@@ -1,8 +1,0 @@
-*.dbtcache.v2
-*.suo
-*.exe
-*.dll
-*.pdb
-bin/
-obj/
-.vs/

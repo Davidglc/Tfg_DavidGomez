@@ -1,2 +1,0 @@
-# Tfg_DavidGomez
-Tfg
