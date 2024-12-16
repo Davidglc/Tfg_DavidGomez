@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>TFG_DavidGomez</id>
+    <version>1.0.0</version>
+    <authors>TFG_DavidGomez</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="f125cba4d8ee00b64929444af16f0071dd19b88b" />
+    <dependencies>
+      <group targetFramework="net8.0-windows7.0" />
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net8.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="D:\TFG\GitHub\TFG_DavidGomez\TFG_DavidGomez\bin\Debug\net8.0-windows\TFG_DavidGomez.runtimeconfig.json" target="lib\net8.0-windows7.0\TFG_DavidGomez.runtimeconfig.json" />
+    <file src="D:\TFG\GitHub\TFG_DavidGomez\TFG_DavidGomez\bin\Debug\net8.0-windows\TFG_DavidGomez.dll" target="lib\net8.0-windows7.0\TFG_DavidGomez.dll" />
+  </files>
+</package>
