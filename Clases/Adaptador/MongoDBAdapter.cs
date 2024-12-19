@@ -2,9 +2,7 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 
 namespace TFG_DavidGomez.Clases.Adaptador
 {
@@ -12,11 +10,10 @@ namespace TFG_DavidGomez.Clases.Adaptador
     {
         private readonly IMongoDatabase _database;
 
-        public MongoDBAdapter(string connectionString, string databaseName)
+        public MongoDBAdapter()
         {
-            // Configurar la conexión a la base de datos
-            var client = new MongoClient(connectionString);
-            _database = client.GetDatabase(databaseName);
+            // Usar la conexión existente de la clase ConexionBD
+            _database = ConexionBD.ObtenerConexionActiva();
         }
 
         /// <summary>
@@ -26,7 +23,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <returns>Actividad programada para la fecha.</returns>
         public BsonDocument ObtenerActividadPorDia(DateTime dia)
         {
-            var actividadesCollection = _database.GetCollection<BsonDocument>("actividades");
+            var actividadesCollection = ConexionBD.GetCollection<BsonDocument>("actividades");
 
             // Filtrar por fecha específica
             var filtro = Builders<BsonDocument>.Filter.Eq("fecha", dia.Date);
@@ -44,8 +41,8 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <returns>Lista de nombres de niños inscritos.</returns>
         public List<string> ObtenerNinosPorDia(DateTime dia)
         {
-            var inscripcionesCollection = _database.GetCollection<BsonDocument>("inscripciones");
-            var ninosCollection = _database.GetCollection<BsonDocument>("ninos");
+            var inscripcionesCollection = ConexionBD.GetCollection<BsonDocument>("inscripciones");
+            var ninosCollection = ConexionBD.GetCollection<BsonDocument>("ninos");
 
             // Filtrar por la fecha de la actividad
             var filtro = Builders<BsonDocument>.Filter.Eq("fecha", dia.Date);
@@ -80,7 +77,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <returns>Lista de materiales requeridos.</returns>
         public List<string> ObtenerMaterialesDeHoy(DateTime dia)
         {
-            var actividadesCollection = _database.GetCollection<BsonDocument>("actividades");
+            var actividadesCollection = ConexionBD.GetCollection<BsonDocument>("actividades");
 
             // Filtrar por la fecha de la actividad
             var filtro = Builders<BsonDocument>.Filter.Eq("fecha", dia.Date);
@@ -111,9 +108,9 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <param name="usuario">Nombre de usuario.</param>
         /// <param name="contraseña">Contraseña del usuario.</param>
         /// <returns>True si las credenciales son válidas, false de lo contrario.</returns>
-        public bool VerificarAcceso(string usuario, string contraseña)
+        public (bool, string) VerificarAccesoConRol(string usuario, string contraseña)
         {
-            var usuariosCollection = _database.GetCollection<BsonDocument>("usuarios");
+            var usuariosCollection = ConexionBD.GetCollection<BsonDocument>("usuarios");
 
             // Crear el filtro para buscar un usuario que coincida con el nombre de usuario y la contraseña
             var filtro = Builders<BsonDocument>.Filter.And(
@@ -121,12 +118,19 @@ namespace TFG_DavidGomez.Clases.Adaptador
                 Builders<BsonDocument>.Filter.Eq("contraseña", contraseña)
             );
 
-            // Buscar en la colección de usuarios
+            // Buscar el usuario en la colección
             var resultado = usuariosCollection.Find(filtro).FirstOrDefault();
 
-            // Si el resultado no es nulo, las credenciales son válidas
-            return resultado != null;
+            // Verificar si el usuario existe
+            if (resultado != null)
+            {
+                // Obtener el rol del usuario (asumimos que el campo en la base de datos se llama 'rol')
+                string rol = resultado.Contains("rol") ? resultado.GetValue("rol").AsString : "Desconocido";
+
+                return (true, rol); // Credenciales válidas y rol encontrado
+            }
+
+            return (false, null); // Credenciales no válidas
         }
     }
 }
-

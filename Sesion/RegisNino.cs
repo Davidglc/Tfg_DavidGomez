@@ -53,5 +53,22 @@ namespace TFG_DavidGomez.Sesion
             }
 
         }
+
+        public void VerificarInstancia()
+        {
+            object obj = new RegisNino();
+
+            if (obj is RegisNino RegisNi)
+            {
+                Console.WriteLine("El objeto es una instancia de PadresForm.");
+                RegisNi.Show();
+            }
+            else
+            {
+                Console.WriteLine("El objeto no es una instancia de PadresForm.");
+            }
+        }
+
     }
+
 }

@@ -12,6 +12,10 @@ namespace TFG_DavidGomez
 {
     public partial class MonitorForm : Form
     {
+        public MonitorForm()
+        {
+        }
+
         public MonitorForm(DateTime fecha, string actividad, List<string> materiales, List<string> niños)
         {
             InitializeComponent();
@@ -30,6 +34,23 @@ namespace TFG_DavidGomez
                 LbNiños.Items.Add(niño);
             }
         }
+
+        public void VerificarInstancia()
+        {
+            object obj = new MonitorForm();
+
+            if (obj is MonitorForm monitorForm)
+            {
+                Console.WriteLine("El objeto proporcionado es de tipo MonitorForm.");
+                monitorForm.Show();
+            }
+            else
+            {
+                Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
+            }
+        }
+
+
     }
 
 }

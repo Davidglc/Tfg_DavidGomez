@@ -49,10 +49,10 @@ namespace TFG_DavidGomez
         {
 
             Dictionary<DateTime, List<string>> actividadesPorFecha = new Dictionary<DateTime, List<string>>
-    {
-        { new DateTime(2024, 11, 25), new List<string> { "Fútbol", "Baloncesto" } },
-        { new DateTime(2024, 11, 26), new List<string> { "Natación", "Pintura" } },
-    };
+            {
+                { new DateTime(2024, 11, 25), new List<string> { "Fútbol", "Baloncesto" } },
+                { new DateTime(2024, 11, 26), new List<string> { "Natación", "Pintura" } },
+            };
 
             if (actividadesPorFecha.ContainsKey(fecha))
             {
@@ -61,6 +61,22 @@ namespace TFG_DavidGomez
 
             return new List<string>();
         }
+
+        public void VerificarInstancia()
+        {
+            object obj = new PadresForm();
+
+            if (obj is PadresForm PadresForm)
+            {
+                Console.WriteLine("El objeto proporcionado es de tipo MonitorForm.");
+                PadresForm.Show();
+            }
+            else
+            {
+                Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
+            }
+        }
+
 
     }
 }

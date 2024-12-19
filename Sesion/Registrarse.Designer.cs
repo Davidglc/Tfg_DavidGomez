@@ -38,7 +38,7 @@
             label2 = new Label();
             txTelf = new TextBox();
             label3 = new Label();
-            textBox1 = new TextBox();
+            txCorreo = new TextBox();
             label4 = new Label();
             btnGuardar = new Button();
             SuspendLayout();
@@ -123,12 +123,12 @@
             label3.TabIndex = 13;
             label3.Text = "Teléfono";
             // 
-            // textBox1
+            // txCorreo
             // 
-            textBox1.Location = new Point(31, 289);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(304, 23);
-            textBox1.TabIndex = 16;
+            txCorreo.Location = new Point(31, 289);
+            txCorreo.Name = "txCorreo";
+            txCorreo.Size = new Size(304, 23);
+            txCorreo.TabIndex = 16;
             // 
             // label4
             // 
@@ -156,7 +156,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(btnGuardar);
-            Controls.Add(textBox1);
+            Controls.Add(txCorreo);
             Controls.Add(label4);
             Controls.Add(txTelf);
             Controls.Add(label3);
@@ -186,7 +186,7 @@
         private Label label2;
         private TextBox txTelf;
         private Label label3;
-        private TextBox textBox1;
+        private TextBox txCorreo;
         private Label label4;
         private Button btnGuardar;
     }
