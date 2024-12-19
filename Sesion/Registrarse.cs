@@ -73,6 +73,8 @@ namespace TFG_DavidGomez.Sesion
 
                 // Cerrar el formulario si es necesario
                 this.Close();
+                InicioSesion inicio = new InicioSesion();
+                inicio.VerificarInstancia();
             }
             catch (Exception ex)
             {

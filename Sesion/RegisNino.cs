@@ -34,8 +34,10 @@ namespace TFG_DavidGomez.Sesion
                     {
                         Nino n = new Nino(nombre, apellidos, fechaNacimiento, edad);
                         PadresForm pf = new PadresForm();
+                        pf.VerificarInstancia();                        
                         pf.AgregarNiño(n);
                         MessageBox.Show("Niño creado correctamente.");
+                        this.Close();
                     }
                     else
                     {

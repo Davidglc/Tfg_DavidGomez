@@ -1,3 +1,4 @@
+using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Adaptador;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 using TFG_DavidGomez.Sesion;
@@ -19,54 +20,56 @@ namespace TFG_DavidGomez
 
         private void btnInicioSesion_Click(object sender, EventArgs e)
         {
-            // Obtener los datos ingresados por el usuario
             string usuario = txUsuario.Text.Trim();
-            string contraseña = txUsuario.Text.Trim();
+            string contraseña = TxContrasena.Text.Trim();
 
-            // Verificar que los campos no estén vacíos
-            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
+            var adapter = new MongoDBAdapter();
+            var (accesoValido, idUsuario, rol) = adapter.VerificarAccesoConRol(usuario, contraseña);
+
+            if (accesoValido)
             {
-                MessageBox.Show("Por favor, completa todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                // Guardar los datos de la sesión
+                SesionIniciada.IdUsuario = idUsuario; // Almacena el ID del usuario desde la base de datos
+                SesionIniciada.NombreUsuario = usuario;
+                SesionIniciada.Rol = rol;
 
-            try
-            {
-                var adapter = new MongoDBAdapter();
+                MessageBox.Show($"Bienvenido, {usuario}. Tu rol es {rol}.");
 
-                var (accesoValido, rol) = adapter.VerificarAccesoConRol(usuario, contraseña);
-
-                if (accesoValido)
+                // Redirigir según el rol
+                if (rol == "Monitor")
                 {
-                    MessageBox.Show($"Bienvenido, {usuario}. Tu rol es {rol}.");
-
-                    if (rol == "Monitor")
-                    {
-                        MonitorForm mf = new MonitorForm();
-                        mf.VerificarInstancia();
-                    }   
-                    else if (rol == "Padre")
-                    {
-                        PadresForm padresForm = new PadresForm();
-                        padresForm.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Rol no reconocido. Contacte con el administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-
-                    this.Hide();
+                    MonitorForm monitorForm = new MonitorForm();
+                    monitorForm.Show();
                 }
-                else
+                else if (rol == "Padre")
                 {
-                    MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PadresForm padresForm = new PadresForm();
+                    padresForm.Show();
                 }
+
+                this.Hide(); // Ocultar el formulario de inicio de sesión
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Ocurrió un error durante el inicio de sesión: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        public void VerificarInstancia()
+        {
+            object obj = new InicioSesion();
+
+            if (obj is InicioSesion ini)
+            {
+                Console.WriteLine("El objeto es una instancia de PadresForm.");
+                ini.ShowDialog();
+            }
+            else
+            {
+                Console.WriteLine("El objeto no es una instancia de PadresForm.");
+            }
+        }
     }
+
 }
+

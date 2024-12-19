@@ -12,7 +12,6 @@ namespace TFG_DavidGomez.Clases
     {
         [BsonId]
         public ObjectId Id { get; set; }
-
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 

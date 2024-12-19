@@ -31,14 +31,14 @@
             menuStrip1 = new MenuStrip();
             actividadesToolStripMenuItem = new ToolStripMenuItem();
             añadirNiñoToolStripMenuItem = new ToolStripMenuItem();
-            monthCalendar1 = new MonthCalendar();
-            button1 = new Button();
-            button2 = new Button();
-            LbNinos = new ListBox();
-            Actividades = new ListBox();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             editarDatosPersonalesToolStripMenuItem = new ToolStripMenuItem();
+            monthCalendar1 = new MonthCalendar();
+            btnApuntar = new Button();
+            button2 = new Button();
+            LbNinos = new ListBox();
+            Actividades = new ListBox();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -64,6 +64,25 @@
             añadirNiñoToolStripMenuItem.Text = "Añadir Niño";
             añadirNiñoToolStripMenuItem.Click += añadirNiñoToolStripMenuItem_Click;
             // 
+            // usuarioToolStripMenuItem
+            // 
+            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cerrarSesiónToolStripMenuItem, editarDatosPersonalesToolStripMenuItem });
+            usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
+            usuarioToolStripMenuItem.Size = new Size(59, 20);
+            usuarioToolStripMenuItem.Text = "Usuario";
+            // 
+            // cerrarSesiónToolStripMenuItem
+            // 
+            cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
+            cerrarSesiónToolStripMenuItem.Size = new Size(196, 22);
+            cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
+            // 
+            // editarDatosPersonalesToolStripMenuItem
+            // 
+            editarDatosPersonalesToolStripMenuItem.Name = "editarDatosPersonalesToolStripMenuItem";
+            editarDatosPersonalesToolStripMenuItem.Size = new Size(196, 22);
+            editarDatosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
+            // 
             // monthCalendar1
             // 
             monthCalendar1.CalendarDimensions = new Size(2, 2);
@@ -72,14 +91,15 @@
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 1;
             // 
-            // button1
+            // btnApuntar
             // 
-            button1.Location = new Point(27, 369);
-            button1.Name = "button1";
-            button1.Size = new Size(82, 52);
-            button1.TabIndex = 2;
-            button1.Text = "Apuntar";
-            button1.UseVisualStyleBackColor = true;
+            btnApuntar.Location = new Point(27, 369);
+            btnApuntar.Name = "btnApuntar";
+            btnApuntar.Size = new Size(82, 52);
+            btnApuntar.TabIndex = 2;
+            btnApuntar.Text = "Apuntar";
+            btnApuntar.UseVisualStyleBackColor = true;
+            btnApuntar.Click += btnApuntar_Click;
             // 
             // button2
             // 
@@ -108,25 +128,6 @@
             Actividades.Size = new Size(158, 139);
             Actividades.TabIndex = 5;
             // 
-            // usuarioToolStripMenuItem
-            // 
-            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cerrarSesiónToolStripMenuItem, editarDatosPersonalesToolStripMenuItem });
-            usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
-            usuarioToolStripMenuItem.Size = new Size(59, 20);
-            usuarioToolStripMenuItem.Text = "Usuario";
-            // 
-            // cerrarSesiónToolStripMenuItem
-            // 
-            cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
-            cerrarSesiónToolStripMenuItem.Size = new Size(196, 22);
-            cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
-            // 
-            // editarDatosPersonalesToolStripMenuItem
-            // 
-            editarDatosPersonalesToolStripMenuItem.Name = "editarDatosPersonalesToolStripMenuItem";
-            editarDatosPersonalesToolStripMenuItem.Size = new Size(196, 22);
-            editarDatosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
-            // 
             // PadresForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -135,7 +136,7 @@
             Controls.Add(Actividades);
             Controls.Add(LbNinos);
             Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnApuntar);
             Controls.Add(monthCalendar1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
@@ -153,7 +154,7 @@
         private ToolStripMenuItem actividadesToolStripMenuItem;
         private ToolStripMenuItem añadirNiñoToolStripMenuItem;
         private MonthCalendar monthCalendar1;
-        private Button button1;
+        private Button btnApuntar;
         private Button button2;
         private ListBox LbNinos;
         private ListBox Actividades;

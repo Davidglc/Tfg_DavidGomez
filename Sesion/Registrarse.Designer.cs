@@ -45,14 +45,14 @@
             // 
             // TxContrasena
             // 
-            TxContrasena.Location = new Point(31, 137);
+            TxContrasena.Location = new Point(66, 142);
             TxContrasena.Name = "TxContrasena";
             TxContrasena.Size = new Size(304, 23);
             TxContrasena.TabIndex = 8;
             // 
             // txUsuario
             // 
-            txUsuario.Location = new Point(31, 42);
+            txUsuario.Location = new Point(66, 47);
             txUsuario.Name = "txUsuario";
             txUsuario.Size = new Size(304, 23);
             txUsuario.TabIndex = 7;
@@ -60,7 +60,7 @@
             // lblContraseña
             // 
             lblContraseña.AutoSize = true;
-            lblContraseña.Location = new Point(31, 119);
+            lblContraseña.Location = new Point(66, 124);
             lblContraseña.Name = "lblContraseña";
             lblContraseña.Size = new Size(67, 15);
             lblContraseña.TabIndex = 6;
@@ -69,7 +69,7 @@
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(31, 24);
+            lblUsuario.Location = new Point(66, 29);
             lblUsuario.Name = "lblUsuario";
             lblUsuario.Size = new Size(51, 15);
             lblUsuario.TabIndex = 5;
@@ -77,7 +77,7 @@
             // 
             // txApellidos
             // 
-            txApellidos.Location = new Point(31, 187);
+            txApellidos.Location = new Point(66, 192);
             txApellidos.Name = "txApellidos";
             txApellidos.Size = new Size(304, 23);
             txApellidos.TabIndex = 10;
@@ -85,7 +85,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(31, 169);
+            label1.Location = new Point(66, 174);
             label1.Name = "label1";
             label1.Size = new Size(56, 15);
             label1.TabIndex = 9;
@@ -93,7 +93,7 @@
             // 
             // txDNI
             // 
-            txDNI.Location = new Point(31, 93);
+            txDNI.Location = new Point(66, 98);
             txDNI.Name = "txDNI";
             txDNI.Size = new Size(304, 23);
             txDNI.TabIndex = 12;
@@ -101,7 +101,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(31, 75);
+            label2.Location = new Point(66, 80);
             label2.Name = "label2";
             label2.Size = new Size(27, 15);
             label2.TabIndex = 11;
@@ -109,7 +109,7 @@
             // 
             // txTelf
             // 
-            txTelf.Location = new Point(31, 238);
+            txTelf.Location = new Point(66, 243);
             txTelf.Name = "txTelf";
             txTelf.Size = new Size(304, 23);
             txTelf.TabIndex = 14;
@@ -117,7 +117,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(31, 220);
+            label3.Location = new Point(66, 225);
             label3.Name = "label3";
             label3.Size = new Size(52, 15);
             label3.TabIndex = 13;
@@ -125,7 +125,7 @@
             // 
             // txCorreo
             // 
-            txCorreo.Location = new Point(31, 289);
+            txCorreo.Location = new Point(66, 294);
             txCorreo.Name = "txCorreo";
             txCorreo.Size = new Size(304, 23);
             txCorreo.TabIndex = 16;
@@ -133,7 +133,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(31, 271);
+            label4.Location = new Point(66, 276);
             label4.Name = "label4";
             label4.Size = new Size(43, 15);
             label4.TabIndex = 15;
@@ -142,7 +142,7 @@
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.Red;
-            btnGuardar.Location = new Point(107, 328);
+            btnGuardar.Location = new Point(142, 333);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(125, 55);
             btnGuardar.TabIndex = 18;
@@ -154,7 +154,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(466, 450);
             Controls.Add(btnGuardar);
             Controls.Add(txCorreo);
             Controls.Add(label4);

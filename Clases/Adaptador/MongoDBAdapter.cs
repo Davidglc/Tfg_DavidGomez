@@ -108,7 +108,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <param name="usuario">Nombre de usuario.</param>
         /// <param name="contraseña">Contraseña del usuario.</param>
         /// <returns>True si las credenciales son válidas, false de lo contrario.</returns>
-        public (bool, string) VerificarAccesoConRol(string usuario, string contraseña)
+        public (bool, string, string) VerificarAccesoConRol(string usuario, string contraseña)
         {
             var usuariosCollection = ConexionBD.GetCollection<BsonDocument>("usuarios");
 
@@ -124,13 +124,15 @@ namespace TFG_DavidGomez.Clases.Adaptador
             // Verificar si el usuario existe
             if (resultado != null)
             {
-                // Obtener el rol del usuario (asumimos que el campo en la base de datos se llama 'rol')
+                // Obtener el ID y el rol del usuario
+                string idUsuario = resultado.GetValue("_id").ToString(); // ID del usuario
                 string rol = resultado.Contains("rol") ? resultado.GetValue("rol").AsString : "Desconocido";
 
-                return (true, rol); // Credenciales válidas y rol encontrado
+                return (true, idUsuario, rol); // Credenciales válidas, ID y rol encontrados
             }
 
-            return (false, null); // Credenciales no válidas
+            return (false, null, null); // Credenciales no válidas
         }
+
     }
 }
