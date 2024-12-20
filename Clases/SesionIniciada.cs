@@ -18,7 +18,7 @@ namespace TFG_DavidGomez.Clases
         /// <summary>
         /// Limpia los datos de la sesión.
         /// </summary>
-        public static void CerrarSesion()
+        public void CerrarSesion()
         {
             IdUsuario = "";
             NombreUsuario = "";

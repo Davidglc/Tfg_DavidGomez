@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -84,8 +85,8 @@ namespace TFG_DavidGomez
             try
             {
                 // Obtener el ID del padre desde la sesión
-                string idPadre = SesionIniciada.IdUsuario; 
-                
+                string idPadre = SesionIniciada.IdUsuario;
+
                 mdba = new MongoDBAdapter();
 
                 BsonDocument Actividad = mdba.ObtenerActividadPorDia(selectedDate);
@@ -99,7 +100,7 @@ namespace TFG_DavidGomez
                 }
 
                 // Crear el documento de inscripción para la base de datos
-                    var inscripcion = new BsonDocument
+                var inscripcion = new BsonDocument
                     {
                         { "id_padre", ObjectId.Parse(idPadre) },       // ID del padre desde la sesión
                         { "id_actividad", ObjectId.Parse(idActividad) } // ID de la actividad
@@ -127,6 +128,93 @@ namespace TFG_DavidGomez
             {
                 // Cualquier otro error
                 MessageBox.Show($"Ocurrió un error al realizar la inscripción: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SesionIniciada si = new SesionIniciada();
+            si.CerrarSesion();
+            this.Close();
+            InicioSesion inicioSesion = new InicioSesion();
+            inicioSesion.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Obtener el ID del padre desde la sesión
+                string idPadre = SesionIniciada.IdUsuario;
+
+
+                // Validar si la sesión está iniciada
+                if (string.IsNullOrEmpty(idPadre))
+                {
+                    MessageBox.Show("La sesión no está iniciada. Por favor, inicie sesión nuevamente.", "Sesión no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Crear instancia del adaptador para la base de datos
+                var mdba = new MongoDBAdapter();
+
+                // Obtener la actividad seleccionada
+                selectedDate = monthCalendar1.SelectionRange.Start;
+                var actividad = mdba.ObtenerActividadPorDia(selectedDate);
+
+                // Validar que existe una actividad para la fecha seleccionada
+                if (actividad == null)
+                {
+                    MessageBox.Show("No hay actividades programadas para la fecha seleccionada.", "Actividad no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Obtener el ID de la actividad
+                string idActividad = actividad.GetValue("_id").ToString();
+
+                // Validar que el ID de la actividad no esté vacío
+                if (string.IsNullOrEmpty(idActividad))
+                {
+                    MessageBox.Show("No se pudo obtener el ID de la actividad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Obtener la colección "inscripciones"
+                var inscripcionesCollection = ConexionBD.GetCollection<BsonDocument>("inscripciones");
+
+                // Crear el filtro para eliminar la inscripción del padre a la actividad
+                var filtro = Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("id_padre", ObjectId.Parse(idPadre)),
+                    Builders<BsonDocument>.Filter.Eq("id_actividad", ObjectId.Parse(idActividad))
+                );
+
+                // Eliminar la inscripción
+                var resultado = inscripcionesCollection.DeleteOne(filtro);
+
+                // Validar si se eliminó algún documento
+                if (resultado.DeletedCount > 0)
+                {
+                    MessageBox.Show("Desapuntado correctamente de la actividad.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró una inscripción para desapuntar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Error si la sesión no está iniciada
+                MessageBox.Show($"Error: {ex.Message}. Inicie sesión nuevamente.", "Sesión no válida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FormatException ex)
+            {
+                // Error si el ID no tiene un formato válido
+                MessageBox.Show("Por favor, asegúrese de que los IDs sean válidos.", "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                // Cualquier otro error
+                MessageBox.Show($"Ocurrió un error al desapuntar de la actividad: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

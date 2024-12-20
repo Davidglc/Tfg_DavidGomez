@@ -76,6 +76,7 @@
             cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
             cerrarSesiónToolStripMenuItem.Size = new Size(196, 22);
             cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
+            cerrarSesiónToolStripMenuItem.Click += cerrarSesiónToolStripMenuItem_Click;
             // 
             // editarDatosPersonalesToolStripMenuItem
             // 
@@ -109,6 +110,7 @@
             button2.TabIndex = 3;
             button2.Text = "DesApuntar";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // LbNinos
             // 

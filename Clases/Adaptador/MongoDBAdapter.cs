@@ -134,5 +134,69 @@ namespace TFG_DavidGomez.Clases.Adaptador
             return (false, null, null); // Credenciales no válidas
         }
 
+        public Nino CargarDatosNino(ObjectId idNino)
+        {
+            try
+            {
+                // Obtener la colección de niños desde la base de datos
+                var ninosCollection = ConexionBD.GetCollection<Nino>("ninos");
+
+                // Crear un filtro para buscar por ID
+                var filtro = Builders<Nino>.Filter.Eq(n => n.Id, idNino);
+
+                // Buscar el documento del niño
+                var nino = ninosCollection.Find(filtro).FirstOrDefault();
+
+                // Verificar si se encontró el niño
+                if (nino == null)
+                {
+                    MessageBox.Show("No se encontró ningún niño con el ID proporcionado.", "Niño no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return null;
+                }
+
+                return nino;
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("El formato del ID del niño no es válido.", "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al cargar los datos del niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        public List<Nino> CargarDatosNinoPorPadre(ObjectId idPadre)
+        {
+            try
+            {
+                // Obtener la colección de niños desde la base de datos
+                var ninosCollection = ConexionBD.GetCollection<Nino>("ninos");
+
+                // Crear un filtro para buscar niños relacionados con el ID del padre
+                var filtro = Builders<Nino>.Filter.Eq(n => n.IdPadre, idPadre);
+
+                // Buscar todos los niños que coincidan con el filtro
+                var ninos = ninosCollection.Find(filtro).ToList();
+
+                // Validar si no se encontraron niños
+                if (ninos == null || ninos.Count == 0)
+                {
+                    MessageBox.Show("No se encontraron niños asociados con este padre.", "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return new List<Nino>();
+                }
+
+                return ninos;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al cargar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<Nino>();
+            }
+        }
+
+
     }
 }
