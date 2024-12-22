@@ -14,6 +14,9 @@ namespace TFG_DavidGomez.Clases
         public ObjectId Id { get; set; }
 
         public string Nombre { get; set; }
+
+        public string DNI { get; set; }
+
         public string Apellidos { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -22,9 +25,10 @@ namespace TFG_DavidGomez.Clases
         public ObjectId IdPadre { get; set; }
         public ObjectId[] Actividades { get; set; }
 
-        public Nino(string nombre, string apellidos, DateTime FechaNacimiento, int edad)
+        public Nino(string nombre, string DNI, string apellidos, DateTime FechaNacimiento, int edad)
         {
             this.Nombre = nombre;
+            this.DNI = DNI;
             this.Apellidos = apellidos;
             this.FechaNacimiento = FechaNacimiento;
             this.Edad = edad;

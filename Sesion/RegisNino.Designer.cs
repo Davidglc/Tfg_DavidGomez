@@ -39,6 +39,7 @@
             txEdad = new TextBox();
             label4 = new Label();
             button1 = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
             // txDNI
@@ -132,11 +133,24 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.Red;
+            button2.Location = new Point(118, 301);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 26;
+            button2.Text = "Aceptar";
+            button2.UseVisualStyleBackColor = false;
+            button2.Visible = false;
+            button2.Click += button2_Click;
+            // 
             // RegisNino
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(364, 418);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(txEdad);
             Controls.Add(label4);
@@ -167,5 +181,6 @@
         private TextBox txEdad;
         private Label label4;
         private Button button1;
+        private Button button2;
     }
 }

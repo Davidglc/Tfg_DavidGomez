@@ -217,5 +217,36 @@ namespace TFG_DavidGomez
                 MessageBox.Show($"Ocurrió un error al desapuntar de la actividad: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Obtener el ID del usuario desde la sesión
+                var id = ObjectId.Parse(SesionIniciada.IdUsuario);
+
+                // Crear una instancia de MongoDBAdapter
+                MongoDBAdapter ma = new MongoDBAdapter();
+
+                // Obtener el usuario desde la base de datos
+                Usuario u = ma.ObtenerUsuarioPorId(id);
+
+                // Validar si el usuario fue encontrado
+                if (u == null)
+                {
+                    MessageBox.Show("No se encontró información para este usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                
+                DatosPersonales dp = new DatosPersonales(u);
+                dp.VerificarInstancia2(u);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al cargar los datos personales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

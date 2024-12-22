@@ -197,6 +197,34 @@ namespace TFG_DavidGomez.Clases.Adaptador
             }
         }
 
+        public Usuario ObtenerUsuarioPorId(ObjectId idUsuario)
+        {
+            try
+            {
+                // Obtener la colección de usuarios desde la base de datos
+                var usuariosCollection = ConexionBD.GetCollection<Usuario>("usuarios");
+
+                // Crear un filtro para buscar el usuario por su ID
+                var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
+
+                // Buscar el usuario que coincida con el filtro
+                var usuario = usuariosCollection.Find(filtro).FirstOrDefault();
+
+                // Validar si no se encontró el usuario
+                if (usuario == null)
+                {
+                    MessageBox.Show("No se encontró un usuario con este ID.", "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return null;
+                }
+
+                return usuario;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al obtener el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
 
     }
 }

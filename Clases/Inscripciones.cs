@@ -12,7 +12,6 @@ namespace TFG_DavidGomez.Clases
     {
         [BsonId]
         public ObjectId Id { get; set; }
-
         public ObjectId IdNino { get; set; }
         public ObjectId IdActividad { get; set; }
 

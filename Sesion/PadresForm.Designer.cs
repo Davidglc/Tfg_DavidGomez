@@ -83,6 +83,7 @@
             editarDatosPersonalesToolStripMenuItem.Name = "editarDatosPersonalesToolStripMenuItem";
             editarDatosPersonalesToolStripMenuItem.Size = new Size(196, 22);
             editarDatosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
+            editarDatosPersonalesToolStripMenuItem.Click += editarDatosPersonalesToolStripMenuItem_Click;
             // 
             // monthCalendar1
             // 

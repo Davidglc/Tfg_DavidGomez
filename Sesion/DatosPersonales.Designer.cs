@@ -31,8 +31,6 @@
             btnGuardar = new Button();
             txCorreo = new TextBox();
             label4 = new Label();
-            txTelf = new TextBox();
-            label3 = new Label();
             txDNI = new TextBox();
             label2 = new Label();
             txApellidos = new TextBox();
@@ -58,7 +56,7 @@
             // 
             // txCorreo
             // 
-            txCorreo.Location = new Point(16, 306);
+            txCorreo.Location = new Point(16, 258);
             txCorreo.Name = "txCorreo";
             txCorreo.Size = new Size(304, 23);
             txCorreo.TabIndex = 30;
@@ -66,27 +64,11 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(16, 288);
+            label4.Location = new Point(16, 240);
             label4.Name = "label4";
             label4.Size = new Size(43, 15);
             label4.TabIndex = 29;
             label4.Text = "Correo";
-            // 
-            // txTelf
-            // 
-            txTelf.Location = new Point(16, 255);
-            txTelf.Name = "txTelf";
-            txTelf.Size = new Size(304, 23);
-            txTelf.TabIndex = 28;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(16, 237);
-            label3.Name = "label3";
-            label3.Size = new Size(52, 15);
-            label3.TabIndex = 27;
-            label3.Text = "Teléfono";
             // 
             // txDNI
             // 
@@ -176,8 +158,6 @@
             Controls.Add(btnGuardar);
             Controls.Add(txCorreo);
             Controls.Add(label4);
-            Controls.Add(txTelf);
-            Controls.Add(label3);
             Controls.Add(txDNI);
             Controls.Add(label2);
             Controls.Add(txApellidos);
@@ -201,8 +181,6 @@
         private Button btnGuardar;
         private TextBox txCorreo;
         private Label label4;
-        private TextBox txTelf;
-        private Label label3;
         private TextBox txDNI;
         private Label label2;
         private TextBox txApellidos;
