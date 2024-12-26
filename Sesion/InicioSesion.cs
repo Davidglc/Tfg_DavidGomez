@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Adaptador;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
@@ -22,6 +23,7 @@ namespace TFG_DavidGomez
         {
             string usuario = txUsuario.Text.Trim();
             string contraseña = TxContrasena.Text.Trim();
+            MongoDBAdapter ma = new MongoDBAdapter();
 
             var adapter = new MongoDBAdapter();
             var (accesoValido, idUsuario, rol) = adapter.VerificarAccesoConRol(usuario, contraseña);
@@ -38,10 +40,42 @@ namespace TFG_DavidGomez
                 // Redirigir según el rol
                 if (rol == "Monitor")
                 {
-                    MonitorForm monitorForm = new MonitorForm();
-                    monitorForm.Show();
-                }
-                else if (rol == "Padre")
+                    try
+                    {
+                        // Obtener la actividad correspondiente al monitor por la fecha actual
+                        BsonDocument actividad = ma.ObtenerActividadPorDia(DateTime.Now); // Obtener la actividad del día actual
+
+                        if (actividad == null)
+                        {
+                            MessageBox.Show("No se encontró una actividad asociada al monitor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        // Obtener el nombre de la actividad desde el BsonDocument
+                        string nombreActividad = actividad.GetValue("Nombre").AsString;
+
+                        // Obtener los materiales de la actividad
+                        var materiales = ma.ObtenerMaterialesPorActividad(actividad["_id"].AsObjectId);
+
+                        // Obtener los niños inscritos en la actividad
+                        var ninos = ma.ObtenerNinosPorActividad(actividad["_id"].AsObjectId);
+                        var nombresNinos = ninos.Select(n => $"{n.Nombre} {n.Apellidos}").ToList();
+
+                        // Crear y mostrar el formulario del monitor
+                        MonitorForm monitorForm = new MonitorForm(
+                            DateTime.Now,
+                            nombreActividad,
+                            materiales,
+                            nombresNinos
+                        );
+
+                        monitorForm.Show();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al cargar el formulario del monitor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }else if (rol == "Padre")
                 {
                     PadresForm padresForm = new PadresForm();
                     padresForm.Show();

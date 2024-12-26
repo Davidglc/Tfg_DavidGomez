@@ -226,5 +226,73 @@ namespace TFG_DavidGomez.Clases.Adaptador
             }
         }
 
+        public List<Nino> ObtenerNinosPorActividad(ObjectId idActividad)
+        {
+            try
+            {
+                // Obtener la colección de inscripciones
+                var inscripcionesCollection = ConexionBD.GetCollection<Inscripcion>("inscripciones");
+
+                // Crear un filtro para obtener las inscripciones relacionadas con la actividad
+                var filtroInscripciones = Builders<Inscripcion>.Filter.Eq(inscripcion => inscripcion.IdActividad, idActividad);
+                var inscripciones = inscripcionesCollection.Find(filtroInscripciones).ToList();
+
+                if (inscripciones == null || !inscripciones.Any())
+                {
+                    return new List<Nino>(); // No hay inscripciones para esta actividad
+                }
+
+                // Extraer los IDs de los niños desde las inscripciones
+                var idsNinos = inscripciones.Select(inscripcion => inscripcion.IdNino).Distinct().ToList();
+
+                if (!idsNinos.Any())
+                {
+                    return new List<Nino>(); // No hay niños asociados a las inscripciones
+                }
+
+                // Obtener la colección de niños
+                var ninosCollection = ConexionBD.GetCollection<Nino>("ninos");
+
+                // Crear un filtro para obtener los niños por sus IDs
+                var filtroNinos = Builders<Nino>.Filter.In(nino => nino.Id, idsNinos);
+
+                // Buscar los niños en la base de datos
+                var ninos = ninosCollection.Find(filtroNinos).ToList();
+
+                return ninos;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener los niños inscritos en la actividad: {ex.Message}");
+            }
+        }
+
+        public List<string> ObtenerMaterialesPorActividad(ObjectId idActividad)
+        {
+            try
+            {
+                // Obtener la colección de actividades
+                var actividadesCollection = ConexionBD.GetCollection<Actividades>("actividades");
+
+                // Crear un filtro para buscar la actividad con el ID especificado
+                var filtroActividad = Builders<Actividades>.Filter.Eq(a => a.Id, idActividad);
+
+                // Buscar la actividad en la base de datos
+                var actividad = actividadesCollection.Find(filtroActividad).FirstOrDefault();
+
+                if (actividad == null)
+                {
+                    throw new Exception("No se encontró la actividad especificada.");
+                }
+
+                // Devolver la lista de materiales asociados con la actividad
+                return actividad.Materiales ?? new List<string>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener los materiales de la actividad: {ex.Message}");
+            }
+        }
+
     }
 }

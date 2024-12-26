@@ -14,6 +14,7 @@ namespace TFG_DavidGomez
     {
         public MonitorForm()
         {
+            InitializeComponent();
         }
 
         public MonitorForm(DateTime fecha, string actividad, List<string> materiales, List<string> niños)
@@ -49,7 +50,6 @@ namespace TFG_DavidGomez
                 Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
             }
         }
-
 
     }
 

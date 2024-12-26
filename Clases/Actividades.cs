@@ -22,9 +22,9 @@ namespace TFG_DavidGomez.Clases
         public int PlazasMaximas { get; set; }
         public int PlazasOcupadas { get; set; }
         public ObjectId IdMonitor { get; set; }
-        public string[] Materiales { get; set; }
+        public List<String> Materiales { get; set; }
 
-        public Actividades(string nombre, string descripcion, DateTime fechaHora, int duracion, int plazasMaximas, int plazasOcupadas, ObjectId idMonitor, string[] materiales)
+        public Actividades(string nombre, string descripcion, DateTime fechaHora, int duracion, int plazasMaximas, int plazasOcupadas, List<String> materiales)
         {
             Nombre = nombre;
             Descripcion = descripcion;
@@ -32,7 +32,6 @@ namespace TFG_DavidGomez.Clases
             Duracion = duracion;
             PlazasMaximas = plazasMaximas;
             PlazasOcupadas = plazasOcupadas;
-            IdMonitor = idMonitor;
             Materiales = materiales;
         }
 

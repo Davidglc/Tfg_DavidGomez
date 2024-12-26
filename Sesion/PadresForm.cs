@@ -24,6 +24,7 @@ namespace TFG_DavidGomez
 
         public PadresForm()
         {
+            mdba = new MongoDBAdapter();
             InitializeComponent();
         }
 

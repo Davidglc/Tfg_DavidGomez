@@ -31,7 +31,6 @@
             menuStrip1 = new MenuStrip();
             actividadesToolStripMenuItem = new ToolStripMenuItem();
             añadirMonitorToolStripMenuItem = new ToolStripMenuItem();
-            cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
             lbFecha = new Label();
             LbFecha2 = new Label();
             LAtividad = new Label();
@@ -40,12 +39,15 @@
             LbMateriales = new ListBox();
             LbNiños = new ListBox();
             label1 = new Label();
+            usuarioToolStripMenuItem = new ToolStripMenuItem();
+            datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
+            cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { actividadesToolStripMenuItem, añadirMonitorToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { actividadesToolStripMenuItem, añadirMonitorToolStripMenuItem, usuarioToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -63,12 +65,6 @@
             añadirMonitorToolStripMenuItem.Name = "añadirMonitorToolStripMenuItem";
             añadirMonitorToolStripMenuItem.Size = new Size(100, 20);
             añadirMonitorToolStripMenuItem.Text = "Añadir Monitor";
-            // 
-            // cerrarSesionToolStripMenuItem
-            // 
-            cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
-            cerrarSesionToolStripMenuItem.Size = new Size(88, 20);
-            cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             // 
             // lbFecha
             // 
@@ -109,7 +105,7 @@
             // LMateriales
             // 
             LMateriales.AutoSize = true;
-            LMateriales.Location = new Point(20, 102);
+            LMateriales.Location = new Point(20, 72);
             LMateriales.Name = "LMateriales";
             LMateriales.Size = new Size(64, 15);
             LMateriales.TabIndex = 5;
@@ -119,7 +115,7 @@
             // 
             LbMateriales.FormattingEnabled = true;
             LbMateriales.ItemHeight = 15;
-            LbMateriales.Location = new Point(20, 120);
+            LbMateriales.Location = new Point(20, 90);
             LbMateriales.Name = "LbMateriales";
             LbMateriales.Size = new Size(364, 214);
             LbMateriales.TabIndex = 6;
@@ -128,7 +124,7 @@
             // 
             LbNiños.FormattingEnabled = true;
             LbNiños.ItemHeight = 15;
-            LbNiños.Location = new Point(424, 120);
+            LbNiños.Location = new Point(424, 90);
             LbNiños.Name = "LbNiños";
             LbNiños.Size = new Size(364, 214);
             LbNiños.TabIndex = 8;
@@ -136,11 +132,30 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(424, 102);
+            label1.Location = new Point(424, 72);
             label1.Name = "label1";
             label1.Size = new Size(41, 15);
             label1.TabIndex = 7;
             label1.Text = "Niños:";
+            // 
+            // usuarioToolStripMenuItem
+            // 
+            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { datosPersonalesToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
+            usuarioToolStripMenuItem.Size = new Size(59, 20);
+            usuarioToolStripMenuItem.Text = "Usuario";
+            // 
+            // datosPersonalesToolStripMenuItem
+            // 
+            datosPersonalesToolStripMenuItem.Name = "datosPersonalesToolStripMenuItem";
+            datosPersonalesToolStripMenuItem.Size = new Size(180, 22);
+            datosPersonalesToolStripMenuItem.Text = "Datos Personales";
+            // 
+            // cerrarSesionToolStripMenuItem
+            // 
+            cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
+            cerrarSesionToolStripMenuItem.Size = new Size(180, 22);
+            cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             // 
             // MonitorForm
             // 
@@ -170,7 +185,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem actividadesToolStripMenuItem;
         private ToolStripMenuItem añadirMonitorToolStripMenuItem;
-        private ToolStripMenuItem cerrarSesionToolStripMenuItem;
         private Label lbFecha;
         private Label LbFecha2;
         private Label LAtividad;
@@ -179,5 +193,8 @@
         private ListBox LbMateriales;
         private ListBox LbNiños;
         private Label label1;
+        private ToolStripMenuItem usuarioToolStripMenuItem;
+        private ToolStripMenuItem datosPersonalesToolStripMenuItem;
+        private ToolStripMenuItem cerrarSesionToolStripMenuItem;
     }
 }
