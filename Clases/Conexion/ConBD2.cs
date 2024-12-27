@@ -10,7 +10,7 @@ namespace TFG_DavidGomez.Clases.Conexion
         private static MongoClient client;
 
         // URI de conexión para MongoDB Atlas
-        private const string connectionUri = "mongodb+srv://davidbasketyague:{F1zBaN8Z176mHXuL}@clusterludo.jr1kr.mongodb.net/?retryWrites=true&w=majority&appName=ClusterLudo";
+        private const string connectionUri = "mongodb+srv://davidbasketyague:F1zBaN8Z176mHXuL@clusterludo.jr1kr.mongodb.net/?retryWrites=true&w=majority&appName=ClusterLudo";
 
         // Constructor estático para inicializar la conexión
         public ConBD2()

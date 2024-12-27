@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TFG_DavidGomez.Clases;
+using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 
 namespace TFG_DavidGomez.Sesion
@@ -58,7 +60,8 @@ namespace TFG_DavidGomez.Sesion
                 };
 
                 // Insertar el documento en la base de datos
-                var usuariosCollection = ConexionBD.GetCollection<BsonDocument>("usuarios");
+                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
                 usuariosCollection.InsertOne(nuevoUsuario);
 
                 // Mostrar mensaje de éxito
@@ -74,8 +77,8 @@ namespace TFG_DavidGomez.Sesion
 
                 // Cerrar el formulario si es necesario
                 this.Close();
-                InicioSesion inicio = new InicioSesion();
-                inicio.VerificarInstancia();
+                //InicioSesion inicio = new InicioSesion();
+                //inicio.VerificarInstancia();
             }
             catch (Exception ex)
             {

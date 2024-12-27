@@ -21,10 +21,23 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// </summary>
         public BsonDocument ObtenerActividadPorDia(DateTime dia)
         {
-            var actividadesCollection = _database.GetCollection<BsonDocument>("actividades");
-            var filtro = Builders<BsonDocument>.Filter.Eq("fecha", dia.Date);
+            // Obtener la colección "Actividades"
+            var actividadesCollection = _database.GetCollection<BsonDocument>("Actividades");
+
+            // Crear un rango de fecha para incluir todas las actividades del día
+            var inicioDia = dia.Date;
+            var finDia = dia.Date.AddDays(1);
+
+            // Crear el filtro para las actividades del día
+            var filtro = Builders<BsonDocument>.Filter.And(
+                Builders<BsonDocument>.Filter.Gte("Fecha", inicioDia),
+                Builders<BsonDocument>.Filter.Lt("Fecha", finDia)
+            );
+
+            // Obtener la primera actividad que coincida
             return actividadesCollection.Find(filtro).FirstOrDefault();
         }
+
 
         /// <summary>
         /// Obtiene los niños inscritos en una actividad programada para un día específico.
@@ -79,23 +92,51 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// </summary>
         public (bool, string, string) VerificarAccesoConRol(string usuario, string contraseña)
         {
-            var usuariosCollection = _database.GetCollection<BsonDocument>("usuarios");
-            var filtro = Builders<BsonDocument>.Filter.And(
-                Builders<BsonDocument>.Filter.Eq("usuario", usuario),
-                Builders<BsonDocument>.Filter.Eq("contraseña", contraseña)
-            );
-
-            var resultado = usuariosCollection.Find(filtro).FirstOrDefault();
-
-            if (resultado != null)
+            try
             {
-                string idUsuario = resultado.GetValue("_id").ToString();
-                string rol = resultado.Contains("rol") ? resultado.GetValue("rol").AsString : "Desconocido";
-                return (true, idUsuario, rol);
-            }
+                // Obtener la colección "Usuarios"
+                IMongoCollection<BsonDocument> usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
 
-            return (false, null, null);
+                // Crear el filtro por nombre de usuario
+                FilterDefinition<BsonDocument> filtroNombre = Builders<BsonDocument>.Filter.Eq("Nombre", usuario);
+
+                // Mostrar el filtro generado
+                Console.WriteLine($"Filtro generado (Nombre): {filtroNombre.ToJson()}");
+
+                // Buscar el documento por nombre
+                var resultado = usuariosCollection.Find(filtroNombre).FirstOrDefault();
+
+                // Verificar si se encontró un usuario con ese nombre
+                if (resultado != null)
+                {
+                    // Validar la contraseña
+                    string contrasenaAlmacenada = resultado.Contains("Contrasena") ? resultado.GetValue("Contrasena").AsString : null;
+
+                    if (contrasenaAlmacenada == contraseña)
+                    {
+                        // Obtener el ID y el rol
+                        string idUsuario = resultado.GetValue("_id").ToString();
+                        string rol = resultado.Contains("Rol") ? resultado.GetValue("Rol").AsString : "Desconocido";
+
+                        // Retornar credenciales válidas
+                        return (true, idUsuario, rol);
+                    }
+                }
+
+                // Retornar credenciales inválidas si el usuario o la contraseña no coinciden
+                return (false, null, null);
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores
+                Console.WriteLine("Error en VerificarAccesoConRol: " + ex.Message);
+                return (false, null, null);
+            }
         }
+
+
+
+
 
         /// <summary>
         /// Carga los datos de un niño por su ID.
@@ -148,11 +189,26 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// </summary>
         public List<string> ObtenerMaterialesPorActividad(ObjectId idActividad)
         {
-            var actividadesCollection = _database.GetCollection<Actividades>("actividades");
-            var filtroActividad = Builders<Actividades>.Filter.Eq(a => a.Id, idActividad);
+            // Obtener la colección "Actividades"
+            var actividadesCollection = _database.GetCollection<BsonDocument>("Actividades");
+
+            // Crear el filtro para encontrar la actividad por su ID
+            var filtroActividad = Builders<BsonDocument>.Filter.Eq("_id", idActividad);
+
+            // Buscar la actividad en la base de datos
             var actividad = actividadesCollection.Find(filtroActividad).FirstOrDefault();
 
-            return actividad?.Materiales ?? new List<string>();
+            // Verificar si se encontró la actividad y si contiene la propiedad "Materiales"
+            if (actividad != null && actividad.Contains("Materiales"))
+            {
+                // Obtener los materiales como un array BSON y convertirlo a List<string>
+                var materialesBsonArray = actividad["Materiales"].AsBsonArray;
+                return materialesBsonArray.Select(m => m.AsString).ToList();
+            }
+
+            // Retornar una lista vacía si no se encuentra la actividad o no tiene materiales
+            return new List<string>();
         }
+
     }
 }

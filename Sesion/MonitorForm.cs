@@ -54,11 +54,20 @@ namespace TFG_DavidGomez
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Cerrar sesión
             SesionIniciada si = new SesionIniciada();
             si.CerrarSesion();
             this.Close();
+
+            // Crear una nueva instancia del formulario de inicio de sesión
             InicioSesion inicioSesion = new InicioSesion();
-            inicioSesion.ShowDialog();
+
+            // Limpiar los campos de usuario y contraseña
+            inicioSesion.LimpiarCampos();
+
+            // Mostrar el formulario de inicio de sesión
+            inicioSesion.VerificarInstancia();
+
         }
 
         private void datosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)

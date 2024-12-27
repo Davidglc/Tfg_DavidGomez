@@ -16,7 +16,7 @@ namespace TFG_DavidGomez
         private void btnRegistrarse_Click(object sender, EventArgs e)
         {
             Registrarse registroForm = new Registrarse();
-            registroForm.VerificarInstancia();
+            registroForm.Show();
         }
 
         private void btnInicioSesion_Click(object sender, EventArgs e)
@@ -24,9 +24,8 @@ namespace TFG_DavidGomez
             string usuario = txUsuario.Text.Trim();
             string contraseña = TxContrasena.Text.Trim();
             MongoDBAdapter ma = new MongoDBAdapter();
-
-            var adapter = new MongoDBAdapter();
-            var (accesoValido, idUsuario, rol) = adapter.VerificarAccesoConRol(usuario, contraseña);
+            
+            var (accesoValido, idUsuario, rol) = ma.VerificarAccesoConRol(usuario, contraseña);
 
             if (accesoValido)
             {
@@ -103,6 +102,13 @@ namespace TFG_DavidGomez
                 Console.WriteLine("El objeto no es una instancia de PadresForm.");
             }
         }
+
+        public void LimpiarCampos()
+        {
+            txUsuario.Text = string.Empty; // Limpia el campo del usuario
+            TxContrasena.Text = string.Empty; // Limpia el campo de la contraseña
+        }
+
     }
 
 }
