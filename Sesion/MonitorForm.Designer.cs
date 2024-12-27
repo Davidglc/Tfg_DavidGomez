@@ -31,6 +31,9 @@
             menuStrip1 = new MenuStrip();
             actividadesToolStripMenuItem = new ToolStripMenuItem();
             añadirMonitorToolStripMenuItem = new ToolStripMenuItem();
+            usuarioToolStripMenuItem = new ToolStripMenuItem();
+            datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
+            cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
             lbFecha = new Label();
             LbFecha2 = new Label();
             LAtividad = new Label();
@@ -39,9 +42,6 @@
             LbMateriales = new ListBox();
             LbNiños = new ListBox();
             label1 = new Label();
-            usuarioToolStripMenuItem = new ToolStripMenuItem();
-            datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
-            cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -65,6 +65,28 @@
             añadirMonitorToolStripMenuItem.Name = "añadirMonitorToolStripMenuItem";
             añadirMonitorToolStripMenuItem.Size = new Size(100, 20);
             añadirMonitorToolStripMenuItem.Text = "Añadir Monitor";
+            añadirMonitorToolStripMenuItem.Click += añadirMonitorToolStripMenuItem_Click;
+            // 
+            // usuarioToolStripMenuItem
+            // 
+            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { datosPersonalesToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
+            usuarioToolStripMenuItem.Size = new Size(59, 20);
+            usuarioToolStripMenuItem.Text = "Usuario";
+            // 
+            // datosPersonalesToolStripMenuItem
+            // 
+            datosPersonalesToolStripMenuItem.Name = "datosPersonalesToolStripMenuItem";
+            datosPersonalesToolStripMenuItem.Size = new Size(196, 22);
+            datosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
+            datosPersonalesToolStripMenuItem.Click += datosPersonalesToolStripMenuItem_Click;
+            // 
+            // cerrarSesionToolStripMenuItem
+            // 
+            cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
+            cerrarSesionToolStripMenuItem.Size = new Size(196, 22);
+            cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
+            cerrarSesionToolStripMenuItem.Click += cerrarSesionToolStripMenuItem_Click;
             // 
             // lbFecha
             // 
@@ -137,25 +159,6 @@
             label1.Size = new Size(41, 15);
             label1.TabIndex = 7;
             label1.Text = "Niños:";
-            // 
-            // usuarioToolStripMenuItem
-            // 
-            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { datosPersonalesToolStripMenuItem, cerrarSesionToolStripMenuItem });
-            usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
-            usuarioToolStripMenuItem.Size = new Size(59, 20);
-            usuarioToolStripMenuItem.Text = "Usuario";
-            // 
-            // datosPersonalesToolStripMenuItem
-            // 
-            datosPersonalesToolStripMenuItem.Name = "datosPersonalesToolStripMenuItem";
-            datosPersonalesToolStripMenuItem.Size = new Size(180, 22);
-            datosPersonalesToolStripMenuItem.Text = "Datos Personales";
-            // 
-            // cerrarSesionToolStripMenuItem
-            // 
-            cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
-            cerrarSesionToolStripMenuItem.Size = new Size(180, 22);
-            cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             // 
             // MonitorForm
             // 

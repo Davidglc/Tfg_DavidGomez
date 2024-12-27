@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TFG_DavidGomez.Clases;
 
 namespace TFG_DavidGomez
 {
@@ -50,6 +51,26 @@ namespace TFG_DavidGomez
                 Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
             }
         }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SesionIniciada si = new SesionIniciada();
+            si.CerrarSesion();
+            this.Close();
+            InicioSesion inicioSesion = new InicioSesion();
+            inicioSesion.ShowDialog();
+        }
+
+        private void datosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void añadirMonitorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 

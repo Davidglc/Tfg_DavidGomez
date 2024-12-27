@@ -24,7 +24,36 @@ namespace TFG_DavidGomez.Clases
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime FechaRegistro { get; set; }
 
-        public Usuario(string nombre, string apellidos, string dni, string email, string contrasena, string rol, DateTime fechaRegistro)
+        public string Telefono { get; set; }
+
+        public List<Nino> ninos { get; set; }
+
+        // Constructor específico para el rol "Padre"
+        public Usuario(string nombre, string apellidos, string dni, string email, string contrasena, DateTime fechaRegistro, string telefono)
+        {
+            Nombre = nombre;
+            Apellidos = apellidos;
+            Dni = dni;
+            Email = email;
+            Contrasena = contrasena;
+            Rol = "Padre";
+            FechaRegistro = fechaRegistro;
+            Telefono = telefono;
+            ninos = new List<Nino>();
+        }
+
+        // Método para añadir niños
+        public void AnadirNino(Nino nuevoNino)
+        {
+            if (nuevoNino == null)
+            {
+                throw new ArgumentNullException(nameof(nuevoNino), "El niño no puede ser añadido.");
+            }
+
+            ninos.Add(nuevoNino);
+        }
+
+        public Usuario(string nombre, string apellidos, string dni, string email, string contrasena, string rol, DateTime fechaRegistro, string telefono)
         {
             Nombre = nombre;
             Apellidos = apellidos;
@@ -33,6 +62,7 @@ namespace TFG_DavidGomez.Clases
             Contrasena = contrasena;
             Rol = rol;
             FechaRegistro = fechaRegistro;
+            Telefono = telefono;
         }
 
         public override string ToString()

@@ -50,7 +50,8 @@ namespace TFG_DavidGomez.Sesion
                     { "nombre", nombre },
                     { "DNI", DNI },
                     { "apellido", apellido },
-                    { "contraseña", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                    { "contraseña", contraseña },// Nota: Idealmente, la contraseña debe ser cifrada
+                    { "Rol", "Padre"},
                     { "Telefono", Telf },
                     { "Correo", Correo }
 

@@ -32,8 +32,6 @@
             txUsuario = new TextBox();
             lblContraseña = new Label();
             lblUsuario = new Label();
-            txApellidos = new TextBox();
-            label1 = new Label();
             txDNI = new TextBox();
             label2 = new Label();
             txTelf = new TextBox();
@@ -41,6 +39,8 @@
             txCorreo = new TextBox();
             label4 = new Label();
             btnGuardar = new Button();
+            txApellidos = new TextBox();
+            label1 = new Label();
             SuspendLayout();
             // 
             // TxContrasena
@@ -75,25 +75,9 @@
             lblUsuario.TabIndex = 5;
             lblUsuario.Text = "Nombre";
             // 
-            // txApellidos
-            // 
-            txApellidos.Location = new Point(66, 192);
-            txApellidos.Name = "txApellidos";
-            txApellidos.Size = new Size(304, 23);
-            txApellidos.TabIndex = 10;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(66, 174);
-            label1.Name = "label1";
-            label1.Size = new Size(56, 15);
-            label1.TabIndex = 9;
-            label1.Text = "Apellidos";
-            // 
             // txDNI
             // 
-            txDNI.Location = new Point(66, 98);
+            txDNI.Location = new Point(66, 190);
             txDNI.Name = "txDNI";
             txDNI.Size = new Size(304, 23);
             txDNI.TabIndex = 12;
@@ -101,7 +85,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(66, 80);
+            label2.Location = new Point(66, 172);
             label2.Name = "label2";
             label2.Size = new Size(27, 15);
             label2.TabIndex = 11;
@@ -150,11 +134,29 @@
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
             // 
+            // txApellidos
+            // 
+            txApellidos.Location = new Point(66, 91);
+            txApellidos.Name = "txApellidos";
+            txApellidos.Size = new Size(304, 23);
+            txApellidos.TabIndex = 20;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(66, 73);
+            label1.Name = "label1";
+            label1.Size = new Size(56, 15);
+            label1.TabIndex = 19;
+            label1.Text = "Apellidos";
+            // 
             // Registrarse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(466, 450);
+            Controls.Add(txApellidos);
+            Controls.Add(label1);
             Controls.Add(btnGuardar);
             Controls.Add(txCorreo);
             Controls.Add(label4);
@@ -162,8 +164,6 @@
             Controls.Add(label3);
             Controls.Add(txDNI);
             Controls.Add(label2);
-            Controls.Add(txApellidos);
-            Controls.Add(label1);
             Controls.Add(TxContrasena);
             Controls.Add(txUsuario);
             Controls.Add(lblContraseña);
@@ -180,8 +180,6 @@
         private TextBox txUsuario;
         private Label lblContraseña;
         private Label lblUsuario;
-        private TextBox txApellidos;
-        private Label label1;
         private TextBox txDNI;
         private Label label2;
         private TextBox txTelf;
@@ -189,5 +187,7 @@
         private TextBox txCorreo;
         private Label label4;
         private Button btnGuardar;
+        private TextBox txApellidos;
+        private Label label1;
     }
 }

@@ -40,7 +40,7 @@
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(235, 91);
+            lblUsuario.Location = new Point(235, 118);
             lblUsuario.Name = "lblUsuario";
             lblUsuario.Size = new Size(47, 15);
             lblUsuario.TabIndex = 0;
@@ -49,7 +49,7 @@
             // lblContraseña
             // 
             lblContraseña.AutoSize = true;
-            lblContraseña.Location = new Point(235, 197);
+            lblContraseña.Location = new Point(235, 179);
             lblContraseña.Name = "lblContraseña";
             lblContraseña.Size = new Size(67, 15);
             lblContraseña.TabIndex = 1;
@@ -76,7 +76,7 @@
             // 
             // TxContrasena
             // 
-            TxContrasena.Location = new Point(235, 235);
+            TxContrasena.Location = new Point(235, 197);
             TxContrasena.Name = "TxContrasena";
             TxContrasena.Size = new Size(304, 23);
             TxContrasena.TabIndex = 4;
