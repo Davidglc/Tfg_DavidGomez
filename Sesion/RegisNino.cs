@@ -9,7 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using TFG_DavidGomez.Clases;
+using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 
 namespace TFG_DavidGomez.Sesion
@@ -23,42 +25,81 @@ namespace TFG_DavidGomez.Sesion
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Asumiendo que txFnac.Text es una fecha en formato válido (ejemplo: "dd/MM/yyyy" o "yyyy-MM-dd")
             try
             {
+                // Obtener los datos del formulario
                 string nombre = txUsuario.Text.Trim();
-                string DNI = txDNI.Text.Trim();
+                string dni = txDNI.Text.Trim();
                 string apellidos = txApellidos.Text.Trim();
                 DateTime fechaNacimiento;
                 int edad;
 
-                if (DateTime.TryParse(txFnac.Text.Trim(), out fechaNacimiento))
+                // Validar fecha de nacimiento
+                if (!DateTime.TryParse(txFnac.Text.Trim(), out fechaNacimiento))
                 {
-                    if (int.TryParse(txEdad.Text.Trim(), out edad))
-                    {
-                        Nino n = new Nino(nombre, DNI, apellidos, fechaNacimiento, edad);
-                        PadresForm pf = new PadresForm();
-                        pf.VerificarInstancia();
-                        pf.AgregarNiño(n);
-                        MessageBox.Show("Niño creado correctamente.");
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Por favor, introduce un valor numérico válido para la edad.");
-                    }
+                    MessageBox.Show("Por favor, introduce una fecha de nacimiento válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
-                else
+
+                // Validar edad
+                if (!int.TryParse(txEdad.Text.Trim(), out edad))
                 {
-                    MessageBox.Show("Por favor, introduce una fecha de nacimiento válida.");
+                    MessageBox.Show("Por favor, introduce un valor numérico válido para la edad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                // Validar campos requeridos
+                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(apellidos))
+                {
+                    MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Crear un BsonDocument para el niño
+                var nuevoNino = new BsonDocument
+                {
+                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
+                    { "Nombre", nombre },
+                    { "DNI", dni },
+                    { "Apellidos", apellidos },
+                    { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
+                    { "Edad", edad }
+                };
+
+                // Buscar al padre en la base de datos
+                string idPadre = SesionIniciada.IdUsuario; // Implementa este método para obtener el ID del padre actual
+                if (string.IsNullOrEmpty(idPadre))
+                {
+                    MessageBox.Show("No se encontró al padre asociado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                var padresCollection = _database.GetCollection<BsonDocument>("Usuarios");
+
+                // Actualizar al padre añadiendo el niño a su lista de hijos
+                var filtro = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(idPadre));
+                var actualizacion = Builders<BsonDocument>.Update.Push("ninos", nuevoNino);
+                padresCollection.UpdateOne(filtro, actualizacion);
+
+                // Mostrar mensaje de éxito
+                MessageBox.Show("Niño agregado correctamente al padre.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Nino n = new Nino(nombre, dni, apellidos, fechaNacimiento, edad);
+                PadresForm pf = new PadresForm();
+                pf.AgregarNiño(n);
+
+                // Cerrar el formulario o limpiar los campos
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al crear el niño: {ex.Message}");
+                // Manejar errores
+                MessageBox.Show($"Error al agregar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
+
+
+
 
         public void VerificarInstancia()
         {

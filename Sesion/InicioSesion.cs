@@ -67,7 +67,7 @@ namespace TFG_DavidGomez
                             materiales,
                             nombresNinos
                         );
-
+                        this.Hide();
                         monitorForm.Show();
                     }
                     catch (Exception ex)
@@ -77,10 +77,10 @@ namespace TFG_DavidGomez
                 }else if (rol == "Padre")
                 {
                     PadresForm padresForm = new PadresForm();
+                    this.Hide();
                     padresForm.Show();
                 }
 
-                this.Hide(); // Ocultar el formulario de inicio de sesión
             }
             else
             {
@@ -108,6 +108,17 @@ namespace TFG_DavidGomez
             txUsuario.Text = string.Empty; // Limpia el campo del usuario
             TxContrasena.Text = string.Empty; // Limpia el campo de la contraseña
         }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            // Calcular la posición central
+            int x = (this.ClientSize.Width - this.Width) / 2;
+            int y = (this.ClientSize.Height - this.Height) / 2;
+
+            // Mover el ListBox al centro
+            this.Location = new Point(x, y);
+        }
+
 
     }
 

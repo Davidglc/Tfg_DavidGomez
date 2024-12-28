@@ -39,6 +39,7 @@
             // 
             // lblUsuario
             // 
+            lblUsuario.Anchor = AnchorStyles.None;
             lblUsuario.AutoSize = true;
             lblUsuario.Location = new Point(235, 118);
             lblUsuario.Name = "lblUsuario";
@@ -48,6 +49,7 @@
             // 
             // lblContraseña
             // 
+            lblContraseña.Anchor = AnchorStyles.None;
             lblContraseña.AutoSize = true;
             lblContraseña.Location = new Point(235, 179);
             lblContraseña.Name = "lblContraseña";
@@ -57,11 +59,12 @@
             // 
             // btnInicioSesion
             // 
+            btnInicioSesion.Anchor = AnchorStyles.None;
             btnInicioSesion.BackColor = Color.Red;
             btnInicioSesion.ForeColor = Color.White;
-            btnInicioSesion.Location = new Point(174, 306);
+            btnInicioSesion.Location = new Point(466, 277);
             btnInicioSesion.Name = "btnInicioSesion";
-            btnInicioSesion.Size = new Size(128, 23);
+            btnInicioSesion.Size = new Size(128, 25);
             btnInicioSesion.TabIndex = 2;
             btnInicioSesion.Text = "Iniciar Sesion";
             btnInicioSesion.UseVisualStyleBackColor = false;
@@ -69,6 +72,7 @@
             // 
             // txUsuario
             // 
+            txUsuario.Anchor = AnchorStyles.None;
             txUsuario.Location = new Point(235, 136);
             txUsuario.Name = "txUsuario";
             txUsuario.Size = new Size(304, 23);
@@ -76,6 +80,7 @@
             // 
             // TxContrasena
             // 
+            TxContrasena.Anchor = AnchorStyles.None;
             TxContrasena.Location = new Point(235, 197);
             TxContrasena.Name = "TxContrasena";
             TxContrasena.Size = new Size(304, 23);
@@ -83,11 +88,12 @@
             // 
             // btnRegistrarse
             // 
+            btnRegistrarse.Anchor = AnchorStyles.None;
             btnRegistrarse.BackColor = Color.Red;
             btnRegistrarse.ForeColor = Color.White;
-            btnRegistrarse.Location = new Point(484, 306);
+            btnRegistrarse.Location = new Point(174, 277);
             btnRegistrarse.Name = "btnRegistrarse";
-            btnRegistrarse.Size = new Size(128, 23);
+            btnRegistrarse.Size = new Size(128, 25);
             btnRegistrarse.TabIndex = 5;
             btnRegistrarse.Text = "Registrarse";
             btnRegistrarse.UseVisualStyleBackColor = false;
@@ -95,8 +101,10 @@
             // 
             // lblBienvenia
             // 
+            lblBienvenia.Anchor = AnchorStyles.None;
             lblBienvenia.AutoSize = true;
             lblBienvenia.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblBienvenia.ImageAlign = ContentAlignment.MiddleRight;
             lblBienvenia.Location = new Point(319, 31);
             lblBienvenia.Name = "lblBienvenia";
             lblBienvenia.Size = new Size(127, 25);
@@ -107,6 +115,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(800, 450);
             Controls.Add(lblBienvenia);
@@ -117,6 +126,7 @@
             Controls.Add(lblContraseña);
             Controls.Add(lblUsuario);
             Name = "InicioSesion";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Inicio Sesion";
             ResumeLayout(false);
             PerformLayout();

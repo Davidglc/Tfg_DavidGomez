@@ -87,14 +87,18 @@
             // 
             // monthCalendar1
             // 
+            monthCalendar1.Anchor = AnchorStyles.None;
             monthCalendar1.CalendarDimensions = new Size(2, 2);
             monthCalendar1.Location = new Point(18, 33);
             monthCalendar1.MaxSelectionCount = 1;
             monthCalendar1.Name = "monthCalendar1";
+            monthCalendar1.ShowToday = false;
             monthCalendar1.TabIndex = 1;
+            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
             // 
             // btnApuntar
             // 
+            btnApuntar.Anchor = AnchorStyles.None;
             btnApuntar.Location = new Point(27, 369);
             btnApuntar.Name = "btnApuntar";
             btnApuntar.Size = new Size(82, 52);
@@ -105,6 +109,7 @@
             // 
             // button2
             // 
+            button2.Anchor = AnchorStyles.None;
             button2.Location = new Point(324, 369);
             button2.Name = "button2";
             button2.Size = new Size(82, 52);
@@ -115,26 +120,29 @@
             // 
             // LbNinos
             // 
+            LbNinos.Anchor = AnchorStyles.None;
             LbNinos.FormattingEnabled = true;
             LbNinos.ItemHeight = 15;
             LbNinos.Location = new Point(522, 33);
             LbNinos.Name = "LbNinos";
-            LbNinos.Size = new Size(158, 139);
+            LbNinos.Size = new Size(266, 139);
             LbNinos.TabIndex = 4;
             // 
             // Actividades
             // 
+            Actividades.Anchor = AnchorStyles.None;
             Actividades.FormattingEnabled = true;
             Actividades.ItemHeight = 15;
             Actividades.Location = new Point(522, 203);
             Actividades.Name = "Actividades";
-            Actividades.Size = new Size(158, 139);
+            Actividades.Size = new Size(266, 139);
             Actividades.TabIndex = 5;
             // 
             // PadresForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(800, 450);
             Controls.Add(Actividades);
             Controls.Add(LbNinos);

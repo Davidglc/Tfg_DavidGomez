@@ -46,18 +46,21 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
+                // Generar un _id personalizado como string
+                // string idPersonalizado = ObjectId.GenerateNewId(); // Crea un GUID único como ID
+
                 // Crear un documento para insertar en MongoDB
                 var nuevoUsuario = new BsonDocument
-                {
-                    { "nombre", nombre },
-                    { "DNI", DNI },
-                    { "apellido", apellido },
-                    { "contraseña", contraseña },// Nota: Idealmente, la contraseña debe ser cifrada
-                    { "Rol", "Padre"},
-                    { "Telefono", Telf },
-                    { "Correo", Correo }
-
-                };
+                    {
+                        { "_id", ObjectId.GenerateNewId() }, // Asignar el _id personalizado como string
+                        { "Nombre", nombre },
+                        { "DNI", DNI },
+                        { "Apellido", apellido },
+                        { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                        { "Rol", "Padre"},
+                        { "Telefono", Telf },
+                        { "Correo", Correo }
+                    };
 
                 // Insertar el documento en la base de datos
                 IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
@@ -86,6 +89,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         public void VerificarInstancia()
         {

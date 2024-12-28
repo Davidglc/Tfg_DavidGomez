@@ -153,10 +153,11 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// </summary>
         public List<Nino> CargarDatosNinoPorPadre(ObjectId idPadre)
         {
-            var ninosCollection = _database.GetCollection<Nino>("ninos");
+            var ninosCollection = _database.GetCollection<Nino>("Ninos");
             var filtro = Builders<Nino>.Filter.Eq(n => n.IdPadre, idPadre);
             return ninosCollection.Find(filtro).ToList();
         }
+
 
         /// <summary>
         /// Obtiene un usuario por su ID.
