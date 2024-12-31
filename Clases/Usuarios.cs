@@ -16,8 +16,8 @@ namespace TFG_DavidGomez.Clases
 
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
-        public string Dni { get; set; }
-        public string Email { get; set; }
+        public string DNI { get; set; }
+        public string Correo { get; set; }
         public string Contrasena { get; set; }
         public string Rol { get; set; }
 
@@ -26,20 +26,54 @@ namespace TFG_DavidGomez.Clases
 
         public string Telefono { get; set; }
 
-        public List<Nino> ninos { get; set; }
+        public string Direccion { get; set; }
+        public List<Nino> Hijos { get; set; }
 
         // Constructor específico para el rol "Padre"
-        public Usuario(string nombre, string apellidos, string dni, string email, string contrasena, DateTime fechaRegistro, string telefono)
+        public Usuario(string nombre, string apellidos, string dni, string correo, string contrasena, DateTime fechaRegistro, string telefono, string direccion)
         {
             Nombre = nombre;
             Apellidos = apellidos;
-            Dni = dni;
-            Email = email;
+            DNI = dni;
+            Correo = correo;
             Contrasena = contrasena;
             Rol = "Padre";
             FechaRegistro = fechaRegistro;
             Telefono = telefono;
-            ninos = new List<Nino>();
+            Hijos = new List<Nino>();
+            Direccion = direccion;
+        }
+
+
+
+        public Usuario(string nombre, string apellidos, string dni, string correo, string contrasena, string rol, DateTime fechaRegistro, string telefono,string direccion)
+        {
+            Nombre = nombre;
+            Apellidos = apellidos;
+            DNI = dni;
+            Correo = correo;
+            Contrasena = contrasena;
+            Rol = rol;
+            FechaRegistro = fechaRegistro;
+            Telefono = telefono;
+            Direccion = direccion;
+        }
+
+        public override string ToString()
+        {
+            if (Rol == "Padre")
+            {
+                return $"Nombre: {Nombre}, Apellidos: {Apellidos}, DNI: {DNI}, Correo: {Correo}, Fecha de Registro: {FechaRegistro.ToShortDateString()}, Teléfono: {Telefono}, Dirección: {Direccion}, Rol: {Rol}";
+            }
+            else
+            {
+                return $"Nombre: {Nombre}, Apellidos: {Apellidos}, DNI: {DNI}, Correo: {Correo}, Contraseña: {Contrasena}, Rol: {Rol}, Fecha de Registro: {FechaRegistro.ToShortDateString()}, Teléfono: {Telefono}, Dirección: {Direccion}";
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Usuario usuario && Id.Equals(usuario.Id);
         }
 
         // Método para añadir niños
@@ -50,29 +84,7 @@ namespace TFG_DavidGomez.Clases
                 throw new ArgumentNullException(nameof(nuevoNino), "El niño no puede ser añadido.");
             }
 
-            ninos.Add(nuevoNino);
-        }
-
-        public Usuario(string nombre, string apellidos, string dni, string email, string contrasena, string rol, DateTime fechaRegistro, string telefono)
-        {
-            Nombre = nombre;
-            Apellidos = apellidos;
-            Dni = dni;
-            Email = email;
-            Contrasena = contrasena;
-            Rol = rol;
-            FechaRegistro = fechaRegistro;
-            Telefono = telefono;
-        }
-
-        public override string ToString()
-        {
-            return $"Usuario: {Nombre} {Apellidos}, DNI: {Dni}, Email: {Email}, Rol: {Rol}, FechaRegistro: {FechaRegistro}";
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Usuario usuario && Id.Equals(usuario.Id);
+            Hijos.Add(nuevoNino);
         }
 
         public override int GetHashCode()

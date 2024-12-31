@@ -4,6 +4,9 @@
     <Compile Update="Sesion\DatosPersonales.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Sesion\DatosPersonalesNinos.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Sesion\Eleccion.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -41,18 +41,21 @@
             lblUsuario = new Label();
             menuStrip1 = new MenuStrip();
             datosNiñosToolStripMenuItem = new ToolStripMenuItem();
+            txTelefono = new TextBox();
+            label3 = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.Red;
-            btnGuardar.Location = new Point(92, 345);
+            btnGuardar.Location = new Point(94, 372);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(125, 55);
             btnGuardar.TabIndex = 31;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // txCorreo
             // 
@@ -150,11 +153,30 @@
             datosNiñosToolStripMenuItem.Text = "Datos Niños";
             datosNiñosToolStripMenuItem.Click += datosNiñosToolStripMenuItem_Click;
             // 
+            // txTelefono
+            // 
+            txTelefono.Location = new Point(16, 316);
+            txTelefono.Name = "txTelefono";
+            txTelefono.Size = new Size(304, 23);
+            txTelefono.TabIndex = 34;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(16, 298);
+            label3.Name = "label3";
+            label3.Size = new Size(52, 15);
+            label3.TabIndex = 33;
+            label3.Text = "Teléfono";
+            // 
             // DatosPersonales
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(372, 450);
+            Controls.Add(txTelefono);
+            Controls.Add(label3);
             Controls.Add(btnGuardar);
             Controls.Add(txCorreo);
             Controls.Add(label4);
@@ -169,6 +191,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "DatosPersonales";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "DatosPersonales";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -191,5 +214,7 @@
         private Label lblUsuario;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem datosNiñosToolStripMenuItem;
+        private TextBox txTelefono;
+        private Label label3;
     }
 }

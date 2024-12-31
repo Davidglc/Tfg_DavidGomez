@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             menuStrip1 = new MenuStrip();
-            actividadesToolStripMenuItem = new ToolStripMenuItem();
             añadirNiñoToolStripMenuItem = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
@@ -44,18 +43,12 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { actividadesToolStripMenuItem, añadirNiñoToolStripMenuItem, usuarioToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirNiñoToolStripMenuItem, usuarioToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
-            // 
-            // actividadesToolStripMenuItem
-            // 
-            actividadesToolStripMenuItem.Name = "actividadesToolStripMenuItem";
-            actividadesToolStripMenuItem.Size = new Size(80, 20);
-            actividadesToolStripMenuItem.Text = "Actividades";
             // 
             // añadirNiñoToolStripMenuItem
             // 
@@ -88,7 +81,7 @@
             // monthCalendar1
             // 
             monthCalendar1.Anchor = AnchorStyles.None;
-            monthCalendar1.CalendarDimensions = new Size(2, 2);
+            monthCalendar1.CalendarDimensions = new Size(1, 2);
             monthCalendar1.Location = new Point(18, 33);
             monthCalendar1.MaxSelectionCount = 1;
             monthCalendar1.Name = "monthCalendar1";
@@ -99,7 +92,7 @@
             // btnApuntar
             // 
             btnApuntar.Anchor = AnchorStyles.None;
-            btnApuntar.Location = new Point(27, 369);
+            btnApuntar.Location = new Point(18, 369);
             btnApuntar.Name = "btnApuntar";
             btnApuntar.Size = new Size(82, 52);
             btnApuntar.TabIndex = 2;
@@ -110,7 +103,7 @@
             // button2
             // 
             button2.Anchor = AnchorStyles.None;
-            button2.Location = new Point(324, 369);
+            button2.Location = new Point(128, 369);
             button2.Name = "button2";
             button2.Size = new Size(82, 52);
             button2.TabIndex = 3;
@@ -123,9 +116,9 @@
             LbNinos.Anchor = AnchorStyles.None;
             LbNinos.FormattingEnabled = true;
             LbNinos.ItemHeight = 15;
-            LbNinos.Location = new Point(522, 33);
+            LbNinos.Location = new Point(222, 33);
             LbNinos.Name = "LbNinos";
-            LbNinos.Size = new Size(266, 139);
+            LbNinos.Size = new Size(566, 139);
             LbNinos.TabIndex = 4;
             // 
             // Actividades
@@ -133,9 +126,9 @@
             Actividades.Anchor = AnchorStyles.None;
             Actividades.FormattingEnabled = true;
             Actividades.ItemHeight = 15;
-            Actividades.Location = new Point(522, 203);
+            Actividades.Location = new Point(222, 193);
             Actividades.Name = "Actividades";
-            Actividades.Size = new Size(266, 139);
+            Actividades.Size = new Size(566, 139);
             Actividades.TabIndex = 5;
             // 
             // PadresForm
@@ -152,6 +145,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "PadresForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "PadresForm";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -162,12 +156,11 @@
         #endregion
 
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem actividadesToolStripMenuItem;
         private ToolStripMenuItem añadirNiñoToolStripMenuItem;
         private MonthCalendar monthCalendar1;
         private Button btnApuntar;
         private Button button2;
-        private ListBox LbNinos;
+        public ListBox LbNinos;
         private ListBox Actividades;
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem cerrarSesiónToolStripMenuItem;

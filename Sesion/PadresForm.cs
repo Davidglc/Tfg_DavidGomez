@@ -27,7 +27,7 @@ namespace TFG_DavidGomez
         {
             mdba = new MongoDBAdapter();
             InitializeComponent();
-            CargarHijos();
+            CargarDatosNinos();
         }
 
         private void añadirNiñoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -68,69 +68,36 @@ namespace TFG_DavidGomez
                 Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
             }
         }
-
-        //private void btnApuntar_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        // Obtener el ID del padre desde la sesión
-        //        string idPadre = SesionIniciada.IdUsuario;
-
-        //        mdba = new MongoDBAdapter();
-
-        //        BsonDocument Actividad = mdba.ObtenerActividadPorDia(selectedDate);
-        //        String idActividad = Actividad.GetValue("_id").ToString();
-
-        //        // Validar que el ID de la actividad no esté vacío
-        //        if (string.IsNullOrEmpty(idActividad))
-        //        {
-        //            MessageBox.Show("Por favor, complete el campo de la actividad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //            return;
-        //        }
-
-        //        // Crear el documento de inscripción para la base de datos
-        //        var inscripcion = new BsonDocument
-        //            {
-        //                { "id_padre", ObjectId.Parse(idPadre) },       // ID del padre desde la sesión
-        //                { "id_actividad", ObjectId.Parse(idActividad) } // ID de la actividad
-        //            };
-
-        //        // Insertar el documento en la colección "inscripciones"
-        //        var inscripcionesCollection = ConexionBD.GetCollection<BsonDocument>("inscripciones");
-        //        inscripcionesCollection.InsertOne(inscripcion);
-
-        //        // Confirmar al usuario que la inscripción fue exitosa
-        //        MessageBox.Show("Inscripción realizada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        //    }
-        //    catch (InvalidOperationException ex)
-        //    {
-        //        // Error si la sesión no está iniciada
-        //        MessageBox.Show($"Error: {ex.Message}. Inicie sesión nuevamente.", "Sesión no válida", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //    catch (FormatException ex)
-        //    {
-        //        // Error si el ID de la actividad no tiene un formato válido
-        //        MessageBox.Show("Por favor, ingrese un ID de actividad válido.", "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Cualquier otro error
-        //        MessageBox.Show($"Ocurrió un error al realizar la inscripción: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-
         private void btnApuntar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Obtener la fecha seleccionada directamente del calendario
+                // Verificar que haya un niño seleccionado en el ListBox
+                if (LbNinos.SelectedItem == null)
+                {
+                    MessageBox.Show("Por favor, seleccione un niño de la lista.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Obtener el texto del niño seleccionado en el ListBox
+                string ninoSeleccionadoText = LbNinos.SelectedItem.ToString();
+
+                // Extraer información del texto seleccionado
+                var datosNino = ninoSeleccionadoText.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                if (datosNino.Length < 4)
+                {
+                    MessageBox.Show("El formato del niño seleccionado no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string nombreSeleccionado = datosNino[0].Replace("Nombre: ", "").Trim();
+
+                // Obtener la fecha seleccionada del calendario
                 DateTime selectedDate = monthCalendar1.SelectionStart.Date;
 
-                // Verificar que se haya seleccionado una fecha válida
                 if (selectedDate == DateTime.MinValue)
                 {
-                    MessageBox.Show("Por favor, seleccione una fecha del calendario.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Por favor, seleccione una fecha válida del calendario.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -143,7 +110,23 @@ namespace TFG_DavidGomez
                     return;
                 }
 
+                // Convertir el ID del padre a ObjectId
+                ObjectId idPadreObj = ObjectId.Parse(idPadre);
+
+                // Crear instancia del adaptador para obtener los niños
                 MongoDBAdapter mdba = new MongoDBAdapter();
+
+                // Cargar los niños asociados al padre
+                List<Nino> ninosDelPadre = mdba.CargarDatosNinoPorPadre(idPadreObj);
+
+                // Buscar al niño que coincida por nombre y DNI
+                Nino ninoSeleccionado = ninosDelPadre.FirstOrDefault(n => n.Nombre == nombreSeleccionado);
+
+                if (ninoSeleccionado == null)
+                {
+                    MessageBox.Show("No se encontró al niño seleccionado en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 // Buscar la actividad para la fecha seleccionada
                 BsonDocument actividad = mdba.ObtenerActividadPorDia(selectedDate);
@@ -155,45 +138,49 @@ namespace TFG_DavidGomez
                 }
 
                 string idActividad = actividad.GetValue("_id").ToString();
+                DateTime fechaActividad = actividad.GetValue("Fecha").ToUniversalTime();
 
-                // Cargar los datos de los niños asociados al padre
-                List<Nino> ninos = mdba.CargarDatosNinoPorPadre(ObjectId.Parse(idPadre));
-
-                if (ninos == null || !ninos.Any())
+                // Validar si la fecha de la actividad ya pasó
+                if (fechaActividad < DateTime.UtcNow.Date)
                 {
-                    MessageBox.Show("No se encontraron niños asociados a este padre.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No se puede inscribir en actividades cuya fecha ya haya pasado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Crear la colección para las inscripciones
+                // Crear la colección de inscripciones
                 var inscripcionesCollection = ConBD2.GetCollection<BsonDocument>("Inscripciones");
 
-                // Insertar una inscripción por cada niño
-                foreach (var nino in ninos)
-                {
-                    var inscripcion = new BsonDocument
-                    {
-                        { "id_padre", ObjectId.Parse(idPadre) },
-                        { "id_actividad", ObjectId.Parse(idActividad) },
-                        { "id_nino", nino.Id } // Suponiendo que "Nino" tiene una propiedad "Id" de tipo ObjectId
-                    };
+                // Verificar si ya está inscrito
+                var filtroInscripcion = Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("id_padre", idPadreObj),
+                    Builders<BsonDocument>.Filter.Eq("id_actividad", ObjectId.Parse(idActividad)),
+                    Builders<BsonDocument>.Filter.Eq("id_nino", ninoSeleccionado.Id)
+                );
 
-                    inscripcionesCollection.InsertOne(inscripcion);
+                bool yaInscrito = inscripcionesCollection.Find(filtroInscripcion).Any();
+                if (yaInscrito)
+                {
+                    MessageBox.Show($"El niño '{ninoSeleccionado.Nombre}' ya está inscrito en esta actividad.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
 
-                MessageBox.Show("Inscripción realizada correctamente para todos los niños.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (InvalidOperationException ex)
-            {
-                MessageBox.Show($"Error: Inicie sesión nuevamente.", "Sesión no válida", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show("Por favor, seleccione una actividad válida.", "Error de formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Crear la inscripción
+                var inscripcion = new BsonDocument
+                {
+                    { "id_padre", idPadreObj },
+                    { "id_actividad", ObjectId.Parse(idActividad) },
+                    { "id_nino", ninoSeleccionado.Id },
+                    { "fecha", selectedDate }
+                };
+
+                // Insertar la inscripción en la base de datos
+                inscripcionesCollection.InsertOne(inscripcion);
+
+                MessageBox.Show($"Niño '{ninoSeleccionado.Nombre}' inscrito correctamente a la actividad del {selectedDate.ToShortDateString()}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al realizar la inscripción", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -212,7 +199,6 @@ namespace TFG_DavidGomez
         {
             try
             {
-                // Validar que el padre esté en sesión
                 string idPadre = SesionIniciada.IdUsuario;
 
                 if (string.IsNullOrEmpty(idPadre))
@@ -221,30 +207,40 @@ namespace TFG_DavidGomez
                     return;
                 }
 
-                // Crear instancia del adaptador de base de datos
-                var mdba = new MongoDBAdapter();
-
-                // Obtener la fecha seleccionada del calendario
-                DateTime selectedDate = monthCalendar1.SelectionRange.Start;
-
-                // Validar que se haya seleccionado una fecha
-                if (selectedDate == DateTime.MinValue)
+                if (LbNinos.SelectedItem == null)
                 {
-                    MessageBox.Show("Por favor, seleccione una fecha válida.", "Fecha no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Por favor, seleccione un niño de la lista.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Buscar la actividad en la base de datos según la fecha seleccionada
+                string ninoSeleccionadoText = LbNinos.SelectedItem.ToString();
+                var datosNino = ninoSeleccionadoText.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (datosNino.Length < 4)
+                {
+                    MessageBox.Show("El formato del niño seleccionado no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string nombreSeleccionado = datosNino[0].Replace("Nombre: ", "").Trim();
+
+                DateTime selectedDate = monthCalendar1.SelectionRange.Start;
+
+                if (selectedDate == DateTime.MinValue)
+                {
+                    MessageBox.Show("Por favor, seleccione una fecha válida del calendario.", "Fecha no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var mdba = new MongoDBAdapter();
                 BsonDocument actividad = mdba.ObtenerActividadPorDia(selectedDate);
 
-                // Validar que existe una actividad para la fecha seleccionada
                 if (actividad == null)
                 {
                     MessageBox.Show("No hay actividades programadas para la fecha seleccionada.", "Actividad no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Obtener el ID de la actividad
                 string idActividad = actividad.GetValue("_id").ToString();
 
                 if (string.IsNullOrEmpty(idActividad))
@@ -253,52 +249,57 @@ namespace TFG_DavidGomez
                     return;
                 }
 
-                // Obtener la lista de niños asociados al padre
                 List<Nino> ninos = mdba.CargarDatosNinoPorPadre(ObjectId.Parse(idPadre));
 
-                // Crear una lista de IDs que incluye al padre y a sus niños
-                var idsRelacionados = ninos.Select(n => n.Id).ToList();
-                 // Agregar el ID del padre a la lista
+                Nino ninoSeleccionado = ninos.FirstOrDefault(n => n.Nombre == nombreSeleccionado);
 
-                // Crear conexión con la colección "inscripciones"
+                if (ninoSeleccionado == null)
+                {
+                    MessageBox.Show("No se encontró al niño seleccionado en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 var inscripcionesCollection = ConBD2.GetCollection<BsonDocument>("Inscripciones");
 
-                // Crear el filtro para identificar todas las inscripciones asociadas al padre y sus niños para la actividad seleccionada
-                var filtro = Builders<BsonDocument>.Filter.And(
-                    Builders<BsonDocument>.Filter.In("id_padre", idPadre), // Verifica que el ID sea del padre o de sus niños
-                    Builders<BsonDocument>.Filter.Eq("id_actividad", idActividad) // Mismo ID de actividad
-                );
+                // Crear el filtro para la actividad
+                var filtroActividad = Builders<BsonDocument>.Filter.Eq("id_actividad", ObjectId.Parse(idActividad));
 
-                // Eliminar las inscripciones
-                var resultado = inscripcionesCollection.DeleteMany(filtro);
+                // Obtener las inscripciones que coincidan con el filtro de la actividad
+                var inscripciones = inscripcionesCollection.Find(filtroActividad).ToList();
 
-                // Validar si se eliminaron registros
+                if (inscripciones == null || !inscripciones.Any())
+                {
+                    MessageBox.Show("No se encontraron inscripciones para la actividad seleccionada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Filtrar por el niño dentro de las inscripciones encontradas
+                var inscripcionNino = inscripciones.FirstOrDefault(inscripcion =>
+                    inscripcion.GetValue("id_nino").AsObjectId == ninoSeleccionado.Id);
+
+                if (inscripcionNino == null)
+                {
+                    MessageBox.Show("No se encontró inscripción para el niño seleccionado en la actividad.", "Error al desapuntar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Eliminar la inscripción
+                var resultado = inscripcionesCollection.DeleteOne(Builders<BsonDocument>.Filter.Eq("_id", inscripcionNino.GetValue("_id").AsObjectId));
+
                 if (resultado.DeletedCount > 0)
                 {
-                    MessageBox.Show($"Se desapuntaron correctamente {resultado.DeletedCount} inscripciones para la actividad seleccionada.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"El niño '{ninoSeleccionado.Nombre}' ha sido desapuntado correctamente de la actividad seleccionada.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("No se encontraron inscripciones para la actividad seleccionada.", "Error al desapuntar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No se pudo eliminar la inscripción.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Capturar errores relacionados con sesiones no iniciadas
-                MessageBox.Show($"Error: {ex.Message}. Por favor, inicie sesión nuevamente.", "Sesión no válida", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (FormatException ex)
-            {
-                // Capturar errores relacionados con el formato de los IDs
-                MessageBox.Show("Por favor, asegúrese de que los IDs sean válidos y correctos.", "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                // Capturar cualquier otro tipo de error
                 MessageBox.Show($"Ocurrió un error al intentar desapuntar de la actividad: {ex.Message}", "Error General", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -320,15 +321,16 @@ namespace TFG_DavidGomez
                     return;
                 }
 
+                // Mostrar los datos personales del usuario
                 DatosPersonales dp = new DatosPersonales(u);
                 dp.VerificarInstancia2(u);
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ocurrió un error al cargar los datos personales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
@@ -399,46 +401,49 @@ namespace TFG_DavidGomez
             return resultado.ToString().Trim();
         }
 
-        private void CargarHijos()
+        private void CargarDatosNinos()
         {
             try
             {
+                // Obtener el ID del padre desde la sesión iniciada
                 string idPadre = SesionIniciada.IdUsuario;
                 if (string.IsNullOrEmpty(idPadre))
                 {
-                    MessageBox.Show("No se encontró el padre asociado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No se encontró un padre asociado a la sesión.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                ObjectId objectIdPadre = ObjectId.Parse(idPadre);
-                MongoDBAdapter ma = new MongoDBAdapter();
+                // Conectar a MongoDB y buscar los niños del padre
+                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                var ninosCollection = _database.GetCollection<BsonDocument>("Ninos");
 
-                var listaNinos = ma.CargarDatosNinoPorPadre(objectIdPadre);
+                // Filtrar por el ID del padre
+                var filtro = Builders<BsonDocument>.Filter.Eq("IdPadre", ObjectId.Parse(idPadre));
+                var ninos = ninosCollection.Find(filtro).ToList();
 
+                // Limpiar el ListBox antes de agregar nuevos elementos
                 LbNinos.Items.Clear();
 
-                if (listaNinos != null && listaNinos.Any())
+                // Verificar si hay niños asociados al padre
+                if (ninos.Count == 0)
                 {
-                    foreach (var nino in listaNinos)
-                    {
-                        LbNinos.Items.Add($"Nombre: {nino.Nombre}, DNI: {nino.DNI}");
-                        LbNinos.Items.Add($"Edad: {nino.Edad}, Fecha Nac: {nino.FechaNacimiento.ToShortDateString()}");
-                        LbNinos.Items.Add(""); // Espacio entre niños
-                    }
+                    LbNinos.Items.Add("No hay niños registrados.");
+                    return;
                 }
-                else
+
+                // Agregar los datos de los niños al ListBox
+                foreach (var nino in ninos)
                 {
-                    LbNinos.Items.Add("No se encontraron niños para este padre.");
+                    // Crear una representación legible para mostrar en el ListBox
+                    string datosNino = $"Nombre: {nino["Nombre"]}, DNI: {nino["DNI"]}, Apellidos: {nino["Apellidos"]}, Fecha de nacimiento: {nino["FechaNacimiento"]:yyyy-MM-dd}, Edad: {nino["Edad"]}";
+                    LbNinos.Items.Add(datosNino);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los hijos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al cargar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
 
     }
 }

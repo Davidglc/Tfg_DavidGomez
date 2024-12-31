@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             menuStrip1 = new MenuStrip();
-            actividadesToolStripMenuItem = new ToolStripMenuItem();
             añadirMonitorToolStripMenuItem = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
@@ -47,18 +46,12 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { actividadesToolStripMenuItem, añadirMonitorToolStripMenuItem, usuarioToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, usuarioToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
-            // 
-            // actividadesToolStripMenuItem
-            // 
-            actividadesToolStripMenuItem.Name = "actividadesToolStripMenuItem";
-            actividadesToolStripMenuItem.Size = new Size(80, 20);
-            actividadesToolStripMenuItem.Text = "Actividades";
             // 
             // añadirMonitorToolStripMenuItem
             // 
@@ -186,7 +179,6 @@
         #endregion
 
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem actividadesToolStripMenuItem;
         private ToolStripMenuItem añadirMonitorToolStripMenuItem;
         private Label lbFecha;
         private Label LbFecha2;

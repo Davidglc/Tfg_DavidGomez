@@ -23,7 +23,6 @@ namespace TFG_DavidGomez.Clases
         public DateTime FechaNacimiento { get; set; }
         public int Edad { get; set; }
         public ObjectId IdPadre { get; set; }
-        public ObjectId[] Actividades { get; set; }
 
         public Nino(string nombre, string DNI, string apellidos, DateTime FechaNacimiento, int edad)
         {

@@ -134,11 +134,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
             }
         }
 
-
-
-
-
-        /// <summary>
+        /// <summary>s
         /// Carga los datos de un niño por su ID.
         /// </summary>
         public Nino CargarDatosNino(ObjectId idNino)
@@ -164,7 +160,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// </summary>
         public Usuario ObtenerUsuarioPorId(ObjectId idUsuario)
         {
-            var usuariosCollection = _database.GetCollection<Usuario>("usuarios");
+            var usuariosCollection = _database.GetCollection<Usuario>("Usuarios");
             var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
             return usuariosCollection.Find(filtro).FirstOrDefault();
         }
