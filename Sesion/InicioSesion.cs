@@ -11,6 +11,7 @@ namespace TFG_DavidGomez
         public InicioSesion()
         {
             InitializeComponent();
+            this.FormClosed += CerrarAplicacion;
         }
 
         private void btnRegistrarse_Click(object sender, EventArgs e)
@@ -117,6 +118,11 @@ namespace TFG_DavidGomez
 
             // Mover el ListBox al centro
             this.Location = new Point(x, y);
+        }
+
+        private void CerrarAplicacion(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
 
 

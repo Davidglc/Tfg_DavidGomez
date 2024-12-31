@@ -28,6 +28,7 @@ namespace TFG_DavidGomez
             mdba = new MongoDBAdapter();
             InitializeComponent();
             CargarDatosNinos();
+            //this.FormClosed += CerrarAplicacion;
         }
 
         private void añadirNiñoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,7 +171,7 @@ namespace TFG_DavidGomez
                     { "id_padre", idPadreObj },
                     { "id_actividad", ObjectId.Parse(idActividad) },
                     { "id_nino", ninoSeleccionado.Id },
-                    { "fecha", selectedDate }
+                    { "fecha", fechaActividad }
                 };
 
                 // Insertar la inscripción en la base de datos
@@ -445,5 +446,9 @@ namespace TFG_DavidGomez
             }
         }
 
+        //private void CerrarAplicacion(object sender, FormClosedEventArgs e)
+        //{
+        //    Application.Exit();
+        //}
     }
 }

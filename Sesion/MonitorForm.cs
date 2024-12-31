@@ -16,6 +16,7 @@ namespace TFG_DavidGomez
         public MonitorForm()
         {
             InitializeComponent();
+            //this.FormClosed += CerrarAplicacion;
         }
 
         public MonitorForm(DateTime fecha, string actividad, List<string> materiales, List<string> niños)
@@ -79,6 +80,11 @@ namespace TFG_DavidGomez
         {
 
         }
+
+        //private void CerrarAplicacion(object sender, FormClosedEventArgs e)
+        //{
+        //    Application.Exit();
+        //}
 
 
     }

@@ -170,16 +170,45 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// </summary>
         public List<Nino> ObtenerNinosPorActividad(ObjectId idActividad)
         {
-            var inscripcionesCollection = _database.GetCollection<Inscripcion>("inscripciones");
-            var filtroInscripciones = Builders<Inscripcion>.Filter.Eq(inscripcion => inscripcion.IdActividad, idActividad);
-            var inscripciones = inscripcionesCollection.Find(filtroInscripciones).ToList();
+            try
+            {
+                Console.WriteLine($"Buscando inscripciones para la actividad con ID: {idActividad}");
 
-            var idsNinos = inscripciones.Select(inscripcion => inscripcion.IdNino).Distinct().ToList();
-            var ninosCollection = _database.GetCollection<Nino>("ninos");
-            var filtroNinos = Builders<Nino>.Filter.In(nino => nino.Id, idsNinos);
+                // Obtener la colección de inscripciones
+                var inscripcionesCollection = _database.GetCollection<Inscripcion>("Inscripciones");
 
-            return ninosCollection.Find(filtroNinos).ToList();
+                // Aplicar el filtro usando el nombre correcto del campo
+                var filtroInscripciones = Builders<Inscripcion>.Filter.Eq(inscripcion => inscripcion.IdActividad, idActividad);
+                var inscripciones = inscripcionesCollection.Find(filtroInscripciones).ToList();
+
+                Console.WriteLine($"Número de inscripciones encontradas: {inscripciones.Count}");
+                foreach (var inscripcion in inscripciones)
+                {
+                    Console.WriteLine($"Inscripción encontrada - IdActividad: {inscripcion.IdActividad}, IdNino: {inscripcion.IdNino}");
+                }
+
+                // Obtener los IDs únicos de niños de las inscripciones
+                var idsNinos = inscripciones.Select(inscripcion => inscripcion.IdNino).Distinct().ToList();
+                Console.WriteLine($"Número de IDs de niños únicos: {idsNinos.Count}");
+
+                // Obtener la colección de niños
+                var ninosCollection = _database.GetCollection<Nino>("Ninos");
+                var filtroNinos = Builders<Nino>.Filter.In(nino => nino.Id, idsNinos);
+
+                var ninos = ninosCollection.Find(filtroNinos).ToList();
+                Console.WriteLine($"Número de niños encontrados: {ninos.Count}");
+
+                return ninos;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<Nino>();
+            }
         }
+
+
+
 
         /// <summary>
         /// Obtiene los materiales requeridos por una actividad.

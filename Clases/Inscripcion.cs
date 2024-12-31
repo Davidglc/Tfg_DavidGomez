@@ -13,15 +13,23 @@ namespace TFG_DavidGomez.Clases
         [BsonId]
         public ObjectId Id { get; set; } // ID único de la inscripción
 
+        [BsonElement("id_actividad")]
         public ObjectId IdActividad { get; set; } // ID de la actividad
-        public ObjectId IdNino { get; set; }      // ID del niño inscrito
 
+        [BsonElement("id_padre")]
+        public ObjectId IdPadre { get; set; } // ID del padre
+
+        [BsonElement("id_nino")]
+        public ObjectId IdNino { get; set; } // ID del niño inscrito
+
+        [BsonElement("fecha")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime Fecha { get; set; }      // Fecha de la inscripción
+        public DateTime Fecha { get; set; } // Fecha de la inscripción
 
-        public Inscripcion(ObjectId id, ObjectId idActividad, ObjectId idNino, DateTime fecha)
+        public Inscripcion(ObjectId id, ObjectId idPadre, ObjectId idActividad, ObjectId idNino, DateTime fecha)
         {
             Id = id;
+            IdPadre = idPadre;
             IdActividad = idActividad;
             IdNino = idNino;
             Fecha = fecha;
@@ -36,11 +44,16 @@ namespace TFG_DavidGomez.Clases
             return obj is Inscripcion inscripcion &&
                    Id.Equals(inscripcion.Id) &&
                    IdActividad.Equals(inscripcion.IdActividad) &&
+                   IdPadre.Equals(inscripcion.IdPadre) &&
                    IdNino.Equals(inscripcion.IdNino) &&
                    Fecha == inscripcion.Fecha;
         }
 
-
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, IdActividad, IdPadre, IdNino, Fecha);
+        }
     }
+
 
 }
