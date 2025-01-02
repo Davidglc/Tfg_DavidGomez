@@ -166,6 +166,38 @@ namespace TFG_DavidGomez.Clases.Adaptador
         }
 
         /// <summary>
+        /// Obtiene un usuario por su ID.
+        /// </summary>
+        public BsonDocument ObtenerUsuarioComoBsonDocument(ObjectId idUsuario)
+        {
+            try
+            {
+                // Obtener la colección "Usuarios"
+                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
+
+                // Crear el filtro
+                var filtro = Builders<BsonDocument>.Filter.Eq("_id", idUsuario);
+
+                // Buscar el documento
+                var usuario = usuariosCollection.Find(filtro).FirstOrDefault();
+
+                if (usuario == null)
+                {
+                    Console.WriteLine($"No se encontró usuario con ID: {idUsuario}");
+                }
+
+                return usuario;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener usuario: {ex.Message}");
+                throw;
+            }
+        }
+
+
+
+        /// <summary>
         /// Obtiene los niños inscritos en una actividad por su ID.
         /// </summary>
         public List<Nino> ObtenerNinosPorActividad(ObjectId idActividad)

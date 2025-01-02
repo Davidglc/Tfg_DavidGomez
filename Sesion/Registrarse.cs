@@ -20,6 +20,7 @@ namespace TFG_DavidGomez.Sesion
         public Registrarse()
         {
             InitializeComponent();
+            BtnGuardarMoni.Visible = false;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -46,25 +47,34 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                // Generar un _id personalizado como string
-                // string idPersonalizado = ObjectId.GenerateNewId(); // Crea un GUID único como ID
+                // Conectar con la base de datos
+                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
+
+                // Validar si ya existe un usuario con el mismo DNI
+                var filtroDNI = Builders<BsonDocument>.Filter.Eq("DNI", DNI);
+                var usuarioExistente = usuariosCollection.Find(filtroDNI).FirstOrDefault();
+
+                if (usuarioExistente != null)
+                {
+                    MessageBox.Show("Ya existe un padre registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 // Crear un documento para insertar en MongoDB
                 var nuevoUsuario = new BsonDocument
-                    {
-                        { "_id", ObjectId.GenerateNewId() }, // Asignar el _id personalizado como string
-                        { "Nombre", nombre },
-                        { "DNI", DNI },
-                        { "Apellido", apellido },
-                        { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
-                        { "Rol", "Padre"},
-                        { "Telefono", Telf },
-                        { "Correo", Correo }
-                    };
+                {
+                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
+                    { "Nombre", nombre },
+                    { "DNI", DNI },
+                    { "Apellido", apellido },
+                    { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                    { "Rol", "Padre" },
+                    { "Telefono", Telf },
+                    { "Correo", Correo }
+                };
 
                 // Insertar el documento en la base de datos
-                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
-                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
                 usuariosCollection.InsertOne(nuevoUsuario);
 
                 // Mostrar mensaje de éxito
@@ -80,8 +90,6 @@ namespace TFG_DavidGomez.Sesion
 
                 // Cerrar el formulario si es necesario
                 this.Close();
-                //InicioSesion inicio = new InicioSesion();
-                //inicio.VerificarInstancia();
             }
             catch (Exception ex)
             {
@@ -89,6 +97,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         public void VerificarInstancia()
@@ -105,5 +114,83 @@ namespace TFG_DavidGomez.Sesion
                 Console.WriteLine("El objeto no es una instancia de PadresForm.");
             }
         }
+
+        private void BtnGuardarMoni_Click(object sender, EventArgs e)
+        {
+           
+                try
+                {
+                    // Obtener los datos del formulario
+                    string nombre = txUsuario.Text.Trim();
+                    string DNI = txDNI.Text.Trim();
+                    string apellido = txApellidos.Text.Trim();
+                    string contraseña = TxContrasena.Text.Trim();
+                    string Telf = txTelf.Text.Trim();
+                    string Correo = txCorreo.Text.Trim();
+
+                    // Validar que todos los campos estén llenos
+                    if (string.IsNullOrEmpty(nombre) ||
+                        string.IsNullOrEmpty(apellido) ||
+                        string.IsNullOrEmpty(DNI) ||
+                        string.IsNullOrEmpty(contraseña) ||
+                        string.IsNullOrEmpty(Telf) ||
+                        string.IsNullOrEmpty(Correo))
+                    {
+                        MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Conectar con la base de datos
+                    IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                    var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
+
+                    // Validar si ya existe un usuario con el mismo DNI
+                    var filtroDNI = Builders<BsonDocument>.Filter.Eq("DNI", DNI);
+                    var usuarioExistente = usuariosCollection.Find(filtroDNI).FirstOrDefault();
+
+                    if (usuarioExistente != null)
+                    {
+                        MessageBox.Show("Ya existe un monitor registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Crear un documento para insertar en MongoDB
+                    var nuevoUsuario = new BsonDocument
+                    {
+                        { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
+                        { "Nombre", nombre },
+                        { "DNI", DNI },
+                        { "Apellido", apellido },
+                        { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                        { "Rol", "Monitor" },
+                        { "Telefono", Telf },
+                        { "Correo", Correo }
+                    };
+
+                    // Insertar el documento en la base de datos
+                    usuariosCollection.InsertOne(nuevoUsuario);
+
+                    // Mostrar mensaje de éxito
+                    MessageBox.Show("Usuario registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Limpiar los campos del formulario
+                    txUsuario.Clear();
+                    txDNI.Clear();
+                    txApellidos.Clear();
+                    TxContrasena.Clear();
+                    txTelf.Clear();
+                    txCorreo.Clear();
+
+                    // Cerrar el formulario si es necesario
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    // Manejar errores
+                    MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+        }
+
     }
 }
+

@@ -27,6 +27,8 @@ namespace TFG_DavidGomez.Clases
         public string Telefono { get; set; }
 
         public string Direccion { get; set; }
+
+        [BsonIgnoreIfNull]
         public List<Nino> Hijos { get; set; }
 
         // Constructor específico para el rol "Padre"
@@ -44,8 +46,6 @@ namespace TFG_DavidGomez.Clases
             Direccion = direccion;
         }
 
-
-
         public Usuario(string nombre, string apellidos, string dni, string correo, string contrasena, string rol, DateTime fechaRegistro, string telefono,string direccion)
         {
             Nombre = nombre;
@@ -58,6 +58,8 @@ namespace TFG_DavidGomez.Clases
             Telefono = telefono;
             Direccion = direccion;
         }
+
+
 
         public override string ToString()
         {

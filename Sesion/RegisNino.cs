@@ -55,6 +55,19 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
+                // Buscar si el niño ya existe en la base de datos
+                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                var ninosCollection = _database.GetCollection<BsonDocument>("Ninos");
+
+                var filtroExistente = Builders<BsonDocument>.Filter.Eq("DNI", dni);
+                var ninoExistente = ninosCollection.Find(filtroExistente).FirstOrDefault();
+
+                if (ninoExistente != null)
+                {
+                    MessageBox.Show("El niño ya existe en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 // Crear un BsonDocument para el niño
                 var nuevoNino = new BsonDocument
                 {
@@ -74,14 +87,14 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
                 var padresCollection = _database.GetCollection<BsonDocument>("Usuarios");
 
                 // Actualizar al padre añadiendo el niño a su lista de hijos
-                var filtro = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(idPadre));
+                var filtroPadre = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(idPadre));
                 var actualizacion = Builders<BsonDocument>.Update.Push("Hijos", nuevoNino);
-                padresCollection.UpdateOne(filtro, actualizacion);
+                padresCollection.UpdateOne(filtroPadre, actualizacion);
 
+                // Añadir el niño a la colección "Ninos"
                 var nuevoNino2 = new BsonDocument
                 {
                     { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
@@ -93,12 +106,12 @@ namespace TFG_DavidGomez.Sesion
                     { "IdPadre", ObjectId.Parse(idPadre)}
                 };
 
-                var ninosCollection = _database.GetCollection<BsonDocument>("Ninos");
                 ninosCollection.InsertOne(nuevoNino2);
 
                 // Mostrar mensaje de éxito
                 MessageBox.Show("Niño agregado correctamente al padre.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                // Nino n = new Nino(nombre, dni, apellidos, fechaNacimiento, edad);
+
+                // Recargar datos de niños
                 CargarDatosNinos();
 
                 // Cerrar el formulario o limpiar los campos
@@ -110,8 +123,6 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Error al agregar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
 
 
         public void VerificarInstancia()

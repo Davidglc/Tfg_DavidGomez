@@ -58,6 +58,7 @@
             añadirMonitorToolStripMenuItem.Name = "añadirMonitorToolStripMenuItem";
             añadirMonitorToolStripMenuItem.Size = new Size(100, 20);
             añadirMonitorToolStripMenuItem.Text = "Añadir Monitor";
+            añadirMonitorToolStripMenuItem.Visible = false;
             añadirMonitorToolStripMenuItem.Click += añadirMonitorToolStripMenuItem_Click;
             // 
             // usuarioToolStripMenuItem
@@ -179,7 +180,7 @@
         #endregion
 
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem añadirMonitorToolStripMenuItem;
+        public ToolStripMenuItem añadirMonitorToolStripMenuItem;
         private Label lbFecha;
         private Label LbFecha2;
         private Label LAtividad;

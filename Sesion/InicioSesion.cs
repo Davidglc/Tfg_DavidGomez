@@ -59,7 +59,7 @@ namespace TFG_DavidGomez
 
                         // Obtener los niños inscritos en la actividad
                         var ninos = ma.ObtenerNinosPorActividad(actividad["_id"].AsObjectId);
-                        var nombresNinos = ninos.Select(n => $"{n.Nombre} {n.Apellidos}").ToList();
+                        var nombresNinos = ninos.Select(n => $"Nombre: {n.Nombre}, Apellidos: {n.Apellidos}, Edad: {n.Edad}").ToList();
 
                         // Crear y mostrar el formulario del monitor
                         MonitorForm monitorForm = new MonitorForm(
@@ -80,7 +80,40 @@ namespace TFG_DavidGomez
                     PadresForm padresForm = new PadresForm();
                     this.Hide();
                     padresForm.Show();
+                }else if (rol == "Admin")
+                {
+
+                    // Obtener la actividad correspondiente al monitor por la fecha actual
+                    BsonDocument actividad = ma.ObtenerActividadPorDia(DateTime.Now); // Obtener la actividad del día actual
+
+                    if (actividad == null)
+                    {
+                        MessageBox.Show("No se encontró una actividad asociada al monitor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Obtener el nombre de la actividad desde el BsonDocument
+                    string nombreActividad = actividad.GetValue("Nombre").AsString;
+
+                    // Obtener los materiales de la actividad
+                    var materiales = ma.ObtenerMaterialesPorActividad(actividad["_id"].AsObjectId);
+
+                    // Obtener los niños inscritos en la actividad
+                    var ninos = ma.ObtenerNinosPorActividad(actividad["_id"].AsObjectId);
+                    var nombresNinos = ninos.Select(n => $"Nombre: {n.Nombre}, Apellidos: {n.Apellidos}, Edad: {n.Edad}").ToList();
+
+                    // Crear y mostrar el formulario del monitor
+                    MonitorForm monitorForm = new MonitorForm(
+                        DateTime.Now,
+                        nombreActividad,
+                        materiales,
+                        nombresNinos
+                    );
+                    monitorForm.añadirMonitorToolStripMenuItem.Visible = true;
+                    this.Hide();
+                    monitorForm.Show();
                 }
+
 
             }
             else

@@ -41,6 +41,7 @@
             btnGuardar = new Button();
             txApellidos = new TextBox();
             label1 = new Label();
+            BtnGuardarMoni = new Button();
             SuspendLayout();
             // 
             // TxContrasena
@@ -150,11 +151,23 @@
             label1.TabIndex = 19;
             label1.Text = "Apellidos";
             // 
+            // BtnGuardarMoni
+            // 
+            BtnGuardarMoni.BackColor = Color.Red;
+            BtnGuardarMoni.Location = new Point(142, 348);
+            BtnGuardarMoni.Name = "BtnGuardarMoni";
+            BtnGuardarMoni.Size = new Size(125, 55);
+            BtnGuardarMoni.TabIndex = 21;
+            BtnGuardarMoni.Text = "Guardar";
+            BtnGuardarMoni.UseVisualStyleBackColor = false;
+            BtnGuardarMoni.Click += BtnGuardarMoni_Click;
+            // 
             // Registrarse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(466, 450);
+            Controls.Add(BtnGuardarMoni);
             Controls.Add(txApellidos);
             Controls.Add(label1);
             Controls.Add(btnGuardar);
@@ -186,8 +199,9 @@
         private Label label3;
         private TextBox txCorreo;
         private Label label4;
-        private Button btnGuardar;
+        public Button btnGuardar;
         private TextBox txApellidos;
         private Label label1;
+        public Button BtnGuardarMoni;
     }
 }

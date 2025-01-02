@@ -151,17 +151,18 @@ namespace TFG_DavidGomez
                 // Crear la colección de inscripciones
                 var inscripcionesCollection = ConBD2.GetCollection<BsonDocument>("Inscripciones");
 
-                // Verificar si ya está inscrito
+                // Verificar si ya está inscrito (incluyendo la fecha)
                 var filtroInscripcion = Builders<BsonDocument>.Filter.And(
                     Builders<BsonDocument>.Filter.Eq("id_padre", idPadreObj),
                     Builders<BsonDocument>.Filter.Eq("id_actividad", ObjectId.Parse(idActividad)),
-                    Builders<BsonDocument>.Filter.Eq("id_nino", ninoSeleccionado.Id)
+                    Builders<BsonDocument>.Filter.Eq("id_nino", ninoSeleccionado.Id),
+                    Builders<BsonDocument>.Filter.Eq("fecha", fechaActividad)
                 );
 
                 bool yaInscrito = inscripcionesCollection.Find(filtroInscripcion).Any();
                 if (yaInscrito)
                 {
-                    MessageBox.Show($"El niño '{ninoSeleccionado.Nombre}' ya está inscrito en esta actividad.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"El niño '{ninoSeleccionado.Nombre}' ya está inscrito en esta actividad para la fecha seleccionada.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -184,6 +185,7 @@ namespace TFG_DavidGomez
                 MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 
@@ -262,25 +264,21 @@ namespace TFG_DavidGomez
 
                 var inscripcionesCollection = ConBD2.GetCollection<BsonDocument>("Inscripciones");
 
-                // Crear el filtro para la actividad
-                var filtroActividad = Builders<BsonDocument>.Filter.Eq("id_actividad", ObjectId.Parse(idActividad));
+                // Crear el filtro para la actividad y la fecha
+                var filtroInscripcion = Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("id_actividad", ObjectId.Parse(idActividad)),
+                    Builders<BsonDocument>.Filter.Eq("id_nino", ninoSeleccionado.Id),
+                    Builders<BsonDocument>.Filter.Gte("fecha", selectedDate.Date),
+                    Builders<BsonDocument>.Filter.Lt("fecha", selectedDate.Date.AddDays(1))
+                );
 
-                // Obtener las inscripciones que coincidan con el filtro de la actividad
-                var inscripciones = inscripcionesCollection.Find(filtroActividad).ToList();
 
-                if (inscripciones == null || !inscripciones.Any())
-                {
-                    MessageBox.Show("No se encontraron inscripciones para la actividad seleccionada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Filtrar por el niño dentro de las inscripciones encontradas
-                var inscripcionNino = inscripciones.FirstOrDefault(inscripcion =>
-                    inscripcion.GetValue("id_nino").AsObjectId == ninoSeleccionado.Id);
+                // Obtener la inscripción que coincide con el filtro
+                var inscripcionNino = inscripcionesCollection.Find(filtroInscripcion).FirstOrDefault();
 
                 if (inscripcionNino == null)
                 {
-                    MessageBox.Show("No se encontró inscripción para el niño seleccionado en la actividad.", "Error al desapuntar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No se encontró inscripción para el niño seleccionado en la actividad para la fecha indicada.", "Error al desapuntar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -301,6 +299,7 @@ namespace TFG_DavidGomez
                 MessageBox.Show($"Ocurrió un error al intentar desapuntar de la actividad: {ex.Message}", "Error General", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
