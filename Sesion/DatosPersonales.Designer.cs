@@ -63,9 +63,10 @@
             // 
             // txCorreo
             // 
+            txCorreo.Font = new Font("Segoe UI", 9.75F);
             txCorreo.Location = new Point(16, 250);
             txCorreo.Name = "txCorreo";
-            txCorreo.Size = new Size(304, 23);
+            txCorreo.Size = new Size(304, 25);
             txCorreo.TabIndex = 30;
             // 
             // label4
@@ -79,9 +80,11 @@
             // 
             // txDNI
             // 
+            txDNI.Font = new Font("Segoe UI", 9.75F);
             txDNI.Location = new Point(16, 102);
+            txDNI.MaxLength = 9;
             txDNI.Name = "txDNI";
-            txDNI.Size = new Size(304, 23);
+            txDNI.Size = new Size(304, 25);
             txDNI.TabIndex = 26;
             // 
             // label2
@@ -95,9 +98,10 @@
             // 
             // txApellidos
             // 
+            txApellidos.Font = new Font("Segoe UI", 9.75F);
             txApellidos.Location = new Point(16, 196);
             txApellidos.Name = "txApellidos";
-            txApellidos.Size = new Size(304, 23);
+            txApellidos.Size = new Size(304, 25);
             txApellidos.TabIndex = 24;
             // 
             // label1
@@ -111,16 +115,18 @@
             // 
             // TxContrasena
             // 
+            TxContrasena.Font = new Font("Segoe UI", 9.75F);
             TxContrasena.Location = new Point(16, 146);
             TxContrasena.Name = "TxContrasena";
-            TxContrasena.Size = new Size(304, 23);
+            TxContrasena.Size = new Size(304, 25);
             TxContrasena.TabIndex = 22;
             // 
             // txUsuario
             // 
+            txUsuario.Font = new Font("Segoe UI", 9.75F);
             txUsuario.Location = new Point(16, 59);
             txUsuario.Name = "txUsuario";
-            txUsuario.Size = new Size(304, 23);
+            txUsuario.Size = new Size(304, 25);
             txUsuario.TabIndex = 21;
             // 
             // lblContraseña
@@ -159,9 +165,11 @@
             // 
             // txTelefono
             // 
+            txTelefono.Font = new Font("Segoe UI", 9.75F);
             txTelefono.Location = new Point(16, 299);
+            txTelefono.MaxLength = 9;
             txTelefono.Name = "txTelefono";
-            txTelefono.Size = new Size(304, 23);
+            txTelefono.Size = new Size(304, 25);
             txTelefono.TabIndex = 34;
             // 
             // label3
@@ -186,9 +194,10 @@
             // 
             // txDirec
             // 
+            txDirec.Font = new Font("Segoe UI", 9.75F);
             txDirec.Location = new Point(16, 344);
             txDirec.Name = "txDirec";
-            txDirec.Size = new Size(304, 23);
+            txDirec.Size = new Size(304, 25);
             txDirec.TabIndex = 37;
             // 
             // Dirección
@@ -196,9 +205,9 @@
             Dirección.AutoSize = true;
             Dirección.Location = new Point(16, 326);
             Dirección.Name = "Dirección";
-            Dirección.Size = new Size(52, 15);
+            Dirección.Size = new Size(57, 15);
             Dirección.TabIndex = 36;
-            Dirección.Text = "Teléfono";
+            Dirección.Text = "Dirección";
             // 
             // DatosPersonales
             // 

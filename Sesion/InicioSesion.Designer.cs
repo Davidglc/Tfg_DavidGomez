@@ -63,7 +63,7 @@
             btnInicioSesion.Anchor = AnchorStyles.None;
             btnInicioSesion.BackColor = Color.Red;
             btnInicioSesion.ForeColor = Color.White;
-            btnInicioSesion.Location = new Point(466, 277);
+            btnInicioSesion.Location = new Point(466, 258);
             btnInicioSesion.Name = "btnInicioSesion";
             btnInicioSesion.Size = new Size(128, 25);
             btnInicioSesion.TabIndex = 2;
@@ -74,17 +74,20 @@
             // txUsuario
             // 
             txUsuario.Anchor = AnchorStyles.None;
+            txUsuario.Font = new Font("Segoe UI", 9.75F);
             txUsuario.Location = new Point(235, 136);
             txUsuario.Name = "txUsuario";
-            txUsuario.Size = new Size(304, 23);
+            txUsuario.Size = new Size(304, 25);
             txUsuario.TabIndex = 3;
             // 
             // TxContrasena
             // 
             TxContrasena.Anchor = AnchorStyles.None;
+            TxContrasena.Font = new Font("Segoe UI", 9.75F);
             TxContrasena.Location = new Point(235, 197);
             TxContrasena.Name = "TxContrasena";
-            TxContrasena.Size = new Size(304, 23);
+            TxContrasena.PasswordChar = '*';
+            TxContrasena.Size = new Size(304, 25);
             TxContrasena.TabIndex = 4;
             // 
             // btnRegistrarse
@@ -92,7 +95,7 @@
             btnRegistrarse.Anchor = AnchorStyles.None;
             btnRegistrarse.BackColor = Color.Red;
             btnRegistrarse.ForeColor = Color.White;
-            btnRegistrarse.Location = new Point(174, 277);
+            btnRegistrarse.Location = new Point(174, 258);
             btnRegistrarse.Name = "btnRegistrarse";
             btnRegistrarse.Size = new Size(128, 25);
             btnRegistrarse.TabIndex = 5;

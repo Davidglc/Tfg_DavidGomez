@@ -49,16 +49,18 @@
             // 
             // TxContrasena
             // 
+            TxContrasena.Font = new Font("Segoe UI", 9.75F);
             TxContrasena.Location = new Point(66, 142);
             TxContrasena.Name = "TxContrasena";
-            TxContrasena.Size = new Size(304, 23);
+            TxContrasena.Size = new Size(304, 25);
             TxContrasena.TabIndex = 9;
             // 
             // txUsuario
             // 
+            txUsuario.Font = new Font("Segoe UI", 9.75F);
             txUsuario.Location = new Point(66, 47);
             txUsuario.Name = "txUsuario";
-            txUsuario.Size = new Size(304, 23);
+            txUsuario.Size = new Size(304, 25);
             txUsuario.TabIndex = 7;
             // 
             // lblContraseña
@@ -81,9 +83,11 @@
             // 
             // txDNI
             // 
+            txDNI.Font = new Font("Segoe UI", 9.75F);
             txDNI.Location = new Point(66, 190);
+            txDNI.MaxLength = 9;
             txDNI.Name = "txDNI";
-            txDNI.Size = new Size(304, 23);
+            txDNI.Size = new Size(304, 25);
             txDNI.TabIndex = 12;
             // 
             // label2
@@ -97,9 +101,11 @@
             // 
             // txTelf
             // 
+            txTelf.Font = new Font("Segoe UI", 9.75F);
             txTelf.Location = new Point(66, 243);
+            txTelf.MaxLength = 9;
             txTelf.Name = "txTelf";
-            txTelf.Size = new Size(304, 23);
+            txTelf.Size = new Size(304, 25);
             txTelf.TabIndex = 14;
             // 
             // label3
@@ -113,9 +119,10 @@
             // 
             // txCorreo
             // 
+            txCorreo.Font = new Font("Segoe UI", 9.75F);
             txCorreo.Location = new Point(66, 294);
             txCorreo.Name = "txCorreo";
-            txCorreo.Size = new Size(304, 23);
+            txCorreo.Size = new Size(304, 25);
             txCorreo.TabIndex = 16;
             // 
             // label4
@@ -140,9 +147,10 @@
             // 
             // txApellidos
             // 
+            txApellidos.Font = new Font("Segoe UI", 9.75F);
             txApellidos.Location = new Point(66, 91);
             txApellidos.Name = "txApellidos";
-            txApellidos.Size = new Size(304, 23);
+            txApellidos.Size = new Size(304, 25);
             txApellidos.TabIndex = 8;
             // 
             // label1
@@ -167,10 +175,11 @@
             // 
             // TxDirec
             // 
+            TxDirec.Font = new Font("Segoe UI", 9.75F);
             TxDirec.Location = new Point(66, 339);
             TxDirec.Name = "TxDirec";
-            TxDirec.Size = new Size(304, 23);
-            TxDirec.TabIndex = 23;
+            TxDirec.Size = new Size(304, 25);
+            TxDirec.TabIndex = 17;
             // 
             // TxDireccion
             // 

@@ -83,6 +83,7 @@
             // 
             monthCalendar1.Anchor = AnchorStyles.None;
             monthCalendar1.CalendarDimensions = new Size(1, 2);
+            monthCalendar1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             monthCalendar1.Location = new Point(18, 33);
             monthCalendar1.MaxSelectionCount = 1;
             monthCalendar1.Name = "monthCalendar1";
@@ -117,21 +118,23 @@
             // LbNinos
             // 
             LbNinos.Anchor = AnchorStyles.None;
+            LbNinos.Font = new Font("Segoe UI", 9.75F);
             LbNinos.FormattingEnabled = true;
-            LbNinos.ItemHeight = 15;
+            LbNinos.ItemHeight = 17;
             LbNinos.Location = new Point(222, 33);
             LbNinos.Name = "LbNinos";
-            LbNinos.Size = new Size(566, 139);
+            LbNinos.Size = new Size(566, 123);
             LbNinos.TabIndex = 4;
             // 
             // Actividades
             // 
             Actividades.Anchor = AnchorStyles.None;
+            Actividades.Font = new Font("Segoe UI", 9.75F);
             Actividades.FormattingEnabled = true;
-            Actividades.ItemHeight = 15;
+            Actividades.ItemHeight = 17;
             Actividades.Location = new Point(222, 193);
             Actividades.Name = "Actividades";
-            Actividades.Size = new Size(566, 139);
+            Actividades.Size = new Size(566, 123);
             Actividades.TabIndex = 5;
             // 
             // PadresForm

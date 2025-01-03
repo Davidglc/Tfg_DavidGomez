@@ -120,7 +120,7 @@ namespace TFG_DavidGomez
                 // Cargar los niños asociados al padre
                 List<Nino> ninosDelPadre = mdba.CargarDatosNinoPorPadre(idPadreObj);
 
-                // Buscar al niño que coincida por nombre y DNI
+                // Buscar al niño que coincida por nombre
                 Nino ninoSeleccionado = ninosDelPadre.FirstOrDefault(n => n.Nombre == nombreSeleccionado);
 
                 if (ninoSeleccionado == null)
@@ -141,13 +141,6 @@ namespace TFG_DavidGomez
                 string idActividad = actividad.GetValue("_id").ToString();
                 DateTime fechaActividad = actividad.GetValue("Fecha").ToUniversalTime();
 
-                // Validar si la fecha de la actividad ya pasó
-                if (fechaActividad < DateTime.UtcNow.Date)
-                {
-                    MessageBox.Show("No se puede inscribir en actividades cuya fecha ya haya pasado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 // Crear la colección de inscripciones
                 var inscripcionesCollection = ConBD2.GetCollection<BsonDocument>("Inscripciones");
 
@@ -160,9 +153,23 @@ namespace TFG_DavidGomez
                 );
 
                 bool yaInscrito = inscripcionesCollection.Find(filtroInscripcion).Any();
-                if (yaInscrito)
+
+                // Validar si ya está inscrito y la actividad ya pasó
+                if (yaInscrito && fechaActividad < DateTime.Now.Date)
+                {
+                    MessageBox.Show($"El niño '{ninoSeleccionado.Nombre}' ya está inscrito, pero la actividad del {selectedDate.ToShortDateString()} ya se ha realizado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                else if (yaInscrito)
                 {
                     MessageBox.Show($"El niño '{ninoSeleccionado.Nombre}' ya está inscrito en esta actividad para la fecha seleccionada.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Validar si la fecha de la actividad ya pasó
+                if (fechaActividad < DateTime.Now.Date)
+                {
+                    MessageBox.Show("No se puede inscribir en actividades cuya fecha ya haya pasado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -185,6 +192,7 @@ namespace TFG_DavidGomez
                 MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 
@@ -272,13 +280,20 @@ namespace TFG_DavidGomez
                     Builders<BsonDocument>.Filter.Lt("fecha", selectedDate.Date.AddDays(1))
                 );
 
-
                 // Obtener la inscripción que coincide con el filtro
                 var inscripcionNino = inscripcionesCollection.Find(filtroInscripcion).FirstOrDefault();
 
                 if (inscripcionNino == null)
                 {
                     MessageBox.Show("No se encontró inscripción para el niño seleccionado en la actividad para la fecha indicada.", "Error al desapuntar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Verificar si la fecha de la actividad ya pasó
+                DateTime fechaActividad = inscripcionNino.GetValue("fecha").ToUniversalTime();
+                if (fechaActividad < DateTime.Now.Date)
+                {
+                    MessageBox.Show($"No se puede desapuntar al niño '{ninoSeleccionado.Nombre}' porque la actividad ya ha pasado (Fecha: {fechaActividad.ToShortDateString()}).", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -299,6 +314,8 @@ namespace TFG_DavidGomez
                 MessageBox.Show($"Ocurrió un error al intentar desapuntar de la actividad: {ex.Message}", "Error General", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
 
         private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)

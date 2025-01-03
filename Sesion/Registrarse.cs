@@ -49,6 +49,20 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
+                // Validar formato del teléfono (solo números)
+                if (!long.TryParse(Telf, out _))
+                {
+                    MessageBox.Show("El teléfono debe contener solo números.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Validar formato del DNI (solo una letra al final)
+                if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
+                {
+                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 // Conectar con la base de datos
                 IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
                 var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
@@ -75,8 +89,7 @@ namespace TFG_DavidGomez.Sesion
                     { "Telefono", Telf },
                     { "Correo", Correo },
                     { "Direccion", direccion },
-                    { "FechaRegistro", DateTime.Now}
-
+                    { "FechaRegistro", DateTime.Now }
                 };
 
                 // Insertar el documento en la base de datos
@@ -106,6 +119,7 @@ namespace TFG_DavidGomez.Sesion
 
 
 
+
         public void VerificarInstancia()
         {
             object obj = new Registrarse();
@@ -123,9 +137,8 @@ namespace TFG_DavidGomez.Sesion
 
         private void BtnGuardarMoni_Click(object sender, EventArgs e)
         {
-           
-                try
-                {
+            try
+            {
                 // Obtener los datos del formulario
                 string nombre = txUsuario.Text.Trim();
                 string DNI = txDNI.Text.Trim();
@@ -148,59 +161,74 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
+                // Validar formato del teléfono (solo números)
+                if (!long.TryParse(Telf, out _))
+                {
+                    MessageBox.Show("El teléfono debe contener solo números.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Validar formato del DNI (solo una letra al final)
+                if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
+                {
+                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 // Conectar con la base de datos
                 IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
-                    var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
+                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
 
-                    // Validar si ya existe un usuario con el mismo DNI
-                    var filtroDNI = Builders<BsonDocument>.Filter.Eq("DNI", DNI);
-                    var usuarioExistente = usuariosCollection.Find(filtroDNI).FirstOrDefault();
+                // Validar si ya existe un usuario con el mismo DNI
+                var filtroDNI = Builders<BsonDocument>.Filter.Eq("DNI", DNI);
+                var usuarioExistente = usuariosCollection.Find(filtroDNI).FirstOrDefault();
 
-                    if (usuarioExistente != null)
-                    {
-                        MessageBox.Show("Ya existe un monitor registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    // Crear un documento para insertar en MongoDB
-                    var nuevoUsuario = new BsonDocument
-                    {
-                        { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                        { "Nombre", nombre },
-                        { "DNI", DNI },
-                        { "Apellidos", apellido },
-                        { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
-                        { "Rol", "Monitor" },
-                        { "Telefono", Telf },
-                        { "Correo", Correo },
-                        { "Direccion", direccion },
-                        { "FechaRegistro", DateTime.Now}
-                    };
-
-                    // Insertar el documento en la base de datos
-                    usuariosCollection.InsertOne(nuevoUsuario);
-
-                    // Mostrar mensaje de éxito
-                    MessageBox.Show("Usuario registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Limpiar los campos del formulario
-                    txUsuario.Clear();
-                    txDNI.Clear();
-                    txApellidos.Clear();
-                    TxContrasena.Clear();
-                    txTelf.Clear();
-                    txCorreo.Clear();
-                    TxDirec.Clear();
-
-                    // Cerrar el formulario si es necesario
-                    this.Close();
-                }
-                catch (Exception ex)
+                if (usuarioExistente != null)
                 {
-                    // Manejar errores
-                    MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ya existe un monitor registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                // Crear un documento para insertar en MongoDB
+                var nuevoUsuario = new BsonDocument
+                {
+                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
+                    { "Nombre", nombre },
+                    { "DNI", DNI },
+                    { "Apellidos", apellido },
+                    { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                    { "Rol", "Monitor" },
+                    { "Telefono", Telf },
+                    { "Correo", Correo },
+                    { "Direccion", direccion },
+                    { "FechaRegistro", DateTime.Now }
+                };
+
+                // Insertar el documento en la base de datos
+                usuariosCollection.InsertOne(nuevoUsuario);
+
+                // Mostrar mensaje de éxito
+                MessageBox.Show("Usuario registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Limpiar los campos del formulario
+                txUsuario.Clear();
+                txDNI.Clear();
+                txApellidos.Clear();
+                TxContrasena.Clear();
+                txTelf.Clear();
+                txCorreo.Clear();
+                TxDirec.Clear();
+
+                // Cerrar el formulario si es necesario
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores
+                MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
     }
 }

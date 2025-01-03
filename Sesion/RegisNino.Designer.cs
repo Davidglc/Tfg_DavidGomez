@@ -46,6 +46,7 @@
             // txDNI
             // 
             txDNI.Location = new Point(22, 96);
+            txDNI.MaxLength = 9;
             txDNI.Name = "txDNI";
             txDNI.Size = new Size(304, 23);
             txDNI.TabIndex = 18;
@@ -110,6 +111,7 @@
             // txEdad
             // 
             txEdad.Location = new Point(22, 256);
+            txEdad.MaxLength = 2;
             txEdad.Name = "txEdad";
             txEdad.Size = new Size(304, 23);
             txEdad.TabIndex = 24;

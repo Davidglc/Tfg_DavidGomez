@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,10 +35,10 @@ namespace TFG_DavidGomez.Sesion
                 DateTime fechaNacimiento;
                 int edad;
 
-                // Validar fecha de nacimiento
-                if (!DateTime.TryParse(txFnac.Text.Trim(), out fechaNacimiento))
+                // Validar formato de fecha de nacimiento
+                if (!DateTime.TryParseExact(txFnac.Text.Trim(), "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
                 {
-                    MessageBox.Show("Por favor, introduce una fecha de nacimiento válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Por favor, introduce la fecha de nacimiento en el formato válido (año/mes/día, por ejemplo: 2024/01/15).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -70,14 +71,14 @@ namespace TFG_DavidGomez.Sesion
 
                 // Crear un BsonDocument para el niño
                 var nuevoNino = new BsonDocument
-                {
-                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                    { "Nombre", nombre },
-                    { "DNI", dni },
-                    { "Apellidos", apellidos },
-                    { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
-                    { "Edad", edad }
-                };
+                    {
+                        { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
+                        { "Nombre", nombre },
+                        { "DNI", dni },
+                        { "Apellidos", apellidos },
+                        { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
+                        { "Edad", edad }
+                    };
 
                 // Buscar al padre en la base de datos
                 string idPadre = SesionIniciada.IdUsuario; // Implementa este método para obtener el ID del padre actual
@@ -96,15 +97,15 @@ namespace TFG_DavidGomez.Sesion
 
                 // Añadir el niño a la colección "Ninos"
                 var nuevoNino2 = new BsonDocument
-                {
-                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                    { "Nombre", nombre },
-                    { "DNI", dni },
-                    { "Apellidos", apellidos },
-                    { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
-                    { "Edad", edad },
-                    { "IdPadre", ObjectId.Parse(idPadre)}
-                };
+                    {
+                        { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
+                        { "Nombre", nombre },
+                        { "DNI", dni },
+                        { "Apellidos", apellidos },
+                        { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
+                        { "Edad", edad },
+                        { "IdPadre", ObjectId.Parse(idPadre)}
+                    };
 
                 ninosCollection.InsertOne(nuevoNino2);
 
@@ -120,6 +121,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Error al agregar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         public void VerificarInstancia()
         {
