@@ -168,23 +168,45 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <summary>
         /// Obtiene un usuario por su ID.
         /// </summary>
-        public BsonDocument ObtenerUsuarioComoBsonDocument(ObjectId idUsuario)
+        public UsuarioMonitor ObtenerUsuarioPorIdMoni(ObjectId idUsuario)
         {
             try
             {
-                // Obtener la colección "Usuarios"
+                // Obtener la colección "Usuarios" como BsonDocument
                 var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
 
-                // Crear el filtro
+                // Crear el filtro para buscar el documento
                 var filtro = Builders<BsonDocument>.Filter.Eq("_id", idUsuario);
 
                 // Buscar el documento
-                var usuario = usuariosCollection.Find(filtro).FirstOrDefault();
+                var usuarioBson = usuariosCollection.Find(filtro).FirstOrDefault();
 
-                if (usuario == null)
+                if (usuarioBson == null)
                 {
                     Console.WriteLine($"No se encontró usuario con ID: {idUsuario}");
+                    return null;
                 }
+
+                // Inspeccionar el documento para verificar su estructura
+                Console.WriteLine($"Documento encontrado: {usuarioBson.ToJson()}");
+
+                // Mapear manualmente los campos al objeto UsuarioMonitor
+                var fechaRegistro = usuarioBson.Contains("FechaRegistro") && usuarioBson["FechaRegistro"].IsValidDateTime
+                    ? usuarioBson.GetValue("FechaRegistro").ToUniversalTime()
+                    : DateTime.MinValue; // O cualquier valor predeterminado en caso de error.
+
+                var usuario = new UsuarioMonitor(
+                    usuarioBson.GetValue("Nombre").AsString,
+                    usuarioBson.GetValue("Apellidos").AsString,
+                    usuarioBson.GetValue("DNI").AsString,
+                    usuarioBson.GetValue("Correo").AsString,
+                    usuarioBson.GetValue("Contrasena").AsString,
+                    usuarioBson.GetValue("Rol").AsString,
+                    fechaRegistro,
+                    usuarioBson.GetValue("Telefono").AsString,
+                    usuarioBson.GetValue("Direccion").AsString
+                );
+
 
                 return usuario;
             }
@@ -194,8 +216,6 @@ namespace TFG_DavidGomez.Clases.Adaptador
                 throw;
             }
         }
-
-
 
         /// <summary>
         /// Obtiene los niños inscritos en una actividad por su ID.

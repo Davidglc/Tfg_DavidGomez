@@ -78,42 +78,28 @@ namespace TFG_DavidGomez
             try
             {
                 // Obtener el ID del usuario desde la sesión
-                var idUsuario = ObjectId.Parse(SesionIniciada.IdUsuario);
+                var id = ObjectId.Parse(SesionIniciada.IdUsuario);
 
-                // Instancia del adaptador
+                // Crear una instancia de MongoDBAdapter
                 MongoDBAdapter ma = new MongoDBAdapter();
 
-                // Obtener el usuario como BsonDocument
-                var usuario = ma.ObtenerUsuarioComoBsonDocument(idUsuario);
+                // Obtener el usuario desde la base de datos
+                UsuarioMonitor u = ma.ObtenerUsuarioPorIdMoni(id);
 
-                if (usuario == null)
+                // Validar si el usuario fue encontrado
+                if (u == null)
                 {
-                    MessageBox.Show("No se encontró información para este monitor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No se encontró información para este usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Inspeccionar el documento (opcional)
-                Console.WriteLine($"Documento encontrado: {usuario.ToJson()}");
-
-                // Usar los datos del documento
-                var nombre = usuario["Nombre"].AsString;
-                var apellidos = usuario["Apellidos"].AsString;
-                var dni = usuario["DNI"].AsString;
-                var correo = usuario["Correo"].AsString;
-                var contrasena = usuario["Contrasena"].AsString;
-                var rol = usuario["Rol"].AsString;
-                var fechaRegistro = usuario["FechaRegistro"].ToUniversalTime();
-                var telefono = usuario["Telefono"].AsString;
-                var direccion = usuario["Direccion"].AsString;
-
-                // Mostrar los datos en el formulario
-                DatosPersonales dp = new DatosPersonales();
-                Usuario u = new Usuario(nombre,apellidos,dni,correo,contrasena,fechaRegistro,telefono,direccion);
+                // Mostrar los datos personales del usuario
+                DatosPersonales dp = new DatosPersonales(u);
                 dp.VerificarInstancia2(u);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los datos personales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al cargar los datos personales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

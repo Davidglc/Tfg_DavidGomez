@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonitorForm));
             menuStrip1 = new MenuStrip();
             añadirMonitorToolStripMenuItem = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
@@ -158,6 +159,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(800, 450);
             Controls.Add(LbNiños);
             Controls.Add(label1);
@@ -168,8 +170,10 @@
             Controls.Add(LbFecha2);
             Controls.Add(lbFecha);
             Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "MonitorForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "MonitorForm";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

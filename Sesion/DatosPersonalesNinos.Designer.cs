@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DatosPersonalesNinos));
             button2 = new Button();
             txEdad = new TextBox();
             label4 = new Label();
@@ -161,6 +162,7 @@
             Controls.Add(label2);
             Controls.Add(txUsuario);
             Controls.Add(lblUsuario);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "DatosPersonalesNinos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "DatosPersonalesNinos";

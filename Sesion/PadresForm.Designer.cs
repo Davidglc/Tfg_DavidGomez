@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PadresForm));
             menuStrip1 = new MenuStrip();
             añadirNiñoToolStripMenuItem = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
@@ -143,6 +144,7 @@
             Controls.Add(btnApuntar);
             Controls.Add(monthCalendar1);
             Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "PadresForm";
             StartPosition = FormStartPosition.CenterScreen;

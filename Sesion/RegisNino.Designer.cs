@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegisNino));
             txDNI = new TextBox();
             label2 = new Label();
             txUsuario = new TextBox();
@@ -148,6 +149,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(364, 418);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -161,7 +163,9 @@
             Controls.Add(label2);
             Controls.Add(txUsuario);
             Controls.Add(lblUsuario);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegisNino";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "RegisNino";
             ResumeLayout(false);
             PerformLayout();

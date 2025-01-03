@@ -34,6 +34,7 @@ namespace TFG_DavidGomez.Sesion
                 string contraseña = TxContrasena.Text.Trim();
                 string Telf = txTelf.Text.Trim();
                 string Correo = txCorreo.Text.Trim();
+                string direccion = TxDirec.Text.Trim();
 
                 // Validar que todos los campos estén llenos
                 if (string.IsNullOrEmpty(nombre) ||
@@ -41,7 +42,8 @@ namespace TFG_DavidGomez.Sesion
                     string.IsNullOrEmpty(DNI) ||
                     string.IsNullOrEmpty(contraseña) ||
                     string.IsNullOrEmpty(Telf) ||
-                    string.IsNullOrEmpty(Correo))
+                    string.IsNullOrEmpty(Correo) ||
+                    string.IsNullOrEmpty(direccion))
                 {
                     MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -67,11 +69,14 @@ namespace TFG_DavidGomez.Sesion
                     { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
                     { "Nombre", nombre },
                     { "DNI", DNI },
-                    { "Apellido", apellido },
+                    { "Apellidos", apellido },
                     { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
                     { "Rol", "Padre" },
                     { "Telefono", Telf },
-                    { "Correo", Correo }
+                    { "Correo", Correo },
+                    { "Direccion", direccion },
+                    { "FechaRegistro", DateTime.Now}
+
                 };
 
                 // Insertar el documento en la base de datos
@@ -87,6 +92,7 @@ namespace TFG_DavidGomez.Sesion
                 TxContrasena.Clear();
                 txTelf.Clear();
                 txCorreo.Clear();
+                TxDirec.Clear();
 
                 // Cerrar el formulario si es necesario
                 this.Close();
@@ -120,28 +126,30 @@ namespace TFG_DavidGomez.Sesion
            
                 try
                 {
-                    // Obtener los datos del formulario
-                    string nombre = txUsuario.Text.Trim();
-                    string DNI = txDNI.Text.Trim();
-                    string apellido = txApellidos.Text.Trim();
-                    string contraseña = TxContrasena.Text.Trim();
-                    string Telf = txTelf.Text.Trim();
-                    string Correo = txCorreo.Text.Trim();
+                // Obtener los datos del formulario
+                string nombre = txUsuario.Text.Trim();
+                string DNI = txDNI.Text.Trim();
+                string apellido = txApellidos.Text.Trim();
+                string contraseña = TxContrasena.Text.Trim();
+                string Telf = txTelf.Text.Trim();
+                string Correo = txCorreo.Text.Trim();
+                string direccion = TxDirec.Text.Trim();
 
-                    // Validar que todos los campos estén llenos
-                    if (string.IsNullOrEmpty(nombre) ||
-                        string.IsNullOrEmpty(apellido) ||
-                        string.IsNullOrEmpty(DNI) ||
-                        string.IsNullOrEmpty(contraseña) ||
-                        string.IsNullOrEmpty(Telf) ||
-                        string.IsNullOrEmpty(Correo))
-                    {
-                        MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                // Validar que todos los campos estén llenos
+                if (string.IsNullOrEmpty(nombre) ||
+                    string.IsNullOrEmpty(apellido) ||
+                    string.IsNullOrEmpty(DNI) ||
+                    string.IsNullOrEmpty(contraseña) ||
+                    string.IsNullOrEmpty(Telf) ||
+                    string.IsNullOrEmpty(Correo) ||
+                    string.IsNullOrEmpty(direccion))
+                {
+                    MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-                    // Conectar con la base de datos
-                    IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+                // Conectar con la base de datos
+                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
                     var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
 
                     // Validar si ya existe un usuario con el mismo DNI
@@ -160,11 +168,13 @@ namespace TFG_DavidGomez.Sesion
                         { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
                         { "Nombre", nombre },
                         { "DNI", DNI },
-                        { "Apellido", apellido },
+                        { "Apellidos", apellido },
                         { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
                         { "Rol", "Monitor" },
                         { "Telefono", Telf },
-                        { "Correo", Correo }
+                        { "Correo", Correo },
+                        { "Direccion", direccion },
+                        { "FechaRegistro", DateTime.Now}
                     };
 
                     // Insertar el documento en la base de datos
@@ -180,6 +190,7 @@ namespace TFG_DavidGomez.Sesion
                     TxContrasena.Clear();
                     txTelf.Clear();
                     txCorreo.Clear();
+                    TxDirec.Clear();
 
                     // Cerrar el formulario si es necesario
                     this.Close();

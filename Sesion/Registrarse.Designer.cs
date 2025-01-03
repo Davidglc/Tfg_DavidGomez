@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registrarse));
             TxContrasena = new TextBox();
             txUsuario = new TextBox();
             lblContraseña = new Label();
@@ -42,6 +43,8 @@
             txApellidos = new TextBox();
             label1 = new Label();
             BtnGuardarMoni = new Button();
+            TxDirec = new TextBox();
+            TxDireccion = new Label();
             SuspendLayout();
             // 
             // TxContrasena
@@ -49,7 +52,7 @@
             TxContrasena.Location = new Point(66, 142);
             TxContrasena.Name = "TxContrasena";
             TxContrasena.Size = new Size(304, 23);
-            TxContrasena.TabIndex = 8;
+            TxContrasena.TabIndex = 9;
             // 
             // txUsuario
             // 
@@ -127,7 +130,7 @@
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.Red;
-            btnGuardar.Location = new Point(142, 333);
+            btnGuardar.Location = new Point(143, 374);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(125, 55);
             btnGuardar.TabIndex = 18;
@@ -140,7 +143,7 @@
             txApellidos.Location = new Point(66, 91);
             txApellidos.Name = "txApellidos";
             txApellidos.Size = new Size(304, 23);
-            txApellidos.TabIndex = 20;
+            txApellidos.TabIndex = 8;
             // 
             // label1
             // 
@@ -154,7 +157,7 @@
             // BtnGuardarMoni
             // 
             BtnGuardarMoni.BackColor = Color.Red;
-            BtnGuardarMoni.Location = new Point(142, 348);
+            BtnGuardarMoni.Location = new Point(143, 389);
             BtnGuardarMoni.Name = "BtnGuardarMoni";
             BtnGuardarMoni.Size = new Size(125, 55);
             BtnGuardarMoni.TabIndex = 21;
@@ -162,11 +165,30 @@
             BtnGuardarMoni.UseVisualStyleBackColor = false;
             BtnGuardarMoni.Click += BtnGuardarMoni_Click;
             // 
+            // TxDirec
+            // 
+            TxDirec.Location = new Point(66, 339);
+            TxDirec.Name = "TxDirec";
+            TxDirec.Size = new Size(304, 23);
+            TxDirec.TabIndex = 23;
+            // 
+            // TxDireccion
+            // 
+            TxDireccion.AutoSize = true;
+            TxDireccion.Location = new Point(66, 321);
+            TxDireccion.Name = "TxDireccion";
+            TxDireccion.Size = new Size(57, 15);
+            TxDireccion.TabIndex = 22;
+            TxDireccion.Text = "Dirección";
+            // 
             // Registrarse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(466, 450);
+            Controls.Add(TxDirec);
+            Controls.Add(TxDireccion);
             Controls.Add(BtnGuardarMoni);
             Controls.Add(txApellidos);
             Controls.Add(label1);
@@ -181,7 +203,9 @@
             Controls.Add(txUsuario);
             Controls.Add(lblContraseña);
             Controls.Add(lblUsuario);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Registrarse";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Registrarse";
             ResumeLayout(false);
             PerformLayout();
@@ -203,5 +227,7 @@
         private TextBox txApellidos;
         private Label label1;
         public Button BtnGuardarMoni;
+        private TextBox TxDirec;
+        private Label TxDireccion;
     }
 }

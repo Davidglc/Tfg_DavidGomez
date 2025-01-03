@@ -20,6 +20,7 @@ namespace TFG_DavidGomez.Sesion
         public DatosPersonales()
         {
             InitializeComponent();
+            BtnGuardarMoni.Visible = false;
         }
 
         public DatosPersonales(Usuario usuario)
@@ -33,6 +34,27 @@ namespace TFG_DavidGomez.Sesion
             txApellidos.Text = usuario.Apellidos;
             txCorreo.Text = usuario.Correo;
             txTelefono.Text = usuario.Telefono;
+            txDirec.Text = usuario.Direccion;
+            BtnGuardarMoni.Visible = false;
+            btnGuardar.Visible = true;
+            VerificarVisibilidadDatosNinos();
+        }
+
+        public DatosPersonales(UsuarioMonitor usuario)
+        {
+            InitializeComponent();
+
+            // Asignar los datos a los controles
+            txUsuario.Text = usuario.Nombre;
+            txDNI.Text = usuario.DNI;
+            TxContrasena.Text = usuario.Contrasena;
+            txApellidos.Text = usuario.Apellidos;
+            txCorreo.Text = usuario.Correo;
+            txTelefono.Text = usuario.Telefono;
+            txDirec.Text = usuario.Direccion;
+            BtnGuardarMoni.Visible = true;
+            btnGuardar.Visible = false;
+            datosNiñosToolStripMenuItem.Visible = false;
         }
 
         private void datosNiñosToolStripMenuItem_Click(object sender, EventArgs e)
@@ -105,6 +127,21 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+        public void VerificarInstancia2(UsuarioMonitor u)
+        {
+            object obj = new DatosPersonales(u);
+
+            if (obj is DatosPersonales dp)
+            {
+                Console.WriteLine("El objeto proporcionado es de tipo MonitorForm.");
+                dp.Show();
+            }
+            else
+            {
+                Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
+            }
+        }
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -141,7 +178,8 @@ namespace TFG_DavidGomez.Sesion
                     .Set(u => u.DNI, usuarioExistente.DNI)
                     .Set(u => u.Correo, usuarioExistente.Correo)
                     .Set(u => u.Contrasena, usuarioExistente.Contrasena)
-                    .Set(u => u.Telefono,usuarioExistente.Telefono);
+                    .Set(u => u.Telefono, usuarioExistente.Telefono)
+                    .Set(u => u.Direccion, usuarioExistente.Direccion);
 
                 var resultado = usuariosCollection.UpdateOne(filtro, actualizacion);
 
@@ -159,6 +197,94 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             this.Close();
+        }
+
+        private void BtnGuardarMoni_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Obtener el ID del usuario desde la sesión
+                var idUsuario = ObjectId.Parse(SesionIniciada.IdUsuario);
+
+                // Crear una instancia de MongoDBAdapter
+                MongoDBAdapter ma = new MongoDBAdapter();
+
+                // Verificar si el usuario existe en la base de datos
+                Usuario usuarioExistente = ma.ObtenerUsuarioPorId(idUsuario);
+
+                if (usuarioExistente == null)
+                {
+                    MessageBox.Show("No se encontró el usuario en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Modificar los datos del usuario con los valores de los TextBox
+                usuarioExistente.Nombre = txUsuario.Text;
+                usuarioExistente.Apellidos = txApellidos.Text;
+                usuarioExistente.DNI = txDNI.Text;
+                usuarioExistente.Correo = txCorreo.Text;
+                usuarioExistente.Contrasena = TxContrasena.Text;
+                usuarioExistente.Telefono = txTelefono.Text;
+
+                // Actualizar el usuario en la base de datos
+                var usuariosCollection = ConBD2.GetCollection<UsuarioMonitor>("Usuarios");
+                var filtro = Builders<UsuarioMonitor>.Filter.Eq(u => u.Id, idUsuario);
+                var actualizacion = Builders<UsuarioMonitor>.Update
+                    .Set(u => u.Nombre, usuarioExistente.Nombre)
+                    .Set(u => u.Apellidos, usuarioExistente.Apellidos)
+                    .Set(u => u.DNI, usuarioExistente.DNI)
+                    .Set(u => u.Correo, usuarioExistente.Correo)
+                    .Set(u => u.Contrasena, usuarioExistente.Contrasena)
+                    .Set(u => u.Telefono, usuarioExistente.Telefono)
+                    .Set(u => u.Direccion, usuarioExistente.Direccion);
+
+                var resultado = usuariosCollection.UpdateOne(filtro, actualizacion);
+
+                if (resultado.ModifiedCount > 0)
+                {
+                    MessageBox.Show("Los datos han sido actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo actualizar la información.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            this.Close();
+        }
+
+        private void VerificarVisibilidadDatosNinos()
+        {
+            try
+            {
+                // Obtener el ID del usuario desde la sesión
+                string idPadreTexto = SesionIniciada.IdUsuario;
+
+                if (string.IsNullOrEmpty(idPadreTexto))
+                {
+                    // Si no hay sesión activa, ocultar la opción
+                    datosNiñosToolStripMenuItem.Visible = false;
+                    return;
+                }
+
+                ObjectId idPadre = ObjectId.Parse(idPadreTexto);
+
+                // Instancia de MongoDBAdapter para cargar los datos
+                MongoDBAdapter ma = new MongoDBAdapter();
+                List<Nino> ninos = ma.CargarDatosNinoPorPadre(idPadre);
+
+                // Mostrar u ocultar la opción dependiendo si hay niños
+                datosNiñosToolStripMenuItem.Visible = ninos != null && ninos.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al verificar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Ocultar la opción en caso de error
+                datosNiñosToolStripMenuItem.Visible = false;
+            }
         }
 
     }

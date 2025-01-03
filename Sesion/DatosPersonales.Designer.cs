@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DatosPersonales));
             btnGuardar = new Button();
             txCorreo = new TextBox();
             label4 = new Label();
@@ -43,13 +44,16 @@
             datosNiñosToolStripMenuItem = new ToolStripMenuItem();
             txTelefono = new TextBox();
             label3 = new Label();
+            BtnGuardarMoni = new Button();
+            txDirec = new TextBox();
+            Dirección = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.Red;
-            btnGuardar.Location = new Point(94, 372);
+            btnGuardar.Location = new Point(94, 384);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(125, 55);
             btnGuardar.TabIndex = 31;
@@ -59,7 +63,7 @@
             // 
             // txCorreo
             // 
-            txCorreo.Location = new Point(16, 258);
+            txCorreo.Location = new Point(16, 250);
             txCorreo.Name = "txCorreo";
             txCorreo.Size = new Size(304, 23);
             txCorreo.TabIndex = 30;
@@ -67,7 +71,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(16, 240);
+            label4.Location = new Point(16, 232);
             label4.Name = "label4";
             label4.Size = new Size(43, 15);
             label4.TabIndex = 29;
@@ -75,7 +79,7 @@
             // 
             // txDNI
             // 
-            txDNI.Location = new Point(16, 110);
+            txDNI.Location = new Point(16, 102);
             txDNI.Name = "txDNI";
             txDNI.Size = new Size(304, 23);
             txDNI.TabIndex = 26;
@@ -83,7 +87,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(16, 92);
+            label2.Location = new Point(16, 84);
             label2.Name = "label2";
             label2.Size = new Size(27, 15);
             label2.TabIndex = 25;
@@ -91,7 +95,7 @@
             // 
             // txApellidos
             // 
-            txApellidos.Location = new Point(16, 204);
+            txApellidos.Location = new Point(16, 196);
             txApellidos.Name = "txApellidos";
             txApellidos.Size = new Size(304, 23);
             txApellidos.TabIndex = 24;
@@ -99,7 +103,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(16, 186);
+            label1.Location = new Point(16, 178);
             label1.Name = "label1";
             label1.Size = new Size(56, 15);
             label1.TabIndex = 23;
@@ -107,7 +111,7 @@
             // 
             // TxContrasena
             // 
-            TxContrasena.Location = new Point(16, 154);
+            TxContrasena.Location = new Point(16, 146);
             TxContrasena.Name = "TxContrasena";
             TxContrasena.Size = new Size(304, 23);
             TxContrasena.TabIndex = 22;
@@ -122,7 +126,7 @@
             // lblContraseña
             // 
             lblContraseña.AutoSize = true;
-            lblContraseña.Location = new Point(16, 136);
+            lblContraseña.Location = new Point(16, 128);
             lblContraseña.Name = "lblContraseña";
             lblContraseña.Size = new Size(67, 15);
             lblContraseña.TabIndex = 20;
@@ -155,7 +159,7 @@
             // 
             // txTelefono
             // 
-            txTelefono.Location = new Point(16, 316);
+            txTelefono.Location = new Point(16, 299);
             txTelefono.Name = "txTelefono";
             txTelefono.Size = new Size(304, 23);
             txTelefono.TabIndex = 34;
@@ -163,11 +167,38 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(16, 298);
+            label3.Location = new Point(16, 281);
             label3.Name = "label3";
             label3.Size = new Size(52, 15);
             label3.TabIndex = 33;
             label3.Text = "Teléfono";
+            // 
+            // BtnGuardarMoni
+            // 
+            BtnGuardarMoni.BackColor = Color.Red;
+            BtnGuardarMoni.Location = new Point(94, 373);
+            BtnGuardarMoni.Name = "BtnGuardarMoni";
+            BtnGuardarMoni.Size = new Size(125, 55);
+            BtnGuardarMoni.TabIndex = 35;
+            BtnGuardarMoni.Text = "Guardar";
+            BtnGuardarMoni.UseVisualStyleBackColor = false;
+            BtnGuardarMoni.Click += BtnGuardarMoni_Click;
+            // 
+            // txDirec
+            // 
+            txDirec.Location = new Point(16, 344);
+            txDirec.Name = "txDirec";
+            txDirec.Size = new Size(304, 23);
+            txDirec.TabIndex = 37;
+            // 
+            // Dirección
+            // 
+            Dirección.AutoSize = true;
+            Dirección.Location = new Point(16, 326);
+            Dirección.Name = "Dirección";
+            Dirección.Size = new Size(52, 15);
+            Dirección.TabIndex = 36;
+            Dirección.Text = "Teléfono";
             // 
             // DatosPersonales
             // 
@@ -175,6 +206,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(372, 450);
+            Controls.Add(txDirec);
+            Controls.Add(Dirección);
+            Controls.Add(BtnGuardarMoni);
             Controls.Add(txTelefono);
             Controls.Add(label3);
             Controls.Add(btnGuardar);
@@ -189,6 +223,7 @@
             Controls.Add(lblContraseña);
             Controls.Add(lblUsuario);
             Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "DatosPersonales";
             StartPosition = FormStartPosition.CenterScreen;
@@ -213,8 +248,11 @@
         private Label lblContraseña;
         private Label lblUsuario;
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem datosNiñosToolStripMenuItem;
+        public ToolStripMenuItem datosNiñosToolStripMenuItem;
         private TextBox txTelefono;
         private Label label3;
+        private Button BtnGuardarMoni;
+        private TextBox txDirec;
+        private Label Dirección;
     }
 }
