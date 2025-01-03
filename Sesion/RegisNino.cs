@@ -111,9 +111,6 @@ namespace TFG_DavidGomez.Sesion
                 // Mostrar mensaje de éxito
                 MessageBox.Show("Niño agregado correctamente al padre.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Recargar datos de niños
-                CargarDatosNinos();
-
                 // Cerrar el formulario o limpiar los campos
                 this.Close();
             }
@@ -123,7 +120,6 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Error al agregar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         public void VerificarInstancia()
         {

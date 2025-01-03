@@ -93,23 +93,25 @@
             // btnApuntar
             // 
             btnApuntar.Anchor = AnchorStyles.None;
+            btnApuntar.BackColor = Color.Red;
             btnApuntar.Location = new Point(18, 369);
             btnApuntar.Name = "btnApuntar";
             btnApuntar.Size = new Size(82, 52);
             btnApuntar.TabIndex = 2;
             btnApuntar.Text = "Apuntar";
-            btnApuntar.UseVisualStyleBackColor = true;
+            btnApuntar.UseVisualStyleBackColor = false;
             btnApuntar.Click += btnApuntar_Click;
             // 
             // button2
             // 
             button2.Anchor = AnchorStyles.None;
+            button2.BackColor = Color.Red;
             button2.Location = new Point(128, 369);
             button2.Name = "button2";
             button2.Size = new Size(82, 52);
             button2.TabIndex = 3;
             button2.Text = "DesApuntar";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // LbNinos

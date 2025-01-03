@@ -35,7 +35,7 @@ namespace TFG_DavidGomez
                 SesionIniciada.NombreUsuario = usuario;
                 SesionIniciada.Rol = rol;
 
-                MessageBox.Show($"Bienvenido, {usuario}. Tu rol es {rol}.");
+                MessageBox.Show($"Bienvenido, {usuario}.");
 
                 // Redirigir según el rol
                 if (rol == "Monitor")

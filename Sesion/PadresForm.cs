@@ -34,8 +34,8 @@ namespace TFG_DavidGomez
         private void añadirNiñoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RegisNino formAnadirNino = new RegisNino();
-
             formAnadirNino.VerificarInstancia();
+            CargarDatosNinos();
         }
         public void AgregarNiño(Nino nino)
         {
