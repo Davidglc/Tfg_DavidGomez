@@ -14,13 +14,28 @@ using TFG_DavidGomez.Clases.Conexion;
 
 namespace TFG_DavidGomez.Sesion
 {
+
+    /// <summary>
+    /// Formulario para gestionar los datos personales de los niños.
+    /// Permite cargar, visualizar y actualizar la información de los niños asociados a un padre en una base de datos MongoDB.
+    /// </summary>
+    /// 
     public partial class DatosPersonalesNinos : Form
     {
+        /// <summary>
+        /// Constructor de la clase.
+        /// Inicializa los componentes del formulario.
+        /// </summary>
         public DatosPersonalesNinos()
         {
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// Carga los datos de un objeto Nino en los campos del formulario.
+        /// </summary>
+        /// <param name="nino">Objeto Nino con la información a mostrar.</param>
         public void CargarDatosNino(Nino nino)
         {
             txUsuario.Text = nino.Nombre;
@@ -30,6 +45,10 @@ namespace TFG_DavidGomez.Sesion
             txEdad.Text = nino.Edad.ToString();
         }
 
+        /// <summary>
+        /// Evento que se dispara al hacer doble clic sobre un elemento del ListBox.
+        /// Carga la información del niño seleccionado en los campos del formulario.
+        /// </summary>
         private void LbNinos_DoubleClick(object sender, EventArgs e)
         {
             // Verificar que haya un elemento seleccionado
@@ -59,6 +78,9 @@ namespace TFG_DavidGomez.Sesion
             txEdad.Text = datosNino[4].Replace("Edad: ", " ");
         }
 
+        /// <summary>
+        /// Evento del botón para actualizar los datos del niño en la base de datos.
+        /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -170,7 +192,9 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
-        // Método auxiliar para extraer el DNI del texto seleccionado en el ListBox
+        /// <summary>
+        /// Extrae el DNI de un texto seleccionado en el ListBox.
+        /// </summary>
         private string ExtraerDNI(string datosSeleccionados)
         {
             // Supongamos que el DNI está en el formato "DNI: [valor] ..."
@@ -185,7 +209,9 @@ namespace TFG_DavidGomez.Sesion
             return null;
         }
 
-        // Método para limpiar los campos del formulario
+        /// <summary>
+        /// Limpia los campos del formulario.
+        /// </summary>
         private void LimpiarCampos()
         {
             txUsuario.Text = string.Empty;
@@ -195,7 +221,9 @@ namespace TFG_DavidGomez.Sesion
             txEdad.Text = string.Empty;
         }
 
-        // Método para recargar los datos en el ListBox
+        /// <summary>
+        /// Carga los datos de los niños del padre en el ListBox.
+        /// </summary>
         private void CargarDatosNinos()
         {
             try

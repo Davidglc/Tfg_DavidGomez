@@ -6,20 +6,40 @@ using TFG_DavidGomez.Sesion;
 
 namespace TFG_DavidGomez
 {
+
+    /// <summary>
+    /// Clase que representa el formulario de inicio de sesión para los usuarios del sistema.
+    /// Permite el acceso basado en credenciales y redirige a diferentes vistas según el rol del usuario.
+    /// </summary>
     public partial class InicioSesion : Form
     {
+
+        /// <summary>
+        /// Constructor por defecto de la clase.
+        /// Inicializa los componentes del formulario y asigna eventos.
+        /// </summary>
         public InicioSesion()
         {
             InitializeComponent();
             this.FormClosed += CerrarAplicacion;
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al hacer clic en el botón "Registrarse".
+        /// Abre el formulario de registro de usuarios.
+        /// </summary>
         private void btnRegistrarse_Click(object sender, EventArgs e)
         {
             Registrarse registroForm = new Registrarse();
             registroForm.Show();
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al hacer clic en el botón "Iniciar Sesión".
+        /// Valida las credenciales y redirige al formulario correspondiente según el rol del usuario.
+        /// </summary>
         private void btnInicioSesion_Click(object sender, EventArgs e)
         {
             string usuario = txUsuario.Text.Trim();
@@ -122,6 +142,10 @@ namespace TFG_DavidGomez
             }
         }
 
+        /// <summary>
+        /// Verifica si un objeto es una instancia de <see cref="InicioSesion"/> y lo muestra como un diálogo.
+        /// </summary>
+
         public void VerificarInstancia()
         {
             object obj = new InicioSesion();
@@ -137,12 +161,21 @@ namespace TFG_DavidGomez
             }
         }
 
+
+        /// <summary>
+        /// Limpia los campos de texto del formulario.
+        /// </summary>
         public void LimpiarCampos()
         {
             txUsuario.Text = string.Empty; // Limpia el campo del usuario
             TxContrasena.Text = string.Empty; // Limpia el campo de la contraseña
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al redimensionar el formulario.
+        /// Centra la posición de ciertos elementos en el formulario.
+        /// </summary>
         private void Form1_Resize(object sender, EventArgs e)
         {
             // Calcular la posición central
@@ -152,6 +185,11 @@ namespace TFG_DavidGomez
             // Mover el ListBox al centro
             this.Location = new Point(x, y);
         }
+
+        /// <summary>
+        /// Evento que se ejecuta al cerrar el formulario.
+        /// Finaliza la aplicación.
+        /// </summary>
 
         private void CerrarAplicacion(object sender, FormClosedEventArgs e)
         {

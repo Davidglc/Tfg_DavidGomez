@@ -2,49 +2,95 @@
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TFG_DavidGomez.Clases
 {
     public class Actividades
     {
+        /// <summary>
+        /// Identificador único de la actividad.
+        /// </summary>
         [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
+
+        /// <summary>
+        /// Nombre de la actividad.
+        /// </summary>
+        [BsonElement("Nombre")]
         public string Nombre { get; set; }
+
+        /// <summary>
+        /// Descripción de la actividad.
+        /// </summary>
+        [BsonElement("Descripcion")]
         public string Descripcion { get; set; }
 
+        /// <summary>
+        /// Fecha y hora en la que se llevará a cabo la actividad.
+        /// </summary>
+        [BsonElement("FechaHora")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime FechaHora { get; set; }
 
+        /// <summary>
+        /// Duración de la actividad en minutos.
+        /// </summary>
+        [BsonElement("Duracion")]
         public int Duracion { get; set; }
-        public int PlazasMaximas { get; set; }
-        public int PlazasOcupadas { get; set; }
-        public ObjectId IdMonitor { get; set; }
-        public List<String> Materiales { get; set; }
 
-        public Actividades(string nombre, string descripcion, DateTime fechaHora, int duracion, int plazasMaximas, int plazasOcupadas, List<String> materiales)
+        /// <summary>
+        /// Identificador del monitor encargado de la actividad.
+        /// </summary>
+        [BsonElement("IdMonitor")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId IdMonitor { get; set; }
+
+        /// <summary>
+        /// Lista de materiales necesarios para la actividad.
+        /// </summary>
+        [BsonElement("Materiales")]
+        public List<string> Materiales { get; set; }
+
+        /// <summary>
+        /// Constructor de la clase Actividades.
+        /// </summary>
+        public Actividades(
+            string nombre,
+            string descripcion,
+            DateTime fechaHora,
+            int duracion,
+            int plazasMaximas,
+            int plazasOcupadas,
+            List<string> materiales)
         {
             Nombre = nombre;
             Descripcion = descripcion;
             FechaHora = fechaHora;
             Duracion = duracion;
-            PlazasMaximas = plazasMaximas;
-            PlazasOcupadas = plazasOcupadas;
             Materiales = materiales;
         }
 
+        /// <summary>
+        /// Representación en cadena de la actividad.
+        /// </summary>
         public override string ToString()
         {
-            return $"Actividad: {Nombre}, Descripcion: {Descripcion}, FechaHora: {FechaHora}, Duracion: {Duracion} min, Plazas: {PlazasOcupadas}/{PlazasMaximas}, IdMonitor: {IdMonitor}";
+            return $"Actividad: {Nombre}, Descripcion: {Descripcion}, FechaHora: {FechaHora}, " +
+                   $"Duracion: {Duracion} min, IdMonitor: {IdMonitor}";
         }
 
+        /// <summary>
+        /// Verifica si dos objetos de tipo Actividades son iguales.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Actividades actividad && Id.Equals(actividad.Id);
         }
 
+        /// <summary>
+        /// Genera un código hash para la actividad.
+        /// </summary>
         public override int GetHashCode()
         {
             return Id.GetHashCode();

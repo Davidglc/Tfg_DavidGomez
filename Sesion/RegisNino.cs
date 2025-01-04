@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,15 +16,32 @@ using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 
+
+
 namespace TFG_DavidGomez.Sesion
+
+/// <summary>
+/// Clase que representa el formulario para registrar y gestionar información de niños en la aplicación.
+/// Permite registrar nuevos niños, validando sus datos y asociándolos al usuario (padre) actual.
+/// Incluye funcionalidades para mostrar la lista de niños registrados.
+/// </summary>
 {
     public partial class RegisNino : Form
     {
+
+        /// <summary>
+        /// Constructor de la clase.
+        /// Inicializa el formulario y configura la visibilidad de elementos del formulario según las necesidades.
+        /// </summary>
         public RegisNino()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Evento para manejar el clic en el botón de registro de un niño.
+        /// Valida los datos introducidos, verifica la existencia del niño en la base de datos y lo registra.
+        /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -39,6 +57,13 @@ namespace TFG_DavidGomez.Sesion
                 if (!DateTime.TryParseExact(txFnac.Text.Trim(), "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
                 {
                     MessageBox.Show("Por favor, introduce la fecha de nacimiento en el formato válido (año/mes/día, por ejemplo: 2024/01/15).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Validar formato del DNI (solo una letra al final)
+                if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
+                {
+                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -122,22 +147,27 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
-
+        /// <summary>
+        /// Verifica si un objeto es una instancia de RegisNino y lo muestra.
+        /// </summary>
         public void VerificarInstancia()
         {
             object obj = new RegisNino();
 
             if (obj is RegisNino RegisNi)
             {
-                Console.WriteLine("El objeto es una instancia de PadresForm.");
+                Console.WriteLine("El objeto es una instancia de RegisNino.");
                 RegisNi.Show();
             }
             else
             {
-                Console.WriteLine("El objeto no es una instancia de PadresForm.");
+                Console.WriteLine("El objeto no es una instancia de RegisNino.");
             }
         }
 
+        /// <summary>
+        /// Carga los datos de los niños asociados al padre actual y los muestra en un ListBox.
+        /// </summary>
         private void CargarDatosNinos()
         {
             try
@@ -182,90 +212,5 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al cargar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        //    private void button2_Click(object sender, EventArgs e)
-        //    {
-        //        try
-        //        {
-        //            // Validar que todos los campos estén llenos
-        //            if (string.IsNullOrEmpty(txUsuario.Text) ||
-        //                string.IsNullOrEmpty(txDNI.Text) ||
-        //                string.IsNullOrEmpty(txApellidos.Text) ||
-        //                string.IsNullOrEmpty(txFnac.Text) ||
-        //                string.IsNullOrEmpty(txEdad.Text))
-        //            {
-        //                MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //                return;
-        //            }
-
-        //            // Convertir los datos del formulario a un objeto Nino
-        //            var nino = new Nino(
-        //                txUsuario.Text.Trim(),
-        //                txDNI.Text.Trim(),
-        //                txApellidos.Text.Trim(),
-        //                DateTime.Parse(txFnac.Text.Trim()),
-        //                int.Parse(txEdad.Text.Trim())
-        //            )
-        //            {
-        //                IdPadre = ObjectId.Parse(SesionIniciada.IdUsuario) // Asignar el ID del padre desde la sesión
-        //            };
-
-        //            // Obtener la colección de niños desde la base de datos
-        //            var ninosCollection = ConexionBD.GetCollection<Nino>("ninos");
-
-        //            // Crear un filtro para buscar si el niño ya existe por DNI
-        //            var filtro = Builders<Nino>.Filter.And(
-        //                Builders<Nino>.Filter.Eq(n => n.IdPadre, nino.IdPadre), // ID del padre
-        //                Builders<Nino>.Filter.Eq(n => n.Nombre, txUsuario.Text.Trim()) // Nombre del niño
-        //            );
-
-        //            // Verificar si el niño ya existe
-        //            var existente = ninosCollection.Find(filtro).FirstOrDefault();
-
-        //            if (existente != null)
-        //            {
-        //                // Actualizar los datos del niño existente
-        //                var update = Builders<Nino>.Update
-        //                    .Set(n => n.Apellidos, nino.Apellidos)
-        //                    .Set(n => n.FechaNacimiento, nino.FechaNacimiento)
-        //                    .Set(n => n.Edad, nino.Edad);
-
-        //                var resultado = ninosCollection.UpdateOne(filtro, update);
-
-        //                if (resultado.ModifiedCount > 0)
-        //                {
-        //                    MessageBox.Show("Datos del niño actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show("No se realizaron cambios en los datos del niño.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // Insertar un nuevo niño si no existe
-        //                ninosCollection.InsertOne(nino);
-        //                MessageBox.Show("Datos del niño guardados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-
-        //            // Limpiar los campos del formulario después de guardar
-        //            txUsuario.Clear();
-        //            txDNI.Clear();
-        //            txApellidos.Clear();
-        //            txFnac.Clear();
-        //            txEdad.Clear();
-        //        }
-        //        catch (FormatException ex)
-        //        {
-        //            MessageBox.Show("El formato de algunos datos no es válido. Por favor, verifique e intente nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show($"Ocurrió un error al guardar los datos del niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-
-        //}
-
     }
 }

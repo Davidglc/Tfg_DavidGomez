@@ -15,14 +15,26 @@ using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 using TFG_DavidGomez.Sesion;
 
+
 namespace TFG_DavidGomez
 {
+
+    /// <summary>
+    /// Clase que representa el formulario para gestionar la interacción de los padres en la aplicación.
+    /// Permite realizar tareas como registrar niños, inscribirlos en actividades, consultar actividades y editar datos personales.
+    /// </summary>
+
     public partial class PadresForm : Form
     {
 
         MongoDBAdapter mdba;
         public DateTime selectedDate;
 
+
+        /// <summary>
+        /// Constructor de la clase PadresForm.
+        /// Inicializa el formulario y carga los datos de los niños asociados al usuario.
+        /// </summary>
         public PadresForm()
         {
             mdba = new MongoDBAdapter();
@@ -31,12 +43,23 @@ namespace TFG_DavidGomez
             //this.FormClosed += CerrarAplicacion;
         }
 
+
+        /// <summary>
+        /// Evento para añadir un nuevo niño desde el formulario RegisNino.
+        /// Actualiza la lista de niños después de la operación.
+        /// </summary>
         private void añadirNiñoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RegisNino formAnadirNino = new RegisNino();
             formAnadirNino.VerificarInstancia();
             CargarDatosNinos();
         }
+
+
+        /// <summary>
+        /// Agrega un niño a la lista de visualización en el ListBox.
+        /// </summary>
+        /// <param name="nino">Instancia del niño a agregar.</param>
         public void AgregarNiño(Nino nino)
         {
             if (nino == null)
@@ -54,7 +77,9 @@ namespace TFG_DavidGomez
             MessageBox.Show("Niño agregado correctamente al ListBox.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-
+        /// <summary>
+        /// Verifica si la instancia de PadresForm es válida y, de ser así, la muestra.
+        /// </summary>
         public void VerificarInstancia()
         {
             object obj = new PadresForm();
@@ -69,6 +94,10 @@ namespace TFG_DavidGomez
                 Console.WriteLine("El objeto proporcionado no es de tipo MonitorForm.");
             }
         }
+
+        /// <summary>
+        /// Inscribe a un niño seleccionado en una actividad seleccionada en una fecha específica.
+        /// </summary>
         private void btnApuntar_Click(object sender, EventArgs e)
         {
             try
@@ -194,9 +223,9 @@ namespace TFG_DavidGomez
         }
 
 
-
-
-
+        /// <summary>
+        /// Cierra la sesión actual y abre la pantalla de inicio de sesión.
+        /// </summary>
         private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SesionIniciada si = new SesionIniciada();
@@ -205,6 +234,10 @@ namespace TFG_DavidGomez
             InicioSesion inicioSesion = new InicioSesion();
             inicioSesion.ShowDialog();
         }
+
+        /// <summary>
+        /// Desapunta a un niño seleccionado de una actividad específica.
+        /// </summary>
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -316,7 +349,9 @@ namespace TFG_DavidGomez
         }
 
 
-
+        /// <summary>
+        /// Abre un formulario para editar los datos personales del usuario actual.
+        /// </summary>
 
         private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -349,6 +384,10 @@ namespace TFG_DavidGomez
         }
 
 
+        /// <summary>
+        /// Maneja el evento de cambio de fecha en el calendario.
+        /// Actualiza las actividades mostradas según la fecha seleccionada.
+        /// </summary>
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             // Obtener la fecha seleccionada del calendario
@@ -386,6 +425,13 @@ namespace TFG_DavidGomez
             }
         }
 
+        /// <summary>
+        /// Formatea un texto largo en múltiples líneas ajustándose a un ancho especificado.
+        /// </summary>
+        /// <param name="texto">Texto a formatear.</param>
+        /// <param name="ancho">Ancho máximo de las líneas.</param>
+        /// <returns>Texto formateado con saltos de línea.</returns>
+
         private string FormatearTexto(string texto, int ancho)
         {
             StringBuilder resultado = new StringBuilder();
@@ -418,6 +464,10 @@ namespace TFG_DavidGomez
             return resultado.ToString().Trim();
         }
 
+
+        /// <summary>
+        /// Carga los datos de los niños asociados al usuario actual desde la base de datos.
+        /// </summary>
         private void CargarDatosNinos()
         {
             try

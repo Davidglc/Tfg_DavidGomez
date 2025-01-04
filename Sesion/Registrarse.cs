@@ -13,16 +13,36 @@ using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 
+
 namespace TFG_DavidGomez.Sesion
 {
+
+    /// <summary>
+    /// Clase que representa el formulario para registrar usuarios en la aplicación.
+    /// Ofrece funcionalidades para registrar diferentes roles de usuario, como "Padre" o "Monitor",
+    /// validando sus datos y almacenándolos en una base de datos MongoDB.
+    /// </summary>
+
     public partial class Registrarse : Form
     {
+
+        /// <summary>
+        /// Constructor de la clase.
+        /// Inicializa el formulario y configura la visibilidad de elementos del formulario según las necesidades.
+        /// </summary>
         public Registrarse()
         {
             InitializeComponent();
             BtnGuardarMoni.Visible = false;
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al hacer clic en el botón de guardar para registrar un usuario con el rol de "Padre".
+        /// Valida los datos ingresados y los guarda en la base de datos si son correctos.
+        /// </summary>
+        /// <param name="sender">El objeto que genera el evento.</param>
+        /// <param name="e">Los datos del evento.</param>
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -118,8 +138,10 @@ namespace TFG_DavidGomez.Sesion
         }
 
 
-
-
+        /// <summary>
+        /// Verifica si el objeto actual es una instancia de la clase <see cref="Registrarse"/>.
+        /// Si lo es, muestra el formulario en un cuadro de diálogo.
+        /// </summary>
         public void VerificarInstancia()
         {
             object obj = new Registrarse();
@@ -135,6 +157,12 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+        /// <summary>
+        /// Evento que se ejecuta al hacer clic en el botón de guardar para registrar un usuario con el rol de "Monitor".
+        /// Valida los datos ingresados y los guarda en la base de datos si son correctos.
+        /// </summary>
+        /// <param name="sender">El objeto que genera el evento.</param>
+        /// <param name="e">Los datos del evento.</param>
         private void BtnGuardarMoni_Click(object sender, EventArgs e)
         {
             try

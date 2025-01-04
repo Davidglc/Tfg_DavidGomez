@@ -15,14 +15,27 @@ using TFG_DavidGomez.Clases.Conexion;
 
 namespace TFG_DavidGomez.Sesion
 {
+
+    /// <summary>
+    /// Formulario para gestionar los datos personales de los usuarios.
+    /// Permite cargar, visualizar y actualizar la información de los usuarios en una base de datos MongoDB.
+    /// </summary> 
     public partial class DatosPersonales : Form
     {
+        /// <summary>
+        /// Constructor por defecto
+        /// </summary>
         public DatosPersonales()
         {
             InitializeComponent();
             BtnGuardarMoni.Visible = false;
         }
 
+
+        /// <summary>
+        /// Constructor para inicializar datos de un usuario general.
+        /// </summary>
+        /// <param name="usuario">Objeto de tipo Usuario con los datos a cargar en el formulario.</param>
         public DatosPersonales(Usuario usuario)
         {
             InitializeComponent();
@@ -40,6 +53,11 @@ namespace TFG_DavidGomez.Sesion
             VerificarVisibilidadDatosNinos();
         }
 
+
+        /// <summary>
+        /// Constructor para inicializar datos de un monitor.
+        /// </summary>
+        /// <param name="usuario">Objeto de tipo UsuarioMonitor con los datos a cargar en el formulario.</param>
         public DatosPersonales(UsuarioMonitor usuario)
         {
             InitializeComponent();
@@ -57,6 +75,10 @@ namespace TFG_DavidGomez.Sesion
             datosNiñosToolStripMenuItem.Visible = false;
         }
 
+
+        /// <summary>
+        /// Evento para mostrar los datos de los niños asociados al usuario actual.
+        /// </summary>
         private void datosNiñosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -97,6 +119,10 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+
+        /// <summary>
+        /// Método para verificar si un objeto es una instancia de la clase DatosPersonales.
+        /// </summary>
         public void VerificarInstancia()
         {
             object obj = new DatosPersonales();
@@ -112,6 +138,9 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+        /// <summary>
+        /// Sobrecarga de VerificarInstancia para objetos de tipo Usuario.
+        /// </summary>
         public void VerificarInstancia2(Usuario u)
         {
             object obj = new DatosPersonales(u);
@@ -127,6 +156,10 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+
+        /// <summary>
+        /// Sobrecarga de VerificarInstancia para objetos de tipo UsuarioMonitor.
+        /// </summary>
         public void VerificarInstancia2(UsuarioMonitor u)
         {
             object obj = new DatosPersonales(u);
@@ -142,6 +175,10 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+
+        /// <summary>
+        /// Evento para guardar los datos actualizados de un usuario.
+        /// </summary>
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -199,6 +236,9 @@ namespace TFG_DavidGomez.Sesion
             this.Close();
         }
 
+        /// <summary>
+        /// Evento para guardar los datos actualizados de un Monitor.
+        /// </summary>
         private void BtnGuardarMoni_Click(object sender, EventArgs e)
         {
             try
@@ -255,7 +295,9 @@ namespace TFG_DavidGomez.Sesion
             }
             this.Close();
         }
-
+        /// <summary>
+        /// Verifica si se deben mostrar los datos de niños para el usuario actual.
+        /// </summary>
         private void VerificarVisibilidadDatosNinos()
         {
             try

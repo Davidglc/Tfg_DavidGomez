@@ -6,10 +6,19 @@ using TFG_DavidGomez.Clases.Conexion;
 
 namespace TFG_DavidGomez.Clases.Adaptador
 {
+
+    /// <summary>
+    /// Clase que actúa como adaptador para interactuar con la base de datos MongoDB.
+    /// Proporciona métodos para manejar actividades, inscripciones, usuarios y otros datos relacionados.
+    /// </summary>
     internal class MongoDBAdapter
     {
         private readonly IMongoDatabase _database;
 
+
+        /// <summary>
+        /// Constructor que inicializa la conexión utilizando la clase <see cref="ConBD2"/>.
+        /// </summary>
         public MongoDBAdapter()
         {
             // Usar la conexión existente de la clase ConexionBDAtlas
@@ -19,6 +28,8 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <summary>
         /// Obtiene la actividad programada para un día específico.
         /// </summary>
+        /// <param name="dia">Fecha del día para el cual se desea obtener la actividad.</param>
+        /// <returns>Un documento BSON que representa la actividad, o null si no se encuentra.</returns>
         public BsonDocument ObtenerActividadPorDia(DateTime dia)
         {
             // Obtener la colección "Actividades"
@@ -40,8 +51,10 @@ namespace TFG_DavidGomez.Clases.Adaptador
 
 
         /// <summary>
-        /// Obtiene los niños inscritos en una actividad programada para un día específico.
+        /// Obtiene los nombres de los niños inscritos en una actividad programada para un día específico.
         /// </summary>
+        /// <param name="dia">Fecha del día para el cual se desea obtener la lista de niños inscritos.</param>
+        /// <returns>Lista de nombres de niños inscritos.</returns>
         public List<string> ObtenerNinosPorDia(DateTime dia)
         {
             var inscripcionesCollection = _database.GetCollection<BsonDocument>("inscripciones");
@@ -65,8 +78,10 @@ namespace TFG_DavidGomez.Clases.Adaptador
         }
 
         /// <summary>
-        /// Obtiene los materiales necesarios para la actividad programada hoy.
+        /// Obtiene los materiales necesarios para la actividad programada en el día especificado.
         /// </summary>
+        /// <param name="dia">Fecha del día para el cual se desea obtener los materiales.</param>
+        /// <returns>Lista de materiales necesarios para la actividad.</returns>
         public List<string> ObtenerMaterialesDeHoy(DateTime dia)
         {
             var actividadesCollection = _database.GetCollection<BsonDocument>("actividades");
@@ -90,6 +105,14 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <summary>
         /// Verifica las credenciales del usuario en la base de datos.
         /// </summary>
+        /// <param name="usuario">Nombre de usuario a verificar.</param>
+        /// <param name="contraseña">Contraseña asociada al usuario.</param>
+        /// <returns>
+        /// Una tupla con tres valores:
+        /// - <c>true</c> si las credenciales son válidas, de lo contrario <c>false</c>.
+        /// - El ID del usuario como cadena.
+        /// - El rol del usuario.
+        /// </returns>
         public (bool, string, string) VerificarAccesoConRol(string usuario, string contraseña)
         {
             try
@@ -134,9 +157,11 @@ namespace TFG_DavidGomez.Clases.Adaptador
             }
         }
 
-        /// <summary>s
+        /// <summary>
         /// Carga los datos de un niño por su ID.
         /// </summary>
+        /// <param name="idNino">ID del niño en formato <see cref="ObjectId"/>.</param>
+        /// <returns>Un objeto <see cref="Nino"/> que contiene los datos del niño, o null si no se encuentra.</returns>
         public Nino CargarDatosNino(ObjectId idNino)
         {
             var ninosCollection = _database.GetCollection<Nino>("ninos");
@@ -147,6 +172,8 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <summary>
         /// Carga los datos de los niños relacionados con un padre.
         /// </summary>
+        /// <param name="idPadre">ID del padre en formato <see cref="ObjectId"/>.</param>
+        /// <returns>Lista de objetos <see cref="Nino"/> relacionados con el padre.</returns>
         public List<Nino> CargarDatosNinoPorPadre(ObjectId idPadre)
         {
             var ninosCollection = _database.GetCollection<Nino>("Ninos");
@@ -156,18 +183,25 @@ namespace TFG_DavidGomez.Clases.Adaptador
 
 
         /// <summary>
-        /// Obtiene un usuario por su ID.
+        /// Obtiene los materiales requeridos para una actividad específica por su ID.
         /// </summary>
+        /// <param name="idActividad">ID de la actividad en formato <see cref="ObjectId"/>.</param>
+        /// <returns>Lista de materiales necesarios para la actividad.</returns>
         public Usuario ObtenerUsuarioPorId(ObjectId idUsuario)
         {
             var usuariosCollection = _database.GetCollection<Usuario>("Usuarios");
             var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
             return usuariosCollection.Find(filtro).FirstOrDefault();
         }
-
         /// <summary>
         /// Obtiene un usuario por su ID.
         /// </summary>
+        /// <param name="idUsuario">El ID del usuario como un <see cref="ObjectId"/>.</param>
+        /// <returns>
+        /// Un objeto <see cref="UsuarioMonitor"/> que representa al usuario, 
+        /// o <c>null</c> si no se encuentra el usuario.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza si ocurre un error durante el proceso.</exception>
         public UsuarioMonitor ObtenerUsuarioPorIdMoni(ObjectId idUsuario)
         {
             try
@@ -220,6 +254,11 @@ namespace TFG_DavidGomez.Clases.Adaptador
         /// <summary>
         /// Obtiene los niños inscritos en una actividad por su ID.
         /// </summary>
+        /// <param name="idActividad">El ID de la actividad como un <see cref="ObjectId"/>.</param>
+        /// <returns>
+        /// Una lista de objetos <see cref="Nino"/> que representan a los niños inscritos en la actividad.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza si ocurre un error durante el proceso.</exception>
         public List<Nino> ObtenerNinosPorActividad(ObjectId idActividad)
         {
             try
@@ -260,11 +299,14 @@ namespace TFG_DavidGomez.Clases.Adaptador
         }
 
 
-
-
         /// <summary>
-        /// Obtiene los materiales requeridos por una actividad.
+        /// Obtiene los materiales requeridos para una actividad por su ID.
         /// </summary>
+        /// <param name="idActividad">El ID de la actividad como un <see cref="ObjectId"/>.</param>
+        /// <returns>
+        /// Una lista de cadenas (<see cref="List{String}"/>) que representan los materiales requeridos 
+        /// para la actividad. Devuelve una lista vacía si no se encuentran materiales.
+        /// </returns>
         public List<string> ObtenerMaterialesPorActividad(ObjectId idActividad)
         {
             // Obtener la colección "Actividades"

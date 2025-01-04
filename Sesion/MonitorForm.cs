@@ -14,12 +14,31 @@ using TFG_DavidGomez.Sesion;
 
 namespace TFG_DavidGomez
 {
+
+    /// <summary>
+    /// Clase que representa el formulario de gestión para monitores.
+    /// Proporciona funcionalidades como visualizar actividades, materiales asociados, niños asignados,
+    /// consultar datos personales y gestionar monitores.
+    /// </summary>
     public partial class MonitorForm : Form
     {
+
+        /// <summary>
+        /// Constructor por defecto de la clase.
+        /// Inicializa el formulario de Monitor.
+        /// </summary>
         public MonitorForm()
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Constructor que inicializa el formulario con información específica de una actividad.
+        /// </summary>
+        /// <param name="fecha">Fecha de la actividad.</param>
+        /// <param name="actividad">Nombre de la actividad.</param>
+        /// <param name="materiales">Lista de materiales necesarios para la actividad.</param>
+        /// <param name="niños">Lista de niños inscritos en la actividad.</param>
 
         public MonitorForm(DateTime fecha, string actividad, List<string> materiales, List<string> niños)
         {
@@ -40,6 +59,11 @@ namespace TFG_DavidGomez
             }
         }
 
+        /// <summary>
+        /// Verifica si un objeto es una instancia de la clase <see cref="MonitorForm"/>.
+        /// Si lo es, muestra el formulario.
+        /// </summary>
+
         public void VerificarInstancia()
         {
             object obj = new MonitorForm();
@@ -55,6 +79,11 @@ namespace TFG_DavidGomez
             }
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al seleccionar "Cerrar sesión" en el menú.
+        /// Cierra la sesión actual y redirige al formulario de inicio de sesión.
+        /// </summary>
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Cerrar sesión
@@ -73,6 +102,11 @@ namespace TFG_DavidGomez
 
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al seleccionar "Datos personales" en el menú.
+        /// Carga y muestra los datos personales del monitor desde la base de datos.
+        /// </summary>
         private void datosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -104,7 +138,10 @@ namespace TFG_DavidGomez
         }
 
 
-
+        /// <summary>
+        /// Evento que se ejecuta al seleccionar "Añadir monitor" en el menú.
+        /// Abre el formulario de registro con la opción específica para registrar monitores.
+        /// </summary>
 
         private void añadirMonitorToolStripMenuItem_Click(object sender, EventArgs e)
         {
