@@ -28,6 +28,7 @@ namespace TFG_DavidGomez.Sesion
 {
     public partial class RegisNino : Form
     {
+        private PadresForm _padresForm;
 
         /// <summary>
         /// Constructor de la clase.
@@ -150,25 +151,12 @@ namespace TFG_DavidGomez.Sesion
         /// <summary>
         /// Verifica si un objeto es una instancia de RegisNino y lo muestra.
         /// </summary>
-        public void VerificarInstancia()
-        {
-            object obj = new RegisNino();
-
-            if (obj is RegisNino RegisNi)
-            {
-                Console.WriteLine("El objeto es una instancia de RegisNino.");
-                RegisNi.Show();
-            }
-            else
-            {
-                Console.WriteLine("El objeto no es una instancia de RegisNino.");
-            }
-        }
+        
 
         /// <summary>
         /// Carga los datos de los niños asociados al padre actual y los muestra en un ListBox.
         /// </summary>
-        private void CargarDatosNinos()
+        public void CargarDatosNinos()
         {
             try
             {
@@ -212,5 +200,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al cargar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        
     }
 }

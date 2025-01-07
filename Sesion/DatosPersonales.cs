@@ -318,6 +318,7 @@ namespace TFG_DavidGomez.Sesion
                 MongoDBAdapter ma = new MongoDBAdapter();
                 List<Nino> ninos = ma.CargarDatosNinoPorPadre(idPadre);
 
+
                 // Mostrar u ocultar la opción dependiendo si hay niños
                 datosNiñosToolStripMenuItem.Visible = ninos != null && ninos.Count > 0;
             }

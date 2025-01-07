@@ -19,40 +19,40 @@ namespace TFG_DavidGomez.Clases
         /// <summary>
         /// Nombre del niño.
         /// </summary>
-        [BsonElement("nombre")]
+        [BsonElement("Nombre")]
         public string Nombre { get; set; }
 
         /// <summary>
         /// DNI del niño, utilizado para su identificación.
         /// </summary>
-        [BsonElement("dni")]
+        [BsonElement("DNI")]
         public string DNI { get; set; }
 
         /// <summary>
         /// Apellidos del niño.
         /// </summary>
-        [BsonElement("apellidos")]
+        [BsonElement("Apellidos")]
         public string Apellidos { get; set; }
 
         /// <summary>
         /// Fecha de nacimiento del niño.
         /// El atributo está marcado con la opción <see cref="BsonDateTimeOptions"/> para asegurar que se guarde correctamente la fecha con la zona horaria local.
         /// </summary>
-        [BsonElement("fecha_nacimiento")]
+        [BsonElement("FechaNacimiento")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime FechaNacimiento { get; set; }
 
         /// <summary>
         /// Edad del niño, que se calcula en base a la fecha de nacimiento.
         /// </summary>
-        [BsonElement("edad")]
+        [BsonElement("Edad")]
         public int Edad { get; set; }
 
         /// <summary>
         /// Identificador del padre del niño.
         /// Este campo es una referencia al objeto <see cref="Padre"/> que contiene la información del padre.
         /// </summary>
-        [BsonElement("id_padre")]
+        [BsonElement("IdPadre")]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId IdPadre { get; set; }
 

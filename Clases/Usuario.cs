@@ -19,63 +19,63 @@ namespace TFG_DavidGomez.Clases
         /// <summary>
         /// Nombre del usuario.
         /// </summary>
-        [BsonElement("nombre")]
+        [BsonElement("Nombre")]
         public string Nombre { get; set; }
 
         /// <summary>
         /// Apellidos del usuario.
         /// </summary>
-        [BsonElement("apellidos")]
+        [BsonElement("Apellidos")]
         public string Apellidos { get; set; }
 
         /// <summary>
         /// DNI del usuario, utilizado para su identificación.
         /// </summary>
-        [BsonElement("dni")]
+        [BsonElement("DNI")]
         public string DNI { get; set; }
 
         /// <summary>
         /// Correo electrónico del usuario.
         /// </summary>
-        [BsonElement("correo")]
+        [BsonElement("Correo")]
         public string Correo { get; set; }
 
         /// <summary>
         /// Contraseña del usuario (en texto plano o encriptada).
         /// </summary>
-        [BsonElement("contrasena")]
+        [BsonElement("Contrasena")]
         public string Contrasena { get; set; }
 
         /// <summary>
         /// Rol del usuario (Ej. "Padre", "Admin", etc.).
         /// </summary>
-        [BsonElement("rol")]
+        [BsonElement("Rol")]
         public string Rol { get; set; }
 
         /// <summary>
         /// Fecha en la que se registró el usuario en el sistema.
         /// </summary>
-        [BsonElement("fecha_registro")]
+        [BsonElement("FechaRegistro")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime FechaRegistro { get; set; }
 
         /// <summary>
         /// Teléfono del usuario.
         /// </summary>
-        [BsonElement("telefono")]
+        [BsonElement("Telefono")]
         public string Telefono { get; set; }
 
         /// <summary>
         /// Dirección del usuario.
         /// </summary>
-        [BsonElement("direccion")]
+        [BsonElement("Direccion")]
         public string Direccion { get; set; }
 
         /// <summary>
         /// Lista de hijos asociados al usuario. Este campo se ignora si es null.
         /// </summary>
         [BsonIgnoreIfNull]
-        [BsonElement("hijos")]
+        [BsonElement("Hijos")]
         public List<Nino> Hijos { get; set; }
 
         /// <summary>
