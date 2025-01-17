@@ -60,7 +60,7 @@
             // 
             // usuarioToolStripMenuItem
             // 
-            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cerrarSesiónToolStripMenuItem, editarDatosPersonalesToolStripMenuItem });
+            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { editarDatosPersonalesToolStripMenuItem, cerrarSesiónToolStripMenuItem });
             usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
             usuarioToolStripMenuItem.Size = new Size(59, 20);
             usuarioToolStripMenuItem.Text = "Usuario";
