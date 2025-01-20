@@ -250,7 +250,7 @@ namespace TFG_DavidGomez.Sesion
                 MongoDBAdapter ma = new MongoDBAdapter();
 
                 // Verificar si el usuario existe en la base de datos
-                Usuario usuarioExistente = ma.ObtenerUsuarioPorId(idUsuario);
+                UsuarioMonitor usuarioExistente = ma.ObtenerUsuarioPorIdMoni(idUsuario);
 
                 if (usuarioExistente == null)
                 {
@@ -267,9 +267,9 @@ namespace TFG_DavidGomez.Sesion
                 usuarioExistente.Telefono = txTelefono.Text;
 
                 // Actualizar el usuario en la base de datos
-                var usuariosCollection = ConBD2.GetCollection<UsuarioMonitor>("Usuarios");
-                var filtro = Builders<UsuarioMonitor>.Filter.Eq(u => u.Id, idUsuario);
-                var actualizacion = Builders<UsuarioMonitor>.Update
+                var usuariosCollection = ConBD2.GetCollection<Usuario>("Usuarios");
+                var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
+                var actualizacion = Builders<Usuario>.Update
                     .Set(u => u.Nombre, usuarioExistente.Nombre)
                     .Set(u => u.Apellidos, usuarioExistente.Apellidos)
                     .Set(u => u.DNI, usuarioExistente.DNI)

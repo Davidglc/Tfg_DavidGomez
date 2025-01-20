@@ -52,6 +52,7 @@
             TxContrasena.Font = new Font("Segoe UI", 9.75F);
             TxContrasena.Location = new Point(66, 142);
             TxContrasena.Name = "TxContrasena";
+            TxContrasena.PasswordChar = '*';
             TxContrasena.Size = new Size(304, 25);
             TxContrasena.TabIndex = 9;
             // 

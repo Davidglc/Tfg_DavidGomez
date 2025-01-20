@@ -193,6 +193,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
             var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
             return usuariosCollection.Find(filtro).FirstOrDefault();
         }
+
         /// <summary>
         /// Obtiene un usuario por su ID.
         /// </summary>

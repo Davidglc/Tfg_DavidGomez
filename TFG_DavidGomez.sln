@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFG_DavidGomez", "TFG_DavidGomez.csproj", "{434D7A88-8532-4703-8F65-3BA8B1FE123E}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupTFG", "..\SetupTFG\SetupTFG.vdproj", "{4897E0C1-E2E0-41C1-ACD1-1D16A3BEEBB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{434D7A88-8532-4703-8F65-3BA8B1FE123E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{434D7A88-8532-4703-8F65-3BA8B1FE123E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{434D7A88-8532-4703-8F65-3BA8B1FE123E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4897E0C1-E2E0-41C1-ACD1-1D16A3BEEBB6}.Debug|Any CPU.ActiveCfg = Debug
+		{4897E0C1-E2E0-41C1-ACD1-1D16A3BEEBB6}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
