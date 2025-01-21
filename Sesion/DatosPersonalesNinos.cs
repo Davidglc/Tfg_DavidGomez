@@ -72,8 +72,8 @@ namespace TFG_DavidGomez.Sesion
 
             // Asignar los valores a los TextBox correspondientes
             txUsuario.Text = datosNino[0].Replace("Nombre: ", " ");
-            txApellidos.Text = datosNino[1].Replace("Apellidos: ", " ");
-            txDNI.Text = datosNino[2].Replace("DNI: ", " ");
+            txDNI.Text = datosNino[1].Replace("Apellidos: ", " ");
+            txApellidos.Text = datosNino[2].Replace("DNI: ", " ");
             txFnac.Text = datosNino[3].Replace("Fecha de Nacimiento: ", " ");
             txEdad.Text = datosNino[4].Replace("Edad: ", " ");
         }
