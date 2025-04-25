@@ -88,7 +88,7 @@
             // 
             // txApellidos
             // 
-            txApellidos.Location = new Point(11, 151);
+            txApellidos.Location = new Point(12, 107);
             txApellidos.Name = "txApellidos";
             txApellidos.Size = new Size(266, 23);
             txApellidos.TabIndex = 32;
@@ -104,7 +104,7 @@
             // 
             // txDNI
             // 
-            txDNI.Location = new Point(11, 98);
+            txDNI.Location = new Point(12, 151);
             txDNI.Name = "txDNI";
             txDNI.Size = new Size(266, 23);
             txDNI.TabIndex = 30;

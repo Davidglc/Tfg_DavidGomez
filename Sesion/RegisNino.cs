@@ -151,7 +151,7 @@ namespace TFG_DavidGomez.Sesion
         /// <summary>
         /// Verifica si un objeto es una instancia de RegisNino y lo muestra.
         /// </summary>
-        
+
 
         /// <summary>
         /// Carga los datos de los niños asociados al padre actual y los muestra en un ListBox.
@@ -201,6 +201,25 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
-        
+        private void label5_Click(object sender, EventArgs e)
+        {
+            // Generar un número aleatorio de 8 cifras
+            Random rnd = new Random();
+            int numeroDNI = rnd.Next(10000000, 99999999);
+
+            // Calcular la letra del DNI
+            string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            char letra = letras[numeroDNI % 23];
+
+            // Formar el DNI completo
+            string dniFicticio = numeroDNI.ToString() + letra;
+
+            // Asignar al campo de texto
+            txDNI.Text = dniFicticio;
+
+            // Informar al usuario
+            MessageBox.Show($"Se ha generado un DNI provisional válido: {dniFicticio}", "DNI generado automáticamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
     }
 }

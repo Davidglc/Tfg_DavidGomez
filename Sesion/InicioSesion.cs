@@ -133,8 +133,7 @@ namespace TFG_DavidGomez
                     this.Hide();
                     monitorForm.Show();
                 }
-
-
+               
             }
             else
             {

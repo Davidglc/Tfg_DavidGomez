@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,7 +44,7 @@ namespace TFG_DavidGomez.Sesion
             // Asignar los datos a los controles
             txUsuario.Text = usuario.Nombre;
             txDNI.Text = usuario.DNI;
-            TxContrasena.Text = usuario.Contrasena;
+            TxContrasena.Text = "";//usuario.Contrasena;
             txApellidos.Text = usuario.Apellidos;
             txCorreo.Text = usuario.Correo;
             txTelefono.Text = usuario.Telefono;
@@ -65,7 +66,7 @@ namespace TFG_DavidGomez.Sesion
             // Asignar los datos a los controles
             txUsuario.Text = usuario.Nombre;
             txDNI.Text = usuario.DNI;
-            TxContrasena.Text = usuario.Contrasena;
+            TxContrasena.Text = "";//usuario.Contrasena;
             txApellidos.Text = usuario.Apellidos;
             txCorreo.Text = usuario.Correo;
             txTelefono.Text = usuario.Telefono;
@@ -203,7 +204,7 @@ namespace TFG_DavidGomez.Sesion
                 usuarioExistente.Apellidos = txApellidos.Text;
                 usuarioExistente.DNI = txDNI.Text;
                 usuarioExistente.Correo = txCorreo.Text;
-                usuarioExistente.Contrasena = TxContrasena.Text;
+                usuarioExistente.Contrasena = EncriptarSHA256(TxContrasena.Text);
                 usuarioExistente.Telefono = txTelefono.Text;
 
                 // Actualizar el usuario en la base de datos
@@ -263,7 +264,7 @@ namespace TFG_DavidGomez.Sesion
                 usuarioExistente.Apellidos = txApellidos.Text;
                 usuarioExistente.DNI = txDNI.Text;
                 usuarioExistente.Correo = txCorreo.Text;
-                usuarioExistente.Contrasena = TxContrasena.Text;
+                usuarioExistente.Contrasena = EncriptarSHA256(TxContrasena.Text);
                 usuarioExistente.Telefono = txTelefono.Text;
 
                 // Actualizar el usuario en la base de datos
@@ -327,6 +328,16 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al verificar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // Ocultar la opción en caso de error
                 datosNiñosToolStripMenuItem.Visible = false;
+            }
+        }
+
+        private string EncriptarSHA256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
 

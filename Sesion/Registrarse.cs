@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
+using System.Security.Cryptography;
 
 
 namespace TFG_DavidGomez.Sesion
@@ -76,7 +77,7 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                // Validar formato del DNI (solo una letra al final)
+                // Validar formato del DNI (8 números seguidos de una letra)
                 if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
                 {
                     MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -93,9 +94,12 @@ namespace TFG_DavidGomez.Sesion
 
                 if (usuarioExistente != null)
                 {
-                    MessageBox.Show("Ya existe un padre registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Ya existe un usuario registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
+                // Encriptar la contraseña con SHA-256
+                string contraseñaEncriptada = EncriptarSHA256(contraseña);
 
                 // Crear un documento para insertar en MongoDB
                 var nuevoUsuario = new BsonDocument
@@ -104,7 +108,7 @@ namespace TFG_DavidGomez.Sesion
                     { "Nombre", nombre },
                     { "DNI", DNI },
                     { "Apellidos", apellido },
-                    { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                    { "Contrasena", contraseñaEncriptada }, // Guardar la contraseña encriptada
                     { "Rol", "Padre" },
                     { "Telefono", Telf },
                     { "Correo", Correo },
@@ -136,7 +140,6 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         /// <summary>
         /// Verifica si el objeto actual es una instancia de la clase <see cref="Registrarse"/>.
@@ -213,9 +216,11 @@ namespace TFG_DavidGomez.Sesion
 
                 if (usuarioExistente != null)
                 {
-                    MessageBox.Show("Ya existe un monitor registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Ya existe un usuario registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
+                string contraseñaEncriptada = EncriptarSHA256(contraseña);
 
                 // Crear un documento para insertar en MongoDB
                 var nuevoUsuario = new BsonDocument
@@ -224,7 +229,7 @@ namespace TFG_DavidGomez.Sesion
                     { "Nombre", nombre },
                     { "DNI", DNI },
                     { "Apellidos", apellido },
-                    { "Contrasena", contraseña }, // Nota: Idealmente, la contraseña debe ser cifrada
+                    { "Contrasena", contraseñaEncriptada }, // Nota: Idealmente, la contraseña debe ser cifrada
                     { "Rol", "Monitor" },
                     { "Telefono", Telf },
                     { "Correo", Correo },
@@ -257,7 +262,16 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
-
+        // Método para encriptar con SHA-256
+        private string EncriptarSHA256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
     }
 }
 

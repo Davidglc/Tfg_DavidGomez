@@ -2,6 +2,8 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using TFG_DavidGomez.Clases.Conexion;
 
 namespace TFG_DavidGomez.Clases.Adaptador
@@ -102,6 +104,20 @@ namespace TFG_DavidGomez.Clases.Adaptador
             return new List<string> { "No hay materiales para esta actividad." };
         }
 
+        public string ObtenerNinoPorFecha(DateTime fecha)
+        {
+            var inscripcionesCollection = _database.GetCollection<BsonDocument>("Inscripciones");
+
+            // Buscar en la base de datos el niño inscrito en esa fecha
+            var filtro = Builders<BsonDocument>.Filter.Eq("fecha", fecha);
+            var resultado = inscripcionesCollection.Find(filtro).FirstOrDefault();
+
+            Nino n = CargarDatosNino(((ObjectId)resultado));
+
+            // Si encuentra un resultado, devolver el nombre del niño
+            return n != null ? n.Nombre + " " + n.Apellidos : "";
+        }
+
         /// <summary>
         /// Verifica las credenciales del usuario en la base de datos.
         /// </summary>
@@ -123,7 +139,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
                 // Crear el filtro por nombre de usuario
                 FilterDefinition<BsonDocument> filtroNombre = Builders<BsonDocument>.Filter.Eq("Nombre", usuario);
 
-                // Mostrar el filtro generado
+                // Mostrar el filtro generado (solo para depuración)
                 Console.WriteLine($"Filtro generado (Nombre): {filtroNombre.ToJson()}");
 
                 // Buscar el documento por nombre
@@ -132,10 +148,13 @@ namespace TFG_DavidGomez.Clases.Adaptador
                 // Verificar si se encontró un usuario con ese nombre
                 if (resultado != null)
                 {
-                    // Validar la contraseña
+                    // Obtener la contraseña almacenada (encriptada)
                     string contrasenaAlmacenada = resultado.Contains("Contrasena") ? resultado.GetValue("Contrasena").AsString : null;
 
-                    if (contrasenaAlmacenada == contraseña)
+                    // Encriptar la contraseña ingresada para compararla con la almacenada
+                    string contrasenaIngresadaEncriptada = EncriptarSHA256(contraseña);
+
+                    if (contrasenaAlmacenada == contrasenaIngresadaEncriptada)
                     {
                         // Obtener el ID y el rol
                         string idUsuario = resultado.GetValue("_id").ToString();
@@ -154,6 +173,17 @@ namespace TFG_DavidGomez.Clases.Adaptador
                 // Manejar errores
                 Console.WriteLine("Error en VerificarAccesoConRol: " + ex.Message);
                 return (false, null, null);
+            }
+        }
+
+        // Método para encriptar la contraseña con SHA-256
+        private string EncriptarSHA256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
 
@@ -179,6 +209,19 @@ namespace TFG_DavidGomez.Clases.Adaptador
             var ninosCollection = _database.GetCollection<Nino>("Ninos");
             var filtro = Builders<Nino>.Filter.Eq(n => n.IdPadre, idPadre);
             return ninosCollection.Find(filtro).ToList();
+        }
+
+        public bool VerificarInscripcion(ObjectId idNino, ObjectId idActividad)
+        {
+            var db = ConBD2.ObtenerConexionActiva(); 
+            var inscripciones = db.GetCollection<BsonDocument>("Inscripciones");
+
+            var filtro = Builders<BsonDocument>.Filter.Eq("id_nino", idNino) &
+                         Builders<BsonDocument>.Filter.Eq("id_actividad", idActividad);
+
+            var resultado = inscripciones.Find(filtro).FirstOrDefault();
+
+            return resultado != null;
         }
 
 

@@ -41,6 +41,7 @@
             label4 = new Label();
             button1 = new Button();
             button2 = new Button();
+            label5 = new Label();
             SuspendLayout();
             // 
             // txDNI
@@ -147,12 +148,23 @@
             button2.UseVisualStyleBackColor = false;
             button2.Visible = false;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(51, 78);
+            label5.Name = "label5";
+            label5.Size = new Size(250, 15);
+            label5.TabIndex = 27;
+            label5.Text = "(Si el niño no tiene DNI haz click en este texto)";
+            label5.Click += label5_Click;
+            // 
             // RegisNino
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(364, 418);
+            Controls.Add(label5);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(txEdad);
@@ -187,5 +199,6 @@
         private Label label4;
         private Button button1;
         private Button button2;
+        private Label label5;
     }
 }

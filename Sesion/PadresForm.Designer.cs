@@ -32,13 +32,14 @@
             menuStrip1 = new MenuStrip();
             añadirNiñoToolStripMenuItem = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
-            cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             editarDatosPersonalesToolStripMenuItem = new ToolStripMenuItem();
+            cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             monthCalendar1 = new MonthCalendar();
             btnApuntar = new Button();
             button2 = new Button();
             LbNinos = new ListBox();
             Actividades = new ListBox();
+            btn_VP = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -65,13 +66,6 @@
             usuarioToolStripMenuItem.Size = new Size(59, 20);
             usuarioToolStripMenuItem.Text = "Usuario";
             // 
-            // cerrarSesiónToolStripMenuItem
-            // 
-            cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
-            cerrarSesiónToolStripMenuItem.Size = new Size(196, 22);
-            cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
-            cerrarSesiónToolStripMenuItem.Click += cerrarSesiónToolStripMenuItem_Click;
-            // 
             // editarDatosPersonalesToolStripMenuItem
             // 
             editarDatosPersonalesToolStripMenuItem.Name = "editarDatosPersonalesToolStripMenuItem";
@@ -79,12 +73,19 @@
             editarDatosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
             editarDatosPersonalesToolStripMenuItem.Click += editarDatosPersonalesToolStripMenuItem_Click;
             // 
+            // cerrarSesiónToolStripMenuItem
+            // 
+            cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
+            cerrarSesiónToolStripMenuItem.Size = new Size(196, 22);
+            cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
+            cerrarSesiónToolStripMenuItem.Click += cerrarSesiónToolStripMenuItem_Click;
+            // 
             // monthCalendar1
             // 
             monthCalendar1.Anchor = AnchorStyles.None;
             monthCalendar1.CalendarDimensions = new Size(1, 2);
             monthCalendar1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            monthCalendar1.Location = new Point(18, 33);
+            monthCalendar1.Location = new Point(11, 33);
             monthCalendar1.MaxSelectionCount = 1;
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.ShowToday = false;
@@ -95,7 +96,7 @@
             // 
             btnApuntar.Anchor = AnchorStyles.None;
             btnApuntar.BackColor = Color.Red;
-            btnApuntar.Location = new Point(18, 369);
+            btnApuntar.Location = new Point(128, 380);
             btnApuntar.Name = "btnApuntar";
             btnApuntar.Size = new Size(82, 52);
             btnApuntar.TabIndex = 2;
@@ -107,7 +108,7 @@
             // 
             button2.Anchor = AnchorStyles.None;
             button2.BackColor = Color.Red;
-            button2.Location = new Point(128, 369);
+            button2.Location = new Point(238, 380);
             button2.Name = "button2";
             button2.Size = new Size(82, 52);
             button2.TabIndex = 3;
@@ -121,9 +122,9 @@
             LbNinos.Font = new Font("Segoe UI", 9.75F);
             LbNinos.FormattingEnabled = true;
             LbNinos.ItemHeight = 17;
-            LbNinos.Location = new Point(222, 33);
+            LbNinos.Location = new Point(215, 33);
             LbNinos.Name = "LbNinos";
-            LbNinos.Size = new Size(566, 123);
+            LbNinos.Size = new Size(579, 123);
             LbNinos.TabIndex = 4;
             // 
             // Actividades
@@ -132,10 +133,22 @@
             Actividades.Font = new Font("Segoe UI", 9.75F);
             Actividades.FormattingEnabled = true;
             Actividades.ItemHeight = 17;
-            Actividades.Location = new Point(222, 193);
+            Actividades.Location = new Point(215, 193);
             Actividades.Name = "Actividades";
-            Actividades.Size = new Size(566, 123);
+            Actividades.Size = new Size(579, 123);
             Actividades.TabIndex = 5;
+            // 
+            // btn_VP
+            // 
+            btn_VP.Anchor = AnchorStyles.None;
+            btn_VP.BackColor = Color.Red;
+            btn_VP.Location = new Point(18, 380);
+            btn_VP.Name = "btn_VP";
+            btn_VP.Size = new Size(82, 52);
+            btn_VP.TabIndex = 6;
+            btn_VP.Text = "Vista Previa";
+            btn_VP.UseVisualStyleBackColor = false;
+            btn_VP.Click += btn_VP_Click;
             // 
             // PadresForm
             // 
@@ -143,6 +156,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(800, 450);
+            Controls.Add(btn_VP);
             Controls.Add(Actividades);
             Controls.Add(LbNinos);
             Controls.Add(button2);
@@ -172,5 +186,6 @@
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
         private ToolStripMenuItem editarDatosPersonalesToolStripMenuItem;
+        private Button btn_VP;
     }
 }
