@@ -160,6 +160,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.LightGray;
             ClientSize = new Size(800, 450);
             Controls.Add(LbNiños);
             Controls.Add(label1);

@@ -36,7 +36,7 @@
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             monthCalendar1 = new MonthCalendar();
             btnApuntar = new Button();
-            button2 = new Button();
+            btn_DA = new Button();
             LbNinos = new ListBox();
             Actividades = new ListBox();
             btn_VP = new Button();
@@ -83,6 +83,7 @@
             // monthCalendar1
             // 
             monthCalendar1.Anchor = AnchorStyles.None;
+            monthCalendar1.BackColor = Color.LightGray;
             monthCalendar1.CalendarDimensions = new Size(1, 2);
             monthCalendar1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             monthCalendar1.Location = new Point(11, 33);
@@ -95,7 +96,10 @@
             // btnApuntar
             // 
             btnApuntar.Anchor = AnchorStyles.None;
-            btnApuntar.BackColor = Color.Red;
+            btnApuntar.BackColor = Color.DodgerBlue;
+            btnApuntar.FlatAppearance.BorderSize = 0;
+            btnApuntar.FlatStyle = FlatStyle.Flat;
+            btnApuntar.ForeColor = Color.White;
             btnApuntar.Location = new Point(128, 380);
             btnApuntar.Name = "btnApuntar";
             btnApuntar.Size = new Size(82, 52);
@@ -104,17 +108,20 @@
             btnApuntar.UseVisualStyleBackColor = false;
             btnApuntar.Click += btnApuntar_Click;
             // 
-            // button2
+            // btn_DA
             // 
-            button2.Anchor = AnchorStyles.None;
-            button2.BackColor = Color.Red;
-            button2.Location = new Point(238, 380);
-            button2.Name = "button2";
-            button2.Size = new Size(82, 52);
-            button2.TabIndex = 3;
-            button2.Text = "DesApuntar";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
+            btn_DA.Anchor = AnchorStyles.None;
+            btn_DA.BackColor = Color.DodgerBlue;
+            btn_DA.FlatAppearance.BorderSize = 0;
+            btn_DA.FlatStyle = FlatStyle.Flat;
+            btn_DA.ForeColor = Color.White;
+            btn_DA.Location = new Point(238, 380);
+            btn_DA.Name = "btn_DA";
+            btn_DA.Size = new Size(82, 52);
+            btn_DA.TabIndex = 3;
+            btn_DA.Text = "DesApuntar";
+            btn_DA.UseVisualStyleBackColor = false;
+            btn_DA.Click += button2_Click;
             // 
             // LbNinos
             // 
@@ -141,7 +148,10 @@
             // btn_VP
             // 
             btn_VP.Anchor = AnchorStyles.None;
-            btn_VP.BackColor = Color.Red;
+            btn_VP.BackColor = Color.DodgerBlue;
+            btn_VP.FlatAppearance.BorderSize = 0;
+            btn_VP.FlatStyle = FlatStyle.Flat;
+            btn_VP.ForeColor = Color.White;
             btn_VP.Location = new Point(18, 380);
             btn_VP.Name = "btn_VP";
             btn_VP.Size = new Size(82, 52);
@@ -155,11 +165,12 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.LightGray;
             ClientSize = new Size(800, 450);
             Controls.Add(btn_VP);
             Controls.Add(Actividades);
             Controls.Add(LbNinos);
-            Controls.Add(button2);
+            Controls.Add(btn_DA);
             Controls.Add(btnApuntar);
             Controls.Add(monthCalendar1);
             Controls.Add(menuStrip1);
@@ -180,7 +191,7 @@
         private ToolStripMenuItem añadirNiñoToolStripMenuItem;
         private MonthCalendar monthCalendar1;
         private Button btnApuntar;
-        private Button button2;
+        private Button btn_DA;
         public ListBox LbNinos;
         private ListBox Actividades;
         private ToolStripMenuItem usuarioToolStripMenuItem;

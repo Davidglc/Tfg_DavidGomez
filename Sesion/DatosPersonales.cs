@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -51,6 +52,7 @@ namespace TFG_DavidGomez.Sesion
             txDirec.Text = usuario.Direccion;
             BtnGuardarMoni.Visible = false;
             btnGuardar.Visible = true;
+            RedondearBoton(btnGuardar, 20);
             VerificarVisibilidadDatosNinos();
         }
 
@@ -74,6 +76,18 @@ namespace TFG_DavidGomez.Sesion
             BtnGuardarMoni.Visible = true;
             btnGuardar.Visible = false;
             datosNiñosToolStripMenuItem.Visible = false;
+            RedondearBoton(BtnGuardarMoni, 20);
+        }
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+            btn.Region = new Region(path);
         }
 
 

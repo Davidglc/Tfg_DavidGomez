@@ -39,7 +39,7 @@
             label3 = new Label();
             txEdad = new TextBox();
             label4 = new Label();
-            button1 = new Button();
+            btn_Aceptar = new Button();
             button2 = new Button();
             label5 = new Label();
             SuspendLayout();
@@ -126,16 +126,19 @@
             label4.TabIndex = 23;
             label4.Text = "Edad";
             // 
-            // button1
+            // btn_Aceptar
             // 
-            button1.BackColor = Color.Red;
-            button1.Location = new Point(118, 313);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 25;
-            button1.Text = "Aceptar";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            btn_Aceptar.BackColor = Color.DodgerBlue;
+            btn_Aceptar.FlatAppearance.BorderSize = 0;
+            btn_Aceptar.FlatStyle = FlatStyle.Flat;
+            btn_Aceptar.ForeColor = Color.White;
+            btn_Aceptar.Location = new Point(118, 313);
+            btn_Aceptar.Name = "btn_Aceptar";
+            btn_Aceptar.Size = new Size(75, 23);
+            btn_Aceptar.TabIndex = 25;
+            btn_Aceptar.Text = "Aceptar";
+            btn_Aceptar.UseVisualStyleBackColor = false;
+            btn_Aceptar.Click += button1_Click;
             // 
             // button2
             // 
@@ -163,10 +166,11 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.LightGray;
             ClientSize = new Size(364, 418);
             Controls.Add(label5);
             Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btn_Aceptar);
             Controls.Add(txEdad);
             Controls.Add(label4);
             Controls.Add(txFnac);
@@ -197,7 +201,7 @@
         private Label label3;
         private TextBox txEdad;
         private Label label4;
-        private Button button1;
+        private Button btn_Aceptar;
         private Button button2;
         private Label label5;
     }

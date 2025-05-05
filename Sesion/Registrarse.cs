@@ -13,6 +13,7 @@ using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 using System.Security.Cryptography;
+using System.Drawing.Drawing2D;
 
 
 namespace TFG_DavidGomez.Sesion
@@ -34,7 +35,20 @@ namespace TFG_DavidGomez.Sesion
         public Registrarse()
         {
             InitializeComponent();
+            RedondearBoton(btnGuardar,20);
+            RedondearBoton(BtnGuardarMoni,20);
             BtnGuardarMoni.Visible = false;
+        }
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+            btn.Region = new Region(path);
         }
 
 

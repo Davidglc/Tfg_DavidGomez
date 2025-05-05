@@ -52,7 +52,10 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.BackColor = Color.Red;
+            btnGuardar.BackColor = Color.DodgerBlue;
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.ForeColor = Color.White;
             btnGuardar.Location = new Point(94, 384);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(125, 55);
@@ -184,7 +187,10 @@
             // 
             // BtnGuardarMoni
             // 
-            BtnGuardarMoni.BackColor = Color.Red;
+            BtnGuardarMoni.BackColor = Color.DodgerBlue;
+            BtnGuardarMoni.FlatAppearance.BorderSize = 0;
+            BtnGuardarMoni.FlatStyle = FlatStyle.Flat;
+            BtnGuardarMoni.ForeColor = Color.White;
             BtnGuardarMoni.Location = new Point(94, 373);
             BtnGuardarMoni.Name = "BtnGuardarMoni";
             BtnGuardarMoni.Size = new Size(125, 55);
@@ -215,6 +221,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.LightGray;
             ClientSize = new Size(372, 450);
             Controls.Add(txDirec);
             Controls.Add(Dirección);
@@ -237,7 +244,7 @@
             MainMenuStrip = menuStrip1;
             Name = "DatosPersonales";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "DatosPersonales";
+            Text = "Datos Personales";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

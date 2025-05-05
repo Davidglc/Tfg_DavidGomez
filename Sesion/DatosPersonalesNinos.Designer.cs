@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DatosPersonalesNinos));
-            button2 = new Button();
+            btn_Aceptar = new Button();
             txEdad = new TextBox();
             label4 = new Label();
             txFnac = new TextBox();
@@ -43,16 +43,19 @@
             LbNinos = new ListBox();
             SuspendLayout();
             // 
-            // button2
+            // btn_Aceptar
             // 
-            button2.BackColor = Color.Red;
-            button2.Location = new Point(107, 303);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 37;
-            button2.Text = "Aceptar";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
+            btn_Aceptar.BackColor = Color.DodgerBlue;
+            btn_Aceptar.FlatAppearance.BorderSize = 0;
+            btn_Aceptar.FlatStyle = FlatStyle.Flat;
+            btn_Aceptar.ForeColor = Color.White;
+            btn_Aceptar.Location = new Point(107, 303);
+            btn_Aceptar.Name = "btn_Aceptar";
+            btn_Aceptar.Size = new Size(75, 23);
+            btn_Aceptar.TabIndex = 37;
+            btn_Aceptar.Text = "Aceptar";
+            btn_Aceptar.UseVisualStyleBackColor = false;
+            btn_Aceptar.Click += button2_Click;
             // 
             // txEdad
             // 
@@ -149,9 +152,10 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.LightGray;
             ClientSize = new Size(800, 450);
             Controls.Add(LbNinos);
-            Controls.Add(button2);
+            Controls.Add(btn_Aceptar);
             Controls.Add(txEdad);
             Controls.Add(label4);
             Controls.Add(txFnac);
@@ -165,7 +169,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "DatosPersonalesNinos";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "DatosPersonalesNinos";
+            Text = "Datos Personales Niños";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -174,7 +178,7 @@
 
         #endregion
 
-        private Button button2;
+        private Button btn_Aceptar;
         private TextBox txEdad;
         private Label label4;
         private TextBox txFnac;

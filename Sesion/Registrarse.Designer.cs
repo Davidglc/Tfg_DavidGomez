@@ -137,7 +137,10 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.BackColor = Color.Red;
+            btnGuardar.BackColor = Color.DodgerBlue;
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.ForeColor = Color.White;
             btnGuardar.Location = new Point(143, 374);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(125, 55);
@@ -165,7 +168,10 @@
             // 
             // BtnGuardarMoni
             // 
-            BtnGuardarMoni.BackColor = Color.Red;
+            BtnGuardarMoni.BackColor = Color.DodgerBlue;
+            BtnGuardarMoni.FlatAppearance.BorderSize = 0;
+            BtnGuardarMoni.FlatStyle = FlatStyle.Flat;
+            BtnGuardarMoni.ForeColor = Color.White;
             BtnGuardarMoni.Location = new Point(143, 389);
             BtnGuardarMoni.Name = "BtnGuardarMoni";
             BtnGuardarMoni.Size = new Size(125, 55);
@@ -196,6 +202,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.LightGray;
             ClientSize = new Size(466, 450);
             Controls.Add(TxDirec);
             Controls.Add(TxDireccion);

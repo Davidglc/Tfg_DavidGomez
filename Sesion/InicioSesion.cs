@@ -3,6 +3,7 @@ using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Adaptador;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 using TFG_DavidGomez.Sesion;
+using System.Drawing.Drawing2D;
 
 namespace TFG_DavidGomez
 {
@@ -21,6 +22,8 @@ namespace TFG_DavidGomez
         public InicioSesion()
         {
             InitializeComponent();
+            RedondearBoton(btnInicioSesion, 20);
+            RedondearBoton(btnRegistrarse, 20);
             this.FormClosed += CerrarAplicacion;
         }
 
@@ -35,17 +38,28 @@ namespace TFG_DavidGomez
             registroForm.Show();
         }
 
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+            btn.Region = new Region(path);
+        }
+
 
         /// <summary>
         /// Evento que se ejecuta al hacer clic en el botón "Iniciar Sesión".
         /// Valida las credenciales y redirige al formulario correspondiente según el rol del usuario.
         /// </summary>
         private void btnInicioSesion_Click(object sender, EventArgs e)
-        {
+         {
             string usuario = txUsuario.Text.Trim();
             string contraseña = TxContrasena.Text.Trim();
             MongoDBAdapter ma = new MongoDBAdapter();
-            
+
             var (accesoValido, idUsuario, rol) = ma.VerificarAccesoConRol(usuario, contraseña);
 
             if (accesoValido)
@@ -95,12 +109,14 @@ namespace TFG_DavidGomez
                     {
                         MessageBox.Show($"Error al cargar el formulario del monitor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }else if (rol == "Padre")
+                }
+                else if (rol == "Padre")
                 {
                     PadresForm padresForm = new PadresForm();
                     this.Hide();
                     padresForm.Show();
-                }else if (rol == "Admin")
+                }
+                else if (rol == "Admin")
                 {
 
                     // Obtener la actividad correspondiente al monitor por la fecha actual
@@ -133,7 +149,7 @@ namespace TFG_DavidGomez
                     this.Hide();
                     monitorForm.Show();
                 }
-               
+
             }
             else
             {
@@ -195,6 +211,14 @@ namespace TFG_DavidGomez
             Application.Exit();
         }
 
+        private void TxContrasena_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Evita el sonido al presionar Enter
+                btnInicioSesion.PerformClick(); // Ejecuta el botón
+            }
+        }
 
     }
 

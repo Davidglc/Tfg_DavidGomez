@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,9 @@ namespace TFG_DavidGomez
             InitializeComponent();
             CargarDatosNinos();
             CargarInscripciones();
+            RedondearBoton(btnApuntar, 20);
+            RedondearBoton(btn_VP, 20);
+            RedondearBoton(btn_DA, 20);
             //this.FormClosed += CerrarAplicacion;
         }
 
@@ -61,6 +65,16 @@ namespace TFG_DavidGomez
             CargarDatosNinos();
         }
 
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+            btn.Region = new Region(path);
+        }
 
         /// <summary>
         /// Agrega un niño a la lista de visualización en el ListBox.
