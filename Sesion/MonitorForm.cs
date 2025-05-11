@@ -112,10 +112,11 @@ namespace TFG_DavidGomez
             try
             {
                 // Obtener el ID del usuario desde la sesión
-                var id = ObjectId.Parse(SesionIniciada.IdUsuario);
+                // Obtener el ID del usuario desde la sesión
+                int id = int.Parse(SesionIniciada.IdUsuario);
 
                 // Crear una instancia de MongoDBAdapter
-                MongoDBAdapter ma = new MongoDBAdapter();
+                MariaDbAdapter ma = new MariaDbAdapter();
 
                 // Obtener el usuario desde la base de datos
                 UsuarioMonitor u = ma.ObtenerUsuarioPorIdMoni(id);

@@ -169,50 +169,50 @@ namespace TFG_DavidGomez.Sesion
         /// <summary>
         /// Carga los datos de los niños asociados al padre actual y los muestra en un ListBox.
         /// </summary>
-        public void CargarDatosNinos()
-        {
-            try
-            {
-                PadresForm pf = new PadresForm();
-                // Obtener el ID del padre desde la sesión iniciada
-                string idPadre = SesionIniciada.IdUsuario;
-                if (string.IsNullOrEmpty(idPadre))
-                {
-                    MessageBox.Show("No se encontró un padre asociado a la sesión.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+        //public void CargarDatosNinos()
+        //{
+        //    try
+        //    {
+        //        PadresForm pf = new PadresForm();
+        //        // Obtener el ID del padre desde la sesión iniciada
+        //        string idPadre = SesionIniciada.IdUsuario;
+        //        if (string.IsNullOrEmpty(idPadre))
+        //        {
+        //            MessageBox.Show("No se encontró un padre asociado a la sesión.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            return;
+        //        }
 
-                // Conectar a MongoDB y buscar los niños del padre
-                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
-                var ninosCollection = _database.GetCollection<BsonDocument>("Ninos");
+        //        // Conectar a MongoDB y buscar los niños del padre
+        //        IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
+        //        var ninosCollection = _database.GetCollection<BsonDocument>("Ninos");
 
-                // Filtrar por el ID del padre
-                var filtro = Builders<BsonDocument>.Filter.Eq("IdPadre", ObjectId.Parse(idPadre));
-                var ninos = ninosCollection.Find(filtro).ToList();
+        //        // Filtrar por el ID del padre
+        //        var filtro = Builders<BsonDocument>.Filter.Eq("IdPadre", ObjectId.Parse(idPadre));
+        //        var ninos = ninosCollection.Find(filtro).ToList();
 
-                // Limpiar el ListBox antes de agregar nuevos elementos
-                pf.LbNinos.Items.Clear();
+        //        // Limpiar el ListBox antes de agregar nuevos elementos
+        //        pf.LbNinos.Items.Clear();
 
-                // Verificar si hay niños asociados al padre
-                if (ninos.Count == 0)
-                {
-                    pf.LbNinos.Items.Add("No hay niños registrados.");
-                    return;
-                }
+        //        // Verificar si hay niños asociados al padre
+        //        if (ninos.Count == 0)
+        //        {
+        //            pf.LbNinos.Items.Add("No hay niños registrados.");
+        //            return;
+        //        }
 
-                // Agregar los datos de los niños al ListBox
-                foreach (var nino in ninos)
-                {
-                    // Crear una representación legible para mostrar en el ListBox
-                    string datosNino = $"Nombre: {nino["Nombre"]}, DNI: {nino["DNI"]}, Apellidos: {nino["Apellidos"]}, Fecha de nacimiento: {nino["FechaNacimiento"]:yyyy-MM-dd}, Edad: {nino["Edad"]}";
-                    pf.LbNinos.Items.Add(datosNino);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error al cargar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //        // Agregar los datos de los niños al ListBox
+        //        foreach (var nino in ninos)
+        //        {
+        //            // Crear una representación legible para mostrar en el ListBox
+        //            string datosNino = $"Nombre: {nino["Nombre"]}, DNI: {nino["DNI"]}, Apellidos: {nino["Apellidos"]}, Fecha de nacimiento: {nino["FechaNacimiento"]:yyyy-MM-dd}, Edad: {nino["Edad"]}";
+        //            pf.LbNinos.Items.Add(datosNino);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Ocurrió un error al cargar los datos de los niños: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         private void label5_Click(object sender, EventArgs e)
         {

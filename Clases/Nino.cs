@@ -12,49 +12,49 @@ namespace TFG_DavidGomez.Clases
         /// <summary>
         /// Identificador único del niño.
         /// Este campo es la clave primaria en la base de datos de MongoDB.
-        /// </summary>
-        [BsonId]
-        public ObjectId Id { get; set; }
+        ///// </summary>
+        //[BsonId]
+        public int Id { get; set; }
 
         /// <summary>
         /// Nombre del niño.
         /// </summary>
-        [BsonElement("Nombre")]
+        //[BsonElement("Nombre")]
         public string Nombre { get; set; }
 
         /// <summary>
         /// DNI del niño, utilizado para su identificación.
-        /// </summary>
-        [BsonElement("DNI")]
+        ///// </summary>
+        //[BsonElement("DNI")]
         public string DNI { get; set; }
 
         /// <summary>
         /// Apellidos del niño.
-        /// </summary>
-        [BsonElement("Apellidos")]
+        ///// </summary>
+        //[BsonElement("Apellidos")]
         public string Apellidos { get; set; }
 
         /// <summary>
         /// Fecha de nacimiento del niño.
         /// El atributo está marcado con la opción <see cref="BsonDateTimeOptions"/> para asegurar que se guarde correctamente la fecha con la zona horaria local.
-        /// </summary>
-        [BsonElement("FechaNacimiento")]
+        ///// </summary>
+        //[BsonElement("FechaNacimiento")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime FechaNacimiento { get; set; }
 
         /// <summary>
         /// Edad del niño, que se calcula en base a la fecha de nacimiento.
-        /// </summary>
-        [BsonElement("Edad")]
+        ///// </summary>
+        //[BsonElement("Edad")]
         public int Edad { get; set; }
 
         /// <summary>
         /// Identificador del padre del niño.
         /// Este campo es una referencia al objeto <see cref="Padre"/> que contiene la información del padre.
         /// </summary>
-        [BsonElement("IdPadre")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId IdPadre { get; set; }
+        //[BsonElement("IdPadre")]
+        //[BsonRepresentation(BsonType.ObjectId)]
+        public int IdPadre { get; set; }
 
         /// <summary>
         /// Constructor de la clase <see cref="Nino"/>. Inicializa un nuevo objeto de tipo Nino con los valores proporcionados.

@@ -28,60 +28,112 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            label1 = new Label();
+            btn_izq = new Button();
+            btn_drch = new Button();
+            menuStrip1 = new MenuStrip();
+            añadirNiñoToolStripMenuItem = new ToolStripMenuItem();
+            actividadesApuntadasToolStripMenuItem = new ToolStripMenuItem();
+            usuarioToolStripMenuItem = new ToolStripMenuItem();
+            editarDatosPersonalesToolStripMenuItem = new ToolStripMenuItem();
+            cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
+            PanelBotones = new FlowLayoutPanel();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // btn_izq
             // 
-            button1.BackColor = Color.Red;
-            button1.Location = new Point(200, 69);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 0;
-            button1.Text = "Monitor";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            btn_izq.Location = new Point(177, 448);
+            btn_izq.Name = "btn_izq";
+            btn_izq.Size = new Size(75, 23);
+            btn_izq.TabIndex = 1;
+            btn_izq.Text = "<----";
+            btn_izq.UseVisualStyleBackColor = true;
+            btn_izq.Click += btn_izq_Click;
             // 
-            // button2
+            // btn_drch
             // 
-            button2.BackColor = Color.Red;
-            button2.Location = new Point(41, 69);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 1;
-            button2.Text = "Padre";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
+            btn_drch.Location = new Point(429, 448);
+            btn_drch.Name = "btn_drch";
+            btn_drch.Size = new Size(75, 23);
+            btn_drch.TabIndex = 2;
+            btn_drch.Text = "---->";
+            btn_drch.UseVisualStyleBackColor = true;
+            btn_drch.Click += btn_drch_Click;
             // 
-            // label1
+            // menuStrip1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(91, 25);
-            label1.Name = "label1";
-            label1.Size = new Size(147, 15);
-            label1.TabIndex = 2;
-            label1.Text = "¿Como quieres registrarte?";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirNiñoToolStripMenuItem, actividadesApuntadasToolStripMenuItem, usuarioToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(779, 24);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // añadirNiñoToolStripMenuItem
+            // 
+            añadirNiñoToolStripMenuItem.Name = "añadirNiñoToolStripMenuItem";
+            añadirNiñoToolStripMenuItem.Size = new Size(83, 20);
+            añadirNiñoToolStripMenuItem.Text = "Añadir Niño";
+            añadirNiñoToolStripMenuItem.Click += añadirNiñoToolStripMenuItem_Click;
+            // 
+            // actividadesApuntadasToolStripMenuItem
+            // 
+            actividadesApuntadasToolStripMenuItem.Name = "actividadesApuntadasToolStripMenuItem";
+            actividadesApuntadasToolStripMenuItem.Size = new Size(140, 20);
+            actividadesApuntadasToolStripMenuItem.Text = "Actividades Apuntadas";
+            // 
+            // usuarioToolStripMenuItem
+            // 
+            usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { editarDatosPersonalesToolStripMenuItem, cerrarSesiónToolStripMenuItem });
+            usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
+            usuarioToolStripMenuItem.Size = new Size(59, 20);
+            usuarioToolStripMenuItem.Text = "Usuario";
+            // 
+            // editarDatosPersonalesToolStripMenuItem
+            // 
+            editarDatosPersonalesToolStripMenuItem.Name = "editarDatosPersonalesToolStripMenuItem";
+            editarDatosPersonalesToolStripMenuItem.Size = new Size(196, 22);
+            editarDatosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
+            // 
+            // cerrarSesiónToolStripMenuItem
+            // 
+            cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
+            cerrarSesiónToolStripMenuItem.Size = new Size(196, 22);
+            cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
+            // 
+            // PanelBotones
+            // 
+            PanelBotones.Location = new Point(20, 37);
+            PanelBotones.Name = "PanelBotones";
+            PanelBotones.Size = new Size(731, 371);
+            PanelBotones.TabIndex = 4;
             // 
             // Eleccion
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(341, 153);
-            Controls.Add(label1);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            ClientSize = new Size(779, 505);
+            Controls.Add(PanelBotones);
+            Controls.Add(menuStrip1);
+            Controls.Add(btn_drch);
+            Controls.Add(btn_izq);
             Name = "Eleccion";
-            Text = "Eleccion";
+            Text = "Actividades del Mes";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Button button1;
-        private Button button2;
-        private Label label1;
+        private Button btn_izq;
+        private Button btn_drch;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem añadirNiñoToolStripMenuItem;
+        private ToolStripMenuItem actividadesApuntadasToolStripMenuItem;
+        private ToolStripMenuItem usuarioToolStripMenuItem;
+        private ToolStripMenuItem editarDatosPersonalesToolStripMenuItem;
+        private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
+        private FlowLayoutPanel PanelBotones;
     }
 }

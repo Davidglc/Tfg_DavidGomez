@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace TFG_DavidGomez.Clases
@@ -8,89 +6,69 @@ namespace TFG_DavidGomez.Clases
     public class Actividades
     {
         /// <summary>
-        /// Identificador único de la actividad.
+        /// Identificador único de la actividad (clave primaria).
         /// </summary>
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Nombre de la actividad.
         /// </summary>
-        [BsonElement("Nombre")]
         public string Nombre { get; set; }
 
         /// <summary>
         /// Descripción de la actividad.
         /// </summary>
-        [BsonElement("Descripcion")]
         public string Descripcion { get; set; }
 
         /// <summary>
-        /// Fecha y hora en la que se llevará a cabo la actividad.
+        /// Lista de materiales representada como una cadena de texto separada por comas.
         /// </summary>
-        [BsonElement("FechaHora")]
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime FechaHora { get; set; }
-
-        /// <summary>
-        /// Duración de la actividad en minutos.
-        /// </summary>
-        [BsonElement("Duracion")]
-        public int Duracion { get; set; }
-
-        /// <summary>
-        /// Identificador del monitor encargado de la actividad.
-        /// </summary>
-        [BsonElement("IdMonitor")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId IdMonitor { get; set; }
-
-        /// <summary>
-        /// Lista de materiales necesarios para la actividad.
-        /// </summary>
-        [BsonElement("Materiales")]
         public List<string> Materiales { get; set; }
 
+
         /// <summary>
-        /// Constructor de la clase Actividades.
+        /// Fecha de realización de la actividad.
         /// </summary>
-        public Actividades(
-            string nombre,
-            string descripcion,
-            DateTime fechaHora,
-            int duracion,
-            int plazasMaximas,
-            int plazasOcupadas,
-            List<string> materiales)
+        public DateTime Fecha { get; set; }
+
+        /// <summary>
+        /// Imagen asociada a la actividad (almacenada como BLOB en la BD).
+        /// </summary>
+        public byte[] Imagen { get; set; }
+
+        /// <summary>
+        /// ID del usuario (monitor o admin) que creó la actividad.
+        /// </summary>
+        public int? IdUsuario { get; set; }
+
+        /// <summary>
+        /// Constructor vacío.
+        /// </summary>
+        public Actividades() { }
+
+        /// <summary>
+        /// Constructor completo.
+        /// </summary>
+        public Actividades(string nombre, string descripcion, List<string> materiales, DateTime fecha, byte[] imagen, int? idUsuario)
         {
             Nombre = nombre;
             Descripcion = descripcion;
-            FechaHora = fechaHora;
-            Duracion = duracion;
             Materiales = materiales;
+            Fecha = fecha;
+            Imagen = imagen;
+            IdUsuario = idUsuario;
         }
 
-        /// <summary>
-        /// Representación en cadena de la actividad.
-        /// </summary>
         public override string ToString()
         {
-            return $"Actividad: {Nombre}, Descripcion: {Descripcion}, FechaHora: {FechaHora}, " +
-                   $"Duracion: {Duracion} min, IdMonitor: {IdMonitor}";
+            return $"Actividad: {Nombre}, Fecha: {Fecha.ToShortDateString()}, Creador ID: {IdUsuario}";
         }
 
-        /// <summary>
-        /// Verifica si dos objetos de tipo Actividades son iguales.
-        /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is Actividades actividad && Id.Equals(actividad.Id);
+            return obj is Actividades actividad && Id == actividad.Id;
         }
 
-        /// <summary>
-        /// Genera un código hash para la actividad.
-        /// </summary>
         public override int GetHashCode()
         {
             return Id.GetHashCode();

@@ -48,6 +48,10 @@
             "MongoDB.Driver": {
               "target": "Package",
               "version": "[2.19.0, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.3.0, )"
             }
           },
           "imports": [

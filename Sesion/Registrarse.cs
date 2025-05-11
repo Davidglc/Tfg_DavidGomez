@@ -14,6 +14,7 @@ using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 using System.Security.Cryptography;
 using System.Drawing.Drawing2D;
+using MySql.Data.MySqlClient;
 
 
 namespace TFG_DavidGomez.Sesion
@@ -71,69 +72,68 @@ namespace TFG_DavidGomez.Sesion
                 string Correo = txCorreo.Text.Trim();
                 string direccion = TxDirec.Text.Trim();
 
-                // Validar que todos los campos estén llenos
-                if (string.IsNullOrEmpty(nombre) ||
-                    string.IsNullOrEmpty(apellido) ||
-                    string.IsNullOrEmpty(DNI) ||
-                    string.IsNullOrEmpty(contraseña) ||
-                    string.IsNullOrEmpty(Telf) ||
-                    string.IsNullOrEmpty(Correo) ||
-                    string.IsNullOrEmpty(direccion))
+                // Validar campos obligatorios
+                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido) || string.IsNullOrEmpty(DNI) ||
+                    string.IsNullOrEmpty(contraseña) || string.IsNullOrEmpty(Telf) || string.IsNullOrEmpty(Correo) || string.IsNullOrEmpty(direccion))
                 {
                     MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Validar formato del teléfono (solo números)
+                // Validar formato de teléfono
                 if (!long.TryParse(Telf, out _))
                 {
                     MessageBox.Show("El teléfono debe contener solo números.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Validar formato del DNI (8 números seguidos de una letra)
+                // Validar formato de DNI
                 if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
                 {
                     MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Conectar con la base de datos
-                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
-                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
-
-                // Validar si ya existe un usuario con el mismo DNI
-                var filtroDNI = Builders<BsonDocument>.Filter.Eq("DNI", DNI);
-                var usuarioExistente = usuariosCollection.Find(filtroDNI).FirstOrDefault();
-
-                if (usuarioExistente != null)
-                {
-                    MessageBox.Show("Ya existe un usuario registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Encriptar la contraseña con SHA-256
+                // Encriptar la contraseña
                 string contraseñaEncriptada = EncriptarSHA256(contraseña);
 
-                // Crear un documento para insertar en MongoDB
-                var nuevoUsuario = new BsonDocument
+                // Conexión a MariaDB
+                ConMDB con = new ConMDB();
+                con.AbrirConexion();
+
+                // Verificar si el usuario ya existe
+                string queryVerificar = "SELECT COUNT(*) FROM Usuarios WHERE dni = @dni";
+                using (var cmdVerificar = new MySqlCommand(queryVerificar, con.ObtenerConexion()))
                 {
-                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                    { "Nombre", nombre },
-                    { "DNI", DNI },
-                    { "Apellidos", apellido },
-                    { "Contrasena", contraseñaEncriptada }, // Guardar la contraseña encriptada
-                    { "Rol", "Padre" },
-                    { "Telefono", Telf },
-                    { "Correo", Correo },
-                    { "Direccion", direccion },
-                    { "FechaRegistro", DateTime.Now }
-                };
+                    cmdVerificar.Parameters.AddWithValue("@dni", DNI);
+                    int existe = Convert.ToInt32(cmdVerificar.ExecuteScalar());
 
-                // Insertar el documento en la base de datos
-                usuariosCollection.InsertOne(nuevoUsuario);
+                    if (existe > 0)
+                    {
+                        MessageBox.Show("Ya existe un usuario registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        con.CerrarConexion();
+                        return;
+                    }
+                }
 
-                // Mostrar mensaje de éxito
+                // Insertar usuario nuevo
+                string queryInsert = @"INSERT INTO Usuarios (nombre, apellidos, dni, contrasena, tipo, telefono, correo, direccion)
+                               VALUES (@nombre, @apellidos, @dni, @contrasena, 'padre', @telefono, @correo, @direccion)";
+                using (var cmdInsert = new MySqlCommand(queryInsert, con.ObtenerConexion()))
+                {
+                    cmdInsert.Parameters.AddWithValue("@nombre", nombre);
+                    cmdInsert.Parameters.AddWithValue("@apellidos", apellido);
+                    cmdInsert.Parameters.AddWithValue("@dni", DNI);
+                    cmdInsert.Parameters.AddWithValue("@contrasena", contraseñaEncriptada);
+                    cmdInsert.Parameters.AddWithValue("@telefono", Telf);
+                    cmdInsert.Parameters.AddWithValue("@correo", Correo);
+                    cmdInsert.Parameters.AddWithValue("@direccion", direccion);
+
+                    cmdInsert.ExecuteNonQuery();
+                }
+
+                con.CerrarConexion();
+
                 MessageBox.Show("Usuario registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Limpiar los campos del formulario
@@ -145,15 +145,14 @@ namespace TFG_DavidGomez.Sesion
                 txCorreo.Clear();
                 TxDirec.Clear();
 
-                // Cerrar el formulario si es necesario
                 this.Close();
             }
             catch (Exception ex)
             {
-                // Manejar errores
                 MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         /// <summary>
         /// Verifica si el objeto actual es una instancia de la clase <see cref="Registrarse"/>.
@@ -193,71 +192,67 @@ namespace TFG_DavidGomez.Sesion
                 string Correo = txCorreo.Text.Trim();
                 string direccion = TxDirec.Text.Trim();
 
-                // Validar que todos los campos estén llenos
-                if (string.IsNullOrEmpty(nombre) ||
-                    string.IsNullOrEmpty(apellido) ||
-                    string.IsNullOrEmpty(DNI) ||
-                    string.IsNullOrEmpty(contraseña) ||
-                    string.IsNullOrEmpty(Telf) ||
-                    string.IsNullOrEmpty(Correo) ||
-                    string.IsNullOrEmpty(direccion))
+                // Validar campos obligatorios
+                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido) || string.IsNullOrEmpty(DNI) ||
+                    string.IsNullOrEmpty(contraseña) || string.IsNullOrEmpty(Telf) || string.IsNullOrEmpty(Correo) || string.IsNullOrEmpty(direccion))
                 {
                     MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Validar formato del teléfono (solo números)
                 if (!long.TryParse(Telf, out _))
                 {
                     MessageBox.Show("El teléfono debe contener solo números.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Validar formato del DNI (solo una letra al final)
                 if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
                 {
                     MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Conectar con la base de datos
-                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
-                var usuariosCollection = _database.GetCollection<BsonDocument>("Usuarios");
-
-                // Validar si ya existe un usuario con el mismo DNI
-                var filtroDNI = Builders<BsonDocument>.Filter.Eq("DNI", DNI);
-                var usuarioExistente = usuariosCollection.Find(filtroDNI).FirstOrDefault();
-
-                if (usuarioExistente != null)
-                {
-                    MessageBox.Show("Ya existe un usuario registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 string contraseñaEncriptada = EncriptarSHA256(contraseña);
 
-                // Crear un documento para insertar en MongoDB
-                var nuevoUsuario = new BsonDocument
+                ConMDB con = new ConMDB();
+                con.AbrirConexion();
+
+                // Verificar si ya existe el usuario con el mismo DNI
+                string queryVerificar = "SELECT COUNT(*) FROM Usuarios WHERE dni = @dni";
+                using (var cmdVerificar = new MySqlCommand(queryVerificar, con.ObtenerConexion()))
                 {
-                    { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                    { "Nombre", nombre },
-                    { "DNI", DNI },
-                    { "Apellidos", apellido },
-                    { "Contrasena", contraseñaEncriptada }, // Nota: Idealmente, la contraseña debe ser cifrada
-                    { "Rol", "Monitor" },
-                    { "Telefono", Telf },
-                    { "Correo", Correo },
-                    { "Direccion", direccion },
-                    { "FechaRegistro", DateTime.Now }
-                };
+                    cmdVerificar.Parameters.AddWithValue("@dni", DNI);
+                    int existe = Convert.ToInt32(cmdVerificar.ExecuteScalar());
 
-                // Insertar el documento en la base de datos
-                usuariosCollection.InsertOne(nuevoUsuario);
+                    if (existe > 0)
+                    {
+                        MessageBox.Show("Ya existe un usuario registrado con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        con.CerrarConexion();
+                        return;
+                    }
+                }
 
-                // Mostrar mensaje de éxito
-                MessageBox.Show("Usuario registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Insertar nuevo monitor
+                string queryInsert = @"INSERT INTO Usuarios (nombre, apellidos, dni, contrasena, tipo, telefono, correo, direccion)
+                               VALUES (@nombre, @apellidos, @dni, @contrasena, 'monitor', @telefono, @correo, @direccion)";
+                using (var cmdInsert = new MySqlCommand(queryInsert, con.ObtenerConexion()))
+                {
+                    cmdInsert.Parameters.AddWithValue("@nombre", nombre);
+                    cmdInsert.Parameters.AddWithValue("@apellidos", apellido);
+                    cmdInsert.Parameters.AddWithValue("@dni", DNI);
+                    cmdInsert.Parameters.AddWithValue("@contrasena", contraseñaEncriptada);
+                    cmdInsert.Parameters.AddWithValue("@telefono", Telf);
+                    cmdInsert.Parameters.AddWithValue("@correo", Correo);
+                    cmdInsert.Parameters.AddWithValue("@direccion", direccion);
 
-                // Limpiar los campos del formulario
+                    cmdInsert.ExecuteNonQuery();
+                }
+
+                con.CerrarConexion();
+
+                MessageBox.Show("Monitor registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Limpiar los campos
                 txUsuario.Clear();
                 txDNI.Clear();
                 txApellidos.Clear();
@@ -266,15 +261,14 @@ namespace TFG_DavidGomez.Sesion
                 txCorreo.Clear();
                 TxDirec.Clear();
 
-                // Cerrar el formulario si es necesario
                 this.Close();
             }
             catch (Exception ex)
             {
-                // Manejar errores
-                MessageBox.Show($"Ocurrió un error al registrar el usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al registrar el monitor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         // Método para encriptar con SHA-256
         private string EncriptarSHA256(string input)

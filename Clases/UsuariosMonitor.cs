@@ -12,63 +12,63 @@ namespace TFG_DavidGomez.Clases
         /// <summary>
         /// Identificador único del usuario monitor en la base de datos.
         /// </summary>
-        [BsonId]
-        public ObjectId Id { get; set; }
+
+        public int Id { get; set; }
 
         /// <summary>
         /// Nombre del usuario monitor.
         /// </summary>
-        [BsonElement("nombre")]
+
         public string Nombre { get; set; }
 
         /// <summary>
         /// Apellidos del usuario monitor.
         /// </summary>
-        [BsonElement("apellidos")]
+
         public string Apellidos { get; set; }
 
         /// <summary>
         /// DNI del usuario monitor.
         /// </summary>
-        [BsonElement("dni")]
+
         public string DNI { get; set; }
 
         /// <summary>
         /// Correo electrónico del usuario monitor.
         /// </summary>
-        [BsonElement("correo")]
+
         public string Correo { get; set; }
 
         /// <summary>
         /// Contraseña del usuario monitor.
         /// </summary>
-        [BsonElement("contrasena")]
+
         public string Contrasena { get; set; }
 
         /// <summary>
         /// Rol del usuario monitor (Ej. "Monitor").
         /// </summary>
-        [BsonElement("rol")]
+
         public string Rol { get; set; }
 
         /// <summary>
         /// Fecha en la que se registró el usuario monitor en el sistema.
         /// </summary>
-        [BsonElement("fecha_registro")]
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+
         public DateTime FechaRegistro { get; set; }
 
         /// <summary>
         /// Teléfono del usuario monitor.
         /// </summary>
-        [BsonElement("telefono")]
+ 
         public string Telefono { get; set; }
 
         /// <summary>
         /// Dirección del usuario monitor.
         /// </summary>
-        [BsonElement("direccion")]
+
         public string Direccion { get; set; }
+
 
         /// <summary>
         /// Constructor para crear un nuevo usuario monitor.

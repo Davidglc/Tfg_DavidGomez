@@ -106,9 +106,9 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                ObjectId idPadre = ObjectId.Parse(idPadreTexto);
+                int idPadre = int.Parse(idPadreTexto);
 
-                MongoDBAdapter ma = new MongoDBAdapter();
+                MariaDbAdapter ma = new MariaDbAdapter();
                 List<Nino> ninos = ma.CargarDatosNinoPorPadre(idPadre);
 
                 if (ninos == null || ninos.Count == 0)
@@ -199,10 +199,10 @@ namespace TFG_DavidGomez.Sesion
             try
             {
                 // Obtener el ID del usuario desde la sesión
-                var idUsuario = ObjectId.Parse(SesionIniciada.IdUsuario);
+                int idUsuario = int.Parse(SesionIniciada.IdUsuario);
 
                 // Crear una instancia de MongoDBAdapter
-                MongoDBAdapter ma = new MongoDBAdapter();
+                MariaDbAdapter ma = new MariaDbAdapter();
 
                 // Verificar si el usuario existe en la base de datos
                 Usuario usuarioExistente = ma.ObtenerUsuarioPorId(idUsuario);
@@ -259,10 +259,10 @@ namespace TFG_DavidGomez.Sesion
             try
             {
                 // Obtener el ID del usuario desde la sesión
-                var idUsuario = ObjectId.Parse(SesionIniciada.IdUsuario);
+                int idUsuario = int.Parse(SesionIniciada.IdUsuario);
 
                 // Crear una instancia de MongoDBAdapter
-                MongoDBAdapter ma = new MongoDBAdapter();
+                MariaDbAdapter ma = new MariaDbAdapter();
 
                 // Verificar si el usuario existe en la base de datos
                 UsuarioMonitor usuarioExistente = ma.ObtenerUsuarioPorIdMoni(idUsuario);
@@ -327,10 +327,10 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                ObjectId idPadre = ObjectId.Parse(idPadreTexto);
+                int idPadre = int.Parse(idPadreTexto);
 
                 // Instancia de MongoDBAdapter para cargar los datos
-                MongoDBAdapter ma = new MongoDBAdapter();
+                MariaDbAdapter ma = new MariaDbAdapter();
                 List<Nino> ninos = ma.CargarDatosNinoPorPadre(idPadre);
 
 
