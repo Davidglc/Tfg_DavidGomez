@@ -152,6 +152,11 @@ namespace TFG_DavidGomez
             registrarse.ShowDialog();
         }
 
+        private void modificarActividadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
         //private void CerrarAplicacion(object sender, FormClosedEventArgs e)
         //{
         //    Application.Exit();

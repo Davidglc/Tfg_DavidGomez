@@ -54,7 +54,8 @@ namespace TFG_DavidGomez
         /// Evento para añadir un nuevo niño desde el formulario RegisNino.
         /// Actualiza la lista de niños después de la operación.
         /// </summary>
-        //private void añadirNiñoToolStripMenuItem_Click(object sender, EventArgs e)
+        //private void añadirNiñoToolStripMenuItem_Click
+        //(object sender, EventArgs e)
         //{
         //    RegisNino formAnadirNino = new RegisNino();
         //    formAnadirNino.FormClosed += FormAnadirNino_FormClosed;
@@ -108,39 +109,39 @@ namespace TFG_DavidGomez
 
 
 
-        /// <summary>
-        /// Abre un formulario para editar los datos personales del usuario actual.
-        /// </summary>
+        ///// <summary>
+        ///// Abre un formulario para editar los datos personales del usuario actual.
+        ///// </summary>
 
-        private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Obtener el ID del usuario desde la sesión
-                int id = int.Parse(SesionIniciada.IdUsuario);
+        //private void editarDatosPersonalesToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        // Obtener el ID del usuario desde la sesión
+        //        int id = int.Parse(SesionIniciada.IdUsuario);
 
-                // Crear una instancia de MongoDBAdapter
-                MariaDbAdapter ma = new MariaDbAdapter();
+        //        // Crear una instancia de MongoDBAdapter
+        //        MariaDbAdapter ma = new MariaDbAdapter();
 
-                // Obtener el usuario desde la base de datos
-                Usuario u = ma.ObtenerUsuarioPorId(id);
+        //        // Obtener el usuario desde la base de datos
+        //        Usuario u = ma.ObtenerUsuarioPorId(id);
 
-                // Validar si el usuario fue encontrado
-                if (u == null)
-                {
-                    MessageBox.Show("No se encontró información para este usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+        //        // Validar si el usuario fue encontrado
+        //        if (u == null)
+        //        {
+        //            MessageBox.Show("No se encontró información para este usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            return;
+        //        }
 
-                // Mostrar los datos personales del usuario
-                DatosPersonales dp = new DatosPersonales(u);
-                dp.VerificarInstancia2(u);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error al cargar los datos personales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //        // Mostrar los datos personales del usuario
+        //        DatosPersonales dp = new DatosPersonales(u);
+        //        dp.VerificarInstancia2(u);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Ocurrió un error al cargar los datos personales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         private void btn_DA_Click(object sender, EventArgs e)
         {
@@ -367,15 +368,8 @@ namespace TFG_DavidGomez
             inicioSesion.ShowDialog();
         }
 
-        private void actividadesApuntadasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        private void añadirNiñoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
 
         /// <summary>
         /// Desapunta a un niño seleccionado de una actividad específica.

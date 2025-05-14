@@ -386,7 +386,6 @@ namespace TFG_DavidGomez.Clases.Adaptador
                                 Correo = reader.GetString("correo"),
                                 Contrasena = reader.GetString("contrasena"),
                                 Rol = reader.GetString("tipo"),
-                                FechaRegistro = reader.GetDateTime("fecha_registro"),
                                 Telefono = reader.IsDBNull(reader.GetOrdinal("telefono")) ? "" : reader.GetString("telefono"),
                                 Direccion = reader.IsDBNull(reader.GetOrdinal("direccion")) ? "" : reader.GetString("direccion")
                             };
@@ -554,9 +553,9 @@ namespace TFG_DavidGomez.Clases.Adaptador
 
             try
             {
-                using (var connection = con.ObtenerConexion())
+                using (MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=ludotecas;User ID=ludotecas;Password=org;"))
                 {
-                    con.AbrirConexion();
+                    connection.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
@@ -582,8 +581,6 @@ namespace TFG_DavidGomez.Clases.Adaptador
                             }
                         }
                     }
-
-                    con.CerrarConexion();
                 }
             }
             catch (Exception ex)
@@ -593,6 +590,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
 
             return actividades;
         }
+
 
 
     }

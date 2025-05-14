@@ -144,4 +144,4 @@ D:\TFG_Bueno2\Tfg_DavidGomez\bin\Debug\net8.0-windows\runtimes\win-x64\native\kr
 D:\TFG_Bueno2\Tfg_DavidGomez\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 D:\TFG_Bueno2\Tfg_DavidGomez\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 D:\TFG_Bueno2\Tfg_DavidGomez\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-D:\TFG_Bueno2\Tfg_DavidGomez\obj\Debug\net8.0-windows\TFG_DavidGomez.Sesion.Actvidad.resources
+D:\TFG_Bueno2\Tfg_DavidGomez\obj\Debug\net8.0-windows\TFG_DavidGomez.Sesion.Actividad.resources

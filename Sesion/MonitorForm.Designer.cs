@@ -34,6 +34,7 @@
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
+            modificarActividadToolStripMenuItem = new ToolStripMenuItem();
             lbFecha = new Label();
             LbFecha2 = new Label();
             LAtividad = new Label();
@@ -47,7 +48,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, usuarioToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, usuarioToolStripMenuItem, modificarActividadToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -82,6 +83,14 @@
             cerrarSesionToolStripMenuItem.Size = new Size(196, 22);
             cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             cerrarSesionToolStripMenuItem.Click += cerrarSesionToolStripMenuItem_Click;
+            // 
+            // modificarActividadToolStripMenuItem
+            // 
+            modificarActividadToolStripMenuItem.Name = "modificarActividadToolStripMenuItem";
+            modificarActividadToolStripMenuItem.Size = new Size(114, 20);
+            modificarActividadToolStripMenuItem.Text = "Agregar Actividad";
+            modificarActividadToolStripMenuItem.Visible = false;
+            modificarActividadToolStripMenuItem.Click += modificarActividadToolStripMenuItem_Click;
             // 
             // lbFecha
             // 
@@ -176,6 +185,7 @@
             Name = "MonitorForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MonitorForm";
+            WindowState = FormWindowState.Maximized;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -197,5 +207,6 @@
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem datosPersonalesToolStripMenuItem;
         private ToolStripMenuItem cerrarSesionToolStripMenuItem;
+        private ToolStripMenuItem modificarActividadToolStripMenuItem;
     }
 }

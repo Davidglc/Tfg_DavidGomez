@@ -245,6 +245,7 @@
             Name = "DatosPersonales";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Datos Personales";
+            WindowState = FormWindowState.Maximized;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

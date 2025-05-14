@@ -40,11 +40,13 @@
             label2 = new Label();
             txUsuario = new TextBox();
             lblUsuario = new Label();
-            LbNinos = new ListBox();
+            dgvNinos = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvNinos).BeginInit();
             SuspendLayout();
             // 
             // btn_Aceptar
             // 
+            btn_Aceptar.Anchor = AnchorStyles.None;
             btn_Aceptar.BackColor = Color.DodgerBlue;
             btn_Aceptar.FlatAppearance.BorderSize = 0;
             btn_Aceptar.FlatStyle = FlatStyle.Flat;
@@ -59,6 +61,7 @@
             // 
             // txEdad
             // 
+            txEdad.Anchor = AnchorStyles.None;
             txEdad.Location = new Point(11, 258);
             txEdad.Name = "txEdad";
             txEdad.Size = new Size(266, 23);
@@ -66,6 +69,7 @@
             // 
             // label4
             // 
+            label4.Anchor = AnchorStyles.None;
             label4.AutoSize = true;
             label4.Location = new Point(11, 240);
             label4.Name = "label4";
@@ -75,6 +79,7 @@
             // 
             // txFnac
             // 
+            txFnac.Anchor = AnchorStyles.None;
             txFnac.Location = new Point(11, 206);
             txFnac.Name = "txFnac";
             txFnac.Size = new Size(266, 23);
@@ -82,6 +87,7 @@
             // 
             // label3
             // 
+            label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Location = new Point(11, 188);
             label3.Name = "label3";
@@ -91,15 +97,17 @@
             // 
             // txApellidos
             // 
-            txApellidos.Location = new Point(12, 107);
+            txApellidos.Anchor = AnchorStyles.None;
+            txApellidos.Location = new Point(12, 91);
             txApellidos.Name = "txApellidos";
             txApellidos.Size = new Size(266, 23);
             txApellidos.TabIndex = 32;
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
-            label1.Location = new Point(11, 133);
+            label1.Location = new Point(12, 73);
             label1.Name = "label1";
             label1.Size = new Size(56, 15);
             label1.TabIndex = 31;
@@ -107,15 +115,17 @@
             // 
             // txDNI
             // 
-            txDNI.Location = new Point(12, 151);
+            txDNI.Anchor = AnchorStyles.None;
+            txDNI.Location = new Point(11, 150);
             txDNI.Name = "txDNI";
             txDNI.Size = new Size(266, 23);
             txDNI.TabIndex = 30;
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
-            label2.Location = new Point(11, 80);
+            label2.Location = new Point(11, 127);
             label2.Name = "label2";
             label2.Size = new Size(27, 15);
             label2.TabIndex = 29;
@@ -123,13 +133,15 @@
             // 
             // txUsuario
             // 
-            txUsuario.Location = new Point(11, 47);
+            txUsuario.Anchor = AnchorStyles.None;
+            txUsuario.Location = new Point(12, 47);
             txUsuario.Name = "txUsuario";
             txUsuario.Size = new Size(266, 23);
             txUsuario.TabIndex = 28;
             // 
             // lblUsuario
             // 
+            lblUsuario.Anchor = AnchorStyles.None;
             lblUsuario.AutoSize = true;
             lblUsuario.Location = new Point(11, 29);
             lblUsuario.Name = "lblUsuario";
@@ -137,15 +149,15 @@
             lblUsuario.TabIndex = 27;
             lblUsuario.Text = "Nombre";
             // 
-            // LbNinos
+            // dgvNinos
             // 
-            LbNinos.FormattingEnabled = true;
-            LbNinos.ItemHeight = 15;
-            LbNinos.Location = new Point(295, 29);
-            LbNinos.Name = "LbNinos";
-            LbNinos.Size = new Size(494, 274);
-            LbNinos.TabIndex = 38;
-            LbNinos.DoubleClick += LbNinos_DoubleClick;
+            dgvNinos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            dgvNinos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvNinos.Location = new Point(306, 31);
+            dgvNinos.Name = "dgvNinos";
+            dgvNinos.Size = new Size(482, 96);
+            dgvNinos.TabIndex = 38;
+            dgvNinos.CellClick += dgvNinos_CellClick;
             // 
             // DatosPersonalesNinos
             // 
@@ -154,7 +166,7 @@
             AutoSize = true;
             BackColor = Color.LightGray;
             ClientSize = new Size(800, 450);
-            Controls.Add(LbNinos);
+            Controls.Add(dgvNinos);
             Controls.Add(btn_Aceptar);
             Controls.Add(txEdad);
             Controls.Add(label4);
@@ -170,6 +182,8 @@
             Name = "DatosPersonalesNinos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Datos Personales Niños";
+            WindowState = FormWindowState.Maximized;
+            ((System.ComponentModel.ISupportInitialize)dgvNinos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -189,7 +203,6 @@
         private Label label2;
         private TextBox txUsuario;
         private Label lblUsuario;
-        public ListBox LbNinos;
-
+        private DataGridView dgvNinos;
     }
 }

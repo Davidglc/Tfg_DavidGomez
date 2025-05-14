@@ -11,10 +11,11 @@ namespace TFG_DavidGomez.Clases.Conexion
     internal class ConMDB
     {
         private MySqlConnection conexion;
+        string cadenaConexion = "Server=localhost;Port=3306;Database=ludotecas;User ID=ludotecas;Password=org;";
 
         public ConMDB()
         {
-            string cadenaConexion = "Server=localhost;Port=3306;Database=ludotecas;User ID=ludotecas;Password=org;";
+            
             conexion = new MySqlConnection(cadenaConexion);
         }
 

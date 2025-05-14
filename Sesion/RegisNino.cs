@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,13 +75,6 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                // Validar formato del DNI (solo una letra al final)
-                if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
-                {
-                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 // Validar edad
                 if (!int.TryParse(txEdad.Text.Trim(), out edad))
                 {
@@ -89,77 +83,72 @@ namespace TFG_DavidGomez.Sesion
                 }
 
                 // Validar campos requeridos
-                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(apellidos))
+                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellidos))
                 {
-                    MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Por favor, complete los campos requeridos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Buscar si el niño ya existe en la base de datos
-                IMongoDatabase _database = ConBD2.ObtenerConexionActiva();
-                var ninosCollection = _database.GetCollection<BsonDocument>("Ninos");
-
-                var filtroExistente = Builders<BsonDocument>.Filter.Eq("DNI", dni);
-                var ninoExistente = ninosCollection.Find(filtroExistente).FirstOrDefault();
-
-                if (ninoExistente != null)
+                // Validar formato del DNI si se proporciona
+                if (!string.IsNullOrWhiteSpace(dni) && !System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
                 {
-                    MessageBox.Show("El niño ya existe en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Crear un BsonDocument para el niño
-                var nuevoNino = new BsonDocument
+                // Obtener ID del padre desde la sesión
+                if (!int.TryParse(SesionIniciada.IdUsuario, out int idPadre))
+                {
+                    MessageBox.Show("No se encontró un padre válido para asociar al niño.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                ConMDB conexion = new ConMDB();
+                conexion.AbrirConexion();
+
+                // Verificar si ya existe un niño con el mismo DNI (solo si no es nulo)
+                if (!string.IsNullOrEmpty(dni))
+                {
+                    string checkQuery = "SELECT COUNT(*) FROM Ninos WHERE dni = @dni";
+                    using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conexion.ObtenerConexion()))
                     {
-                        { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                        { "Nombre", nombre },
-                        { "DNI", dni },
-                        { "Apellidos", apellidos },
-                        { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
-                        { "Edad", edad }
-                    };
-
-                // Buscar al padre en la base de datos
-                string idPadre = SesionIniciada.IdUsuario; // Implementa este método para obtener el ID del padre actual
-                if (string.IsNullOrEmpty(idPadre))
-                {
-                    MessageBox.Show("No se encontró al padre asociado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                        checkCmd.Parameters.AddWithValue("@dni", dni);
+                        int existe = Convert.ToInt32(checkCmd.ExecuteScalar());
+                        if (existe > 0)
+                        {
+                            MessageBox.Show("Ya existe un niño con el mismo DNI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            conexion.CerrarConexion();
+                            return;
+                        }
+                    }
                 }
 
-                var padresCollection = _database.GetCollection<BsonDocument>("Usuarios");
+                // Insertar el nuevo niño en la tabla Ninos
+                string insertQuery = "INSERT INTO Ninos (nombre, apellidos, fecha_nacimiento, dni, edad, id_padre) VALUES (@nombre, @apellidos, @fechaNacimiento, @dni, @edad, @idPadre)";
+                using (MySqlCommand insertCmd = new MySqlCommand(insertQuery, conexion.ObtenerConexion()))
+                {
+                    insertCmd.Parameters.AddWithValue("@nombre", nombre);
+                    insertCmd.Parameters.AddWithValue("@apellidos", apellidos);
+                    insertCmd.Parameters.AddWithValue("@fechaNacimiento", fechaNacimiento);
+                    insertCmd.Parameters.AddWithValue("@dni", string.IsNullOrEmpty(dni) ? (object)DBNull.Value : dni);
+                    insertCmd.Parameters.AddWithValue("@edad", edad);
+                    insertCmd.Parameters.AddWithValue("@idPadre", idPadre);
 
-                // Actualizar al padre añadiendo el niño a su lista de hijos
-                var filtroPadre = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(idPadre));
-                var actualizacion = Builders<BsonDocument>.Update.Push("Hijos", nuevoNino);
-                padresCollection.UpdateOne(filtroPadre, actualizacion);
+                    insertCmd.ExecuteNonQuery();
+                }
 
-                // Añadir el niño a la colección "Ninos"
-                var nuevoNino2 = new BsonDocument
-                    {
-                        { "_id", ObjectId.GenerateNewId() }, // Generar un nuevo ObjectId
-                        { "Nombre", nombre },
-                        { "DNI", dni },
-                        { "Apellidos", apellidos },
-                        { "FechaNacimiento", fechaNacimiento }, // Almacenar como DateTime
-                        { "Edad", edad },
-                        { "IdPadre", ObjectId.Parse(idPadre)}
-                    };
+                conexion.CerrarConexion();
 
-                ninosCollection.InsertOne(nuevoNino2);
-
-                // Mostrar mensaje de éxito
-                MessageBox.Show("Niño agregado correctamente al padre.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Cerrar el formulario o limpiar los campos
+                // Mostrar éxito
+                MessageBox.Show("Niño añadido correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (Exception ex)
             {
-                // Manejar errores
-                MessageBox.Show($"Error al agregar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al guardar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         /// <summary>
         /// Verifica si un objeto es una instancia de RegisNino y lo muestra.
@@ -216,22 +205,12 @@ namespace TFG_DavidGomez.Sesion
 
         private void label5_Click(object sender, EventArgs e)
         {
-            // Generar un número aleatorio de 8 cifras
-            Random rnd = new Random();
-            int numeroDNI = rnd.Next(10000000, 99999999);
+            // Asignar un valor nulo (vacío) al campo del DNI
+            txDNI.Text = string.Empty;
 
-            // Calcular la letra del DNI
-            string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            char letra = letras[numeroDNI % 23];
-
-            // Formar el DNI completo
-            string dniFicticio = numeroDNI.ToString() + letra;
-
-            // Asignar al campo de texto
-            txDNI.Text = dniFicticio;
-
-            // Informar al usuario
-            MessageBox.Show($"Se ha generado un DNI provisional válido: {dniFicticio}", "DNI generado automáticamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Informar al usuario que se dejará sin DNI
+            MessageBox.Show("Este niño no tendrá DNI registrado. Se dejará como valor nulo en la base de datos.",
+                "DNI no obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
     }

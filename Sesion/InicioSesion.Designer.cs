@@ -142,6 +142,7 @@
             Name = "InicioSesion";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inicio Sesión";
+            WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
             PerformLayout();
         }

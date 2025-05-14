@@ -62,7 +62,6 @@
             actividadesApuntadasToolStripMenuItem.Name = "actividadesApuntadasToolStripMenuItem";
             actividadesApuntadasToolStripMenuItem.Size = new Size(140, 20);
             actividadesApuntadasToolStripMenuItem.Text = "Actividades Apuntadas";
-            actividadesApuntadasToolStripMenuItem.Click += actividadesApuntadasToolStripMenuItem_Click;
             // 
             // usuarioToolStripMenuItem
             // 
@@ -76,7 +75,6 @@
             editarDatosPersonalesToolStripMenuItem.Name = "editarDatosPersonalesToolStripMenuItem";
             editarDatosPersonalesToolStripMenuItem.Size = new Size(196, 22);
             editarDatosPersonalesToolStripMenuItem.Text = "Editar Datos Personales";
-            editarDatosPersonalesToolStripMenuItem.Click += editarDatosPersonalesToolStripMenuItem_Click;
             // 
             // cerrarSesiónToolStripMenuItem
             // 
@@ -138,6 +136,7 @@
             Name = "PadresForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PadresForm";
+            WindowState = FormWindowState.Maximized;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridInscripciones).EndInit();

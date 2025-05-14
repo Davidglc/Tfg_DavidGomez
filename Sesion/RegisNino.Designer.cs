@@ -46,6 +46,7 @@
             // 
             // txDNI
             // 
+            txDNI.Anchor = AnchorStyles.None;
             txDNI.Location = new Point(22, 96);
             txDNI.MaxLength = 9;
             txDNI.Name = "txDNI";
@@ -54,6 +55,7 @@
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Location = new Point(22, 78);
             label2.Name = "label2";
@@ -63,6 +65,7 @@
             // 
             // txUsuario
             // 
+            txUsuario.Anchor = AnchorStyles.None;
             txUsuario.Location = new Point(22, 45);
             txUsuario.Name = "txUsuario";
             txUsuario.Size = new Size(304, 23);
@@ -70,6 +73,7 @@
             // 
             // lblUsuario
             // 
+            lblUsuario.Anchor = AnchorStyles.None;
             lblUsuario.AutoSize = true;
             lblUsuario.Location = new Point(22, 27);
             lblUsuario.Name = "lblUsuario";
@@ -79,6 +83,7 @@
             // 
             // txApellidos
             // 
+            txApellidos.Anchor = AnchorStyles.None;
             txApellidos.Location = new Point(22, 149);
             txApellidos.Name = "txApellidos";
             txApellidos.Size = new Size(304, 23);
@@ -86,6 +91,7 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Location = new Point(22, 131);
             label1.Name = "label1";
@@ -95,6 +101,7 @@
             // 
             // txFnac
             // 
+            txFnac.Anchor = AnchorStyles.None;
             txFnac.Location = new Point(22, 204);
             txFnac.Name = "txFnac";
             txFnac.Size = new Size(304, 23);
@@ -102,6 +109,7 @@
             // 
             // label3
             // 
+            label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Location = new Point(22, 186);
             label3.Name = "label3";
@@ -111,6 +119,7 @@
             // 
             // txEdad
             // 
+            txEdad.Anchor = AnchorStyles.None;
             txEdad.Location = new Point(22, 256);
             txEdad.MaxLength = 2;
             txEdad.Name = "txEdad";
@@ -119,6 +128,7 @@
             // 
             // label4
             // 
+            label4.Anchor = AnchorStyles.None;
             label4.AutoSize = true;
             label4.Location = new Point(22, 238);
             label4.Name = "label4";
@@ -128,6 +138,7 @@
             // 
             // btn_Aceptar
             // 
+            btn_Aceptar.Anchor = AnchorStyles.None;
             btn_Aceptar.BackColor = Color.DodgerBlue;
             btn_Aceptar.FlatAppearance.BorderSize = 0;
             btn_Aceptar.FlatStyle = FlatStyle.Flat;
@@ -153,6 +164,7 @@
             // 
             // label5
             // 
+            label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.Location = new Point(51, 78);
             label5.Name = "label5";
@@ -185,6 +197,7 @@
             Name = "RegisNino";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "RegisNino";
+            WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
             PerformLayout();
         }

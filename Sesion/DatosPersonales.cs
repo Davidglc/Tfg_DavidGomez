@@ -108,24 +108,8 @@ namespace TFG_DavidGomez.Sesion
 
                 int idPadre = int.Parse(idPadreTexto);
 
-                MariaDbAdapter ma = new MariaDbAdapter();
-                List<Nino> ninos = ma.CargarDatosNinoPorPadre(idPadre);
-
-                if (ninos == null || ninos.Count == 0)
-                {
-                    MessageBox.Show("No se encontraron niños asociados con este padre.", "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Obtener referencia a la clase con el ListBox y cargar los datos
-                DatosPersonalesNinos datosNinosForm = new DatosPersonalesNinos(); // Asumiendo que esta es la clase con el ListBox
-
-                foreach (var nino in ninos)
-                {
-                    datosNinosForm.LbNinos.Items.Add($"Nombre: {nino.Nombre}, Apellidos: {nino.Apellidos}, DNI: {nino.DNI}, Fecha de Nacimiento: {nino.FechaNacimiento.ToShortDateString()}, Edad: {nino.Edad}");
-                }
-
-                // Mostrar el formulario
+                // Abrir el formulario y pasar el ID del padre
+                DatosPersonalesNinos datosNinosForm = new DatosPersonalesNinos(idPadre);
                 datosNinosForm.Show();
             }
             catch (Exception ex)
@@ -133,6 +117,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         /// <summary>
