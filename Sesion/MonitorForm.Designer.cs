@@ -31,24 +31,27 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonitorForm));
             menuStrip1 = new MenuStrip();
             añadirMonitorToolStripMenuItem = new ToolStripMenuItem();
+            modificarActividadToolStripMenuItem = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
-            modificarActividadToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
             lbFecha = new Label();
             LbFecha2 = new Label();
             LAtividad = new Label();
             LbAtividad2 = new Label();
             LMateriales = new Label();
-            LbMateriales = new ListBox();
-            LbNiños = new ListBox();
             label1 = new Label();
+            dataGridMateriales = new DataGridView();
+            dataGridNinos = new DataGridView();
             menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridMateriales).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridNinos).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, usuarioToolStripMenuItem, modificarActividadToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, modificarActividadToolStripMenuItem, usuarioToolStripMenuItem, toolStripMenuItem1 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -62,6 +65,14 @@
             añadirMonitorToolStripMenuItem.Text = "Añadir Monitor";
             añadirMonitorToolStripMenuItem.Visible = false;
             añadirMonitorToolStripMenuItem.Click += añadirMonitorToolStripMenuItem_Click;
+            // 
+            // modificarActividadToolStripMenuItem
+            // 
+            modificarActividadToolStripMenuItem.Name = "modificarActividadToolStripMenuItem";
+            modificarActividadToolStripMenuItem.Size = new Size(157, 20);
+            modificarActividadToolStripMenuItem.Text = "Agregar o Editar Actividad";
+            modificarActividadToolStripMenuItem.Visible = false;
+            modificarActividadToolStripMenuItem.Click += modificarActividadToolStripMenuItem_Click;
             // 
             // usuarioToolStripMenuItem
             // 
@@ -84,16 +95,15 @@
             cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             cerrarSesionToolStripMenuItem.Click += cerrarSesionToolStripMenuItem_Click;
             // 
-            // modificarActividadToolStripMenuItem
+            // toolStripMenuItem1
             // 
-            modificarActividadToolStripMenuItem.Name = "modificarActividadToolStripMenuItem";
-            modificarActividadToolStripMenuItem.Size = new Size(114, 20);
-            modificarActividadToolStripMenuItem.Text = "Agregar Actividad";
-            modificarActividadToolStripMenuItem.Visible = false;
-            modificarActividadToolStripMenuItem.Click += modificarActividadToolStripMenuItem_Click;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(22, 20);
+            toolStripMenuItem1.Text = " ";
             // 
             // lbFecha
             // 
+            lbFecha.Anchor = AnchorStyles.None;
             lbFecha.AutoSize = true;
             lbFecha.Location = new Point(20, 41);
             lbFecha.Name = "lbFecha";
@@ -103,6 +113,7 @@
             // 
             // LbFecha2
             // 
+            LbFecha2.Anchor = AnchorStyles.None;
             LbFecha2.AutoSize = true;
             LbFecha2.Location = new Point(67, 41);
             LbFecha2.Name = "LbFecha2";
@@ -112,8 +123,9 @@
             // 
             // LAtividad
             // 
+            LAtividad.Anchor = AnchorStyles.None;
             LAtividad.AutoSize = true;
-            LAtividad.Location = new Point(249, 41);
+            LAtividad.Location = new Point(176, 41);
             LAtividad.Name = "LAtividad";
             LAtividad.Size = new Size(60, 15);
             LAtividad.TabIndex = 3;
@@ -121,8 +133,9 @@
             // 
             // LbAtividad2
             // 
+            LbAtividad2.Anchor = AnchorStyles.None;
             LbAtividad2.AutoSize = true;
-            LbAtividad2.Location = new Point(315, 41);
+            LbAtividad2.Location = new Point(242, 41);
             LbAtividad2.Name = "LbAtividad2";
             LbAtividad2.Size = new Size(69, 15);
             LbAtividad2.TabIndex = 4;
@@ -130,6 +143,7 @@
             // 
             // LMateriales
             // 
+            LMateriales.Anchor = AnchorStyles.None;
             LMateriales.AutoSize = true;
             LMateriales.Location = new Point(20, 72);
             LMateriales.Name = "LMateriales";
@@ -137,32 +151,33 @@
             LMateriales.TabIndex = 5;
             LMateriales.Text = "Materiales:";
             // 
-            // LbMateriales
-            // 
-            LbMateriales.FormattingEnabled = true;
-            LbMateriales.ItemHeight = 15;
-            LbMateriales.Location = new Point(20, 90);
-            LbMateriales.Name = "LbMateriales";
-            LbMateriales.Size = new Size(364, 214);
-            LbMateriales.TabIndex = 6;
-            // 
-            // LbNiños
-            // 
-            LbNiños.FormattingEnabled = true;
-            LbNiños.ItemHeight = 15;
-            LbNiños.Location = new Point(424, 90);
-            LbNiños.Name = "LbNiños";
-            LbNiños.Size = new Size(364, 214);
-            LbNiños.TabIndex = 8;
-            // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Location = new Point(424, 72);
             label1.Name = "label1";
             label1.Size = new Size(41, 15);
             label1.TabIndex = 7;
             label1.Text = "Niños:";
+            // 
+            // dataGridMateriales
+            // 
+            dataGridMateriales.Anchor = AnchorStyles.None;
+            dataGridMateriales.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridMateriales.Location = new Point(20, 90);
+            dataGridMateriales.Name = "dataGridMateriales";
+            dataGridMateriales.Size = new Size(289, 327);
+            dataGridMateriales.TabIndex = 8;
+            // 
+            // dataGridNinos
+            // 
+            dataGridNinos.Anchor = AnchorStyles.None;
+            dataGridNinos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridNinos.Location = new Point(424, 90);
+            dataGridNinos.Name = "dataGridNinos";
+            dataGridNinos.Size = new Size(289, 327);
+            dataGridNinos.TabIndex = 9;
             // 
             // MonitorForm
             // 
@@ -171,9 +186,9 @@
             AutoSize = true;
             BackColor = Color.LightGray;
             ClientSize = new Size(800, 450);
-            Controls.Add(LbNiños);
+            Controls.Add(dataGridNinos);
+            Controls.Add(dataGridMateriales);
             Controls.Add(label1);
-            Controls.Add(LbMateriales);
             Controls.Add(LMateriales);
             Controls.Add(LbAtividad2);
             Controls.Add(LAtividad);
@@ -188,6 +203,8 @@
             WindowState = FormWindowState.Maximized;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridMateriales).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridNinos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -201,12 +218,13 @@
         private Label LAtividad;
         private Label LbAtividad2;
         private Label LMateriales;
-        private ListBox LbMateriales;
-        private ListBox LbNiños;
         private Label label1;
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem datosPersonalesToolStripMenuItem;
         private ToolStripMenuItem cerrarSesionToolStripMenuItem;
-        private ToolStripMenuItem modificarActividadToolStripMenuItem;
+        public ToolStripMenuItem modificarActividadToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private DataGridView dataGridMateriales;
+        private DataGridView dataGridNinos;
     }
 }

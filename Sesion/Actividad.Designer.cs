@@ -34,10 +34,14 @@
             lb_Fecha = new Label();
             btnApuntar = new Button();
             pn_Img = new Panel();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            txtNombre = new TextBox();
+            txtFecha = new TextBox();
             cbNinos = new ComboBox();
+            lbDescripcion = new ListBox();
+            dgvActividades = new DataGridView();
+            btnSeleccionarImagen = new Button();
+            btnGuardar = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             SuspendLayout();
             // 
             // lb_nombre
@@ -95,32 +99,23 @@
             pn_Img.Size = new Size(164, 140);
             pn_Img.TabIndex = 4;
             // 
-            // textBox1
+            // txtNombre
             // 
-            textBox1.Anchor = AnchorStyles.None;
-            textBox1.Location = new Point(145, 37);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 5;
-            textBox1.Visible = false;
+            txtNombre.Anchor = AnchorStyles.None;
+            txtNombre.Location = new Point(145, 37);
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(230, 23);
+            txtNombre.TabIndex = 5;
+            txtNombre.Visible = false;
             // 
-            // textBox2
+            // txtFecha
             // 
-            textBox2.Anchor = AnchorStyles.None;
-            textBox2.Location = new Point(145, 71);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(100, 23);
-            textBox2.TabIndex = 6;
-            textBox2.Visible = false;
-            // 
-            // textBox3
-            // 
-            textBox3.Anchor = AnchorStyles.None;
-            textBox3.Location = new Point(145, 109);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(100, 23);
-            textBox3.TabIndex = 7;
-            textBox3.Visible = false;
+            txtFecha.Anchor = AnchorStyles.None;
+            txtFecha.Location = new Point(145, 76);
+            txtFecha.Name = "txtFecha";
+            txtFecha.Size = new Size(100, 23);
+            txtFecha.TabIndex = 6;
+            txtFecha.Visible = false;
             // 
             // cbNinos
             // 
@@ -131,15 +126,72 @@
             cbNinos.Size = new Size(121, 23);
             cbNinos.TabIndex = 8;
             // 
+            // lbDescripcion
+            // 
+            lbDescripcion.Anchor = AnchorStyles.None;
+            lbDescripcion.FormattingEnabled = true;
+            lbDescripcion.ItemHeight = 15;
+            lbDescripcion.Location = new Point(145, 117);
+            lbDescripcion.Name = "lbDescripcion";
+            lbDescripcion.Size = new Size(338, 124);
+            lbDescripcion.TabIndex = 9;
+            lbDescripcion.Visible = false;
+            // 
+            // dgvActividades
+            // 
+            dgvActividades.Anchor = AnchorStyles.None;
+            dgvActividades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvActividades.Location = new Point(524, 199);
+            dgvActividades.Name = "dgvActividades";
+            dgvActividades.Size = new Size(596, 232);
+            dgvActividades.TabIndex = 10;
+            dgvActividades.Visible = false;
+            dgvActividades.CellClick += dgvActividades_CellClick;
+            // 
+            // btnSeleccionarImagen
+            // 
+            btnSeleccionarImagen.Anchor = AnchorStyles.None;
+            btnSeleccionarImagen.BackColor = Color.DodgerBlue;
+            btnSeleccionarImagen.FlatAppearance.BorderSize = 0;
+            btnSeleccionarImagen.FlatStyle = FlatStyle.Flat;
+            btnSeleccionarImagen.ForeColor = Color.White;
+            btnSeleccionarImagen.Location = new Point(293, 345);
+            btnSeleccionarImagen.Name = "btnSeleccionarImagen";
+            btnSeleccionarImagen.Size = new Size(82, 52);
+            btnSeleccionarImagen.TabIndex = 11;
+            btnSeleccionarImagen.Text = "Imagen";
+            btnSeleccionarImagen.UseVisualStyleBackColor = false;
+            btnSeleccionarImagen.Visible = false;
+            btnSeleccionarImagen.Click += btnSeleccionarImagen_Click;
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.Anchor = AnchorStyles.None;
+            btnGuardar.BackColor = Color.DodgerBlue;
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.Location = new Point(25, 345);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(82, 52);
+            btnGuardar.TabIndex = 12;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Visible = false;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
             // Actividad
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnGuardar);
+            Controls.Add(btnSeleccionarImagen);
+            Controls.Add(dgvActividades);
+            Controls.Add(lbDescripcion);
             Controls.Add(cbNinos);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(txtFecha);
+            Controls.Add(txtNombre);
             Controls.Add(pn_Img);
             Controls.Add(btnApuntar);
             Controls.Add(lb_Fecha);
@@ -150,6 +202,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Actvidad";
             WindowState = FormWindowState.Maximized;
+            ((System.ComponentModel.ISupportInitialize)dgvActividades).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -159,11 +212,14 @@
         private Label lb_nombre;
         private Label lb_des;
         private Label lb_Fecha;
-        private Button btnApuntar;
+        public Button btnApuntar;
         private Panel pn_Img;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private ComboBox cbNinos;
+        public TextBox txtNombre;
+        public TextBox txtFecha;
+        public ComboBox cbNinos;
+        public ListBox lbDescripcion;
+        public DataGridView dgvActividades;
+        public Button btnSeleccionarImagen;
+        public Button btnGuardar;
     }
 }

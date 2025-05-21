@@ -52,6 +52,7 @@
             // 
             // btnGuardar
             // 
+            btnGuardar.Anchor = AnchorStyles.None;
             btnGuardar.BackColor = Color.DodgerBlue;
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.FlatStyle = FlatStyle.Flat;
@@ -66,6 +67,7 @@
             // 
             // txCorreo
             // 
+            txCorreo.Anchor = AnchorStyles.None;
             txCorreo.Font = new Font("Segoe UI", 9.75F);
             txCorreo.Location = new Point(16, 250);
             txCorreo.Name = "txCorreo";
@@ -74,6 +76,7 @@
             // 
             // label4
             // 
+            label4.Anchor = AnchorStyles.None;
             label4.AutoSize = true;
             label4.Location = new Point(16, 232);
             label4.Name = "label4";
@@ -83,6 +86,7 @@
             // 
             // txDNI
             // 
+            txDNI.Anchor = AnchorStyles.None;
             txDNI.Font = new Font("Segoe UI", 9.75F);
             txDNI.Location = new Point(16, 102);
             txDNI.MaxLength = 9;
@@ -92,6 +96,7 @@
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Location = new Point(16, 84);
             label2.Name = "label2";
@@ -101,6 +106,7 @@
             // 
             // txApellidos
             // 
+            txApellidos.Anchor = AnchorStyles.None;
             txApellidos.Font = new Font("Segoe UI", 9.75F);
             txApellidos.Location = new Point(16, 196);
             txApellidos.Name = "txApellidos";
@@ -109,6 +115,7 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Location = new Point(16, 178);
             label1.Name = "label1";
@@ -118,6 +125,7 @@
             // 
             // TxContrasena
             // 
+            TxContrasena.Anchor = AnchorStyles.None;
             TxContrasena.Font = new Font("Segoe UI", 9.75F);
             TxContrasena.Location = new Point(16, 146);
             TxContrasena.Name = "TxContrasena";
@@ -127,6 +135,7 @@
             // 
             // txUsuario
             // 
+            txUsuario.Anchor = AnchorStyles.None;
             txUsuario.Font = new Font("Segoe UI", 9.75F);
             txUsuario.Location = new Point(16, 59);
             txUsuario.Name = "txUsuario";
@@ -135,6 +144,7 @@
             // 
             // lblContraseña
             // 
+            lblContraseña.Anchor = AnchorStyles.None;
             lblContraseña.AutoSize = true;
             lblContraseña.Location = new Point(16, 128);
             lblContraseña.Name = "lblContraseña";
@@ -144,6 +154,7 @@
             // 
             // lblUsuario
             // 
+            lblUsuario.Anchor = AnchorStyles.None;
             lblUsuario.AutoSize = true;
             lblUsuario.Location = new Point(16, 41);
             lblUsuario.Name = "lblUsuario";
@@ -169,6 +180,7 @@
             // 
             // txTelefono
             // 
+            txTelefono.Anchor = AnchorStyles.None;
             txTelefono.Font = new Font("Segoe UI", 9.75F);
             txTelefono.Location = new Point(16, 299);
             txTelefono.MaxLength = 9;
@@ -178,6 +190,7 @@
             // 
             // label3
             // 
+            label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Location = new Point(16, 281);
             label3.Name = "label3";
@@ -187,6 +200,7 @@
             // 
             // BtnGuardarMoni
             // 
+            BtnGuardarMoni.Anchor = AnchorStyles.None;
             BtnGuardarMoni.BackColor = Color.DodgerBlue;
             BtnGuardarMoni.FlatAppearance.BorderSize = 0;
             BtnGuardarMoni.FlatStyle = FlatStyle.Flat;
@@ -201,6 +215,7 @@
             // 
             // txDirec
             // 
+            txDirec.Anchor = AnchorStyles.None;
             txDirec.Font = new Font("Segoe UI", 9.75F);
             txDirec.Location = new Point(16, 344);
             txDirec.Name = "txDirec";
@@ -209,6 +224,7 @@
             // 
             // Dirección
             // 
+            Dirección.Anchor = AnchorStyles.None;
             Dirección.AutoSize = true;
             Dirección.Location = new Point(16, 326);
             Dirección.Name = "Dirección";

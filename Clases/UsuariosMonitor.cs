@@ -82,7 +82,7 @@ namespace TFG_DavidGomez.Clases
         /// <param name="fechaRegistro">Fecha de registro del usuario monitor.</param>
         /// <param name="telefono">Teléfono del usuario monitor.</param>
         /// <param name="direccion">Dirección del usuario monitor.</param>
-        public UsuarioMonitor(string nombre, string apellidos, string dni, string correo, string contrasena, string rol, DateTime fechaRegistro, string telefono, string direccion)
+        public UsuarioMonitor(string nombre, string apellidos, string dni, string correo, string contrasena, string rol, string telefono, string direccion)
         {
             Nombre = nombre;
             Apellidos = apellidos;
@@ -90,7 +90,6 @@ namespace TFG_DavidGomez.Clases
             Correo = correo;
             Contrasena = contrasena;
             Rol = rol;
-            FechaRegistro = fechaRegistro;
             Telefono = telefono;
             Direccion = direccion;
         }

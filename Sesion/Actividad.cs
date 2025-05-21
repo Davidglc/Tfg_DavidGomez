@@ -20,6 +20,8 @@ namespace TFG_DavidGomez.Sesion
         public Actividad()
         {
             InitializeComponent();
+            CargarActividades();          
+
         }
 
         public void CargarDatos(Actividades actividad)
@@ -154,5 +156,187 @@ namespace TFG_DavidGomez.Sesion
                 con.CerrarConexion();
             }
         }
+
+        string rutaImagen = "";
+        byte[] imagenBytes = null;
+
+        private void btnSeleccionarImagen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Imágenes (*.jpg;*.png)|*.jpg;*.png";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    rutaImagen = ofd.FileName;
+                    imagenBytes = File.ReadAllBytes(rutaImagen);
+
+                    Image img = Image.FromFile(rutaImagen);
+                    pn_Img.BackgroundImage = new Bitmap(img, pn_Img.Size);
+                    pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
+                }
+            }
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            string nombre = txtNombre.Text.Trim();
+            string fechaTexto = txtFecha.Text.Trim();
+            string descripcion = string.Join(",", lbDescripcion.Items.Cast<string>());
+
+            if (!DateTime.TryParse(fechaTexto, out DateTime fecha))
+            {
+                MessageBox.Show("Fecha inválida.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(nombre) || lbDescripcion.Items.Count == 0 || imagenBytes == null)
+            {
+                MessageBox.Show("Completa todos los campos.");
+                return;
+            }
+
+            string query = "INSERT INTO Actividades (nombre, descripcion, fecha, imagen) VALUES (@nombre, @descripcion, @fecha, @imagen)";
+
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+
+            using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            {
+                cmd.Parameters.AddWithValue("@nombre", nombre);
+                cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                cmd.Parameters.AddWithValue("@fecha", fecha);
+                cmd.Parameters.AddWithValue("@imagen", imagenBytes);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            con.CerrarConexion();
+            MessageBox.Show("Actividad guardada.");
+            CargarActividades();
+            LimpiarFormulario();
+        }
+
+        private void LimpiarFormulario()
+        {
+            txtNombre.Clear();
+            txtFecha.Clear();
+            lbDescripcion.Items.Clear();
+            pn_Img.BackgroundImage = null;
+            imagenBytes = null;
+        }
+
+        private void CargarActividades()
+        {
+            dgvActividades.Rows.Clear();
+            dgvActividades.Columns.Clear();
+
+            dgvActividades.Columns.Add("Id", "ID");
+            dgvActividades.Columns["Id"].Visible = false;
+            dgvActividades.Columns.Add("Nombre", "Nombre");
+            dgvActividades.Columns.Add("Fecha", "Fecha");
+
+            // 🟡 Añadir columna oculta para imagen
+            var colImg = new DataGridViewImageColumn
+            {
+                Name = "Imagen",
+                HeaderText = "Imagen",
+                Visible = false // Ocultar visualmente
+            };
+            dgvActividades.Columns.Add(colImg);
+
+            string query = "SELECT id, nombre, fecha, imagen FROM Actividades";
+
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+
+            using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            {
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        dgvActividades.Rows.Add(
+                            reader["id"].ToString(),
+                            reader["nombre"].ToString(),
+                            Convert.ToDateTime(reader["fecha"]).ToString("yyyy-MM-dd"),
+                            reader["imagen"] is DBNull ? null : (byte[])reader["imagen"]
+                        );
+                    }
+                }
+            }
+
+            con.CerrarConexion();
+        }
+
+
+
+        private void dgvActividades_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow fila = dgvActividades.Rows[e.RowIndex];
+
+                // Nombre y Fecha
+                txtNombre.Text = fila.Cells["Nombre"].Value?.ToString();
+                txtFecha.Text = fila.Cells["Fecha"].Value?.ToString();
+
+                // ID para la descripción
+                string id = fila.Cells["Id"].Value?.ToString();
+                lbDescripcion.Items.Clear();
+
+                string query = "SELECT descripcion FROM Actividades WHERE id = @id";
+                ConMDB con = new ConMDB();
+                con.AbrirConexion();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            string descripcion = reader["descripcion"].ToString();
+                            const int maxCharsPerLine = 60;
+
+                            for (int i = 0; i < descripcion.Length; i += maxCharsPerLine)
+                            {
+                                string linea = descripcion.Substring(i, Math.Min(maxCharsPerLine, descripcion.Length - i));
+                                lbDescripcion.Items.Add(linea.Trim());
+                            }
+
+                        }
+                    }
+                }
+
+                con.CerrarConexion();
+
+                // Imagen (ya debe estar cargada desde la base de datos como columna oculta "Imagen")
+                object valorImagen = fila.Cells["Imagen"].Value;
+                if (valorImagen != null && valorImagen != DBNull.Value && valorImagen is byte[] imgBytes)
+                {
+                    try
+                    {
+                        using (MemoryStream ms = new MemoryStream(imgBytes))
+                        {
+                            pn_Img.BackgroundImage = new Bitmap(Image.FromStream(ms), pn_Img.Size);
+                            pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
+                        }
+                    }
+                    catch
+                    {
+                        pn_Img.BackgroundImage = null; // Evita excepción si los bytes están corruptos
+                    }
+                }
+                else
+                {
+                    pn_Img.BackgroundImage = null;
+                }
+            }
+        }
+
+
+
+
     }
 }

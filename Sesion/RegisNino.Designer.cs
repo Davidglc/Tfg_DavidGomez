@@ -196,7 +196,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegisNino";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "RegisNino";
+            Text = "Registrar Niño";
             WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
             PerformLayout();

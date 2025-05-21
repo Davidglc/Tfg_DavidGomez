@@ -42,9 +42,9 @@ namespace TFG_DavidGomez
         {
             mdba = new MariaDbAdapter();
             InitializeComponent();
+            CentrarElementos();
             //CargarDatosNinos();
             CargarInscripciones();
-            RedondearBoton(btnApuntar, 20);
             RedondearBoton(btn_DA, 20);
             //this.FormClosed += CerrarAplicacion;
         }
@@ -106,6 +106,35 @@ namespace TFG_DavidGomez
 
             con.CerrarConexion();
         }
+
+        private void CentrarElementos()
+        {
+            int margenVertical = 15;
+
+            // Establece tamaño fijo del DataGridView (lo mínimo necesario)
+            dataGridInscripciones.Width = 700;
+            dataGridInscripciones.Height = 300;
+            dataGridInscripciones.Left = (this.ClientSize.Width - dataGridInscripciones.Width) / 2;
+            dataGridInscripciones.Top = 250;
+
+            // Asegúrate de desactivar el autoajuste para respetar los anchos definidos
+            dataGridInscripciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            // Establecer ancho manual para columnas si ya están agregadas
+            if (dataGridInscripciones.Columns.Count > 0)
+            {
+                dataGridInscripciones.Columns[0].Width = 130; // Nombre del Niño
+                dataGridInscripciones.Columns[1].Width = 380; // Nombre de la Actividad (más ancha)
+                dataGridInscripciones.Columns[2].Width = 160; // Fecha
+            }
+
+            // Posición del botón centrado y cerca de la tabla
+            btn_DA.Width = 130;
+            btn_DA.Height = 40;
+            btn_DA.Left = (this.ClientSize.Width - btn_DA.Width) / 2;
+            btn_DA.Top = 375;
+        }
+
 
 
 

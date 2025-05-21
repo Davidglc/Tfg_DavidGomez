@@ -124,10 +124,11 @@ namespace TFG_DavidGomez
                         DateTime.Now,
                         "Panel de Administración",
                         new List<string>(),
-                        new List<string>()
+                        new List<String>()
                     );
 
                     monitorForm.añadirMonitorToolStripMenuItem.Visible = true;
+                    monitorForm.modificarActividadToolStripMenuItem.Visible = true;
                     this.Hide();
                     monitorForm.Show();
                 }

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TFG_DavidGomez.Clases;
 using TFG_DavidGomez.Clases.Adaptador;
+using TFG_DavidGomez.Clases.Conexion;
 using TFG_DavidGomez.Sesion;
 
 namespace TFG_DavidGomez
@@ -40,24 +42,107 @@ namespace TFG_DavidGomez
         /// <param name="materiales">Lista de materiales necesarios para la actividad.</param>
         /// <param name="niños">Lista de niños inscritos en la actividad.</param>
 
-        public MonitorForm(DateTime fecha, string actividad, List<string> materiales, List<string> niños)
+        public MonitorForm(DateTime fecha, string actividad, List<string> materiales, List<String> niños)
         {
             InitializeComponent();
 
             LbFecha2.Text = fecha.ToString("dd/MM/yyyy");
             LbAtividad2.Text = actividad;
+            AjustarTablaNinos();
 
-            // Cargar materiales en el ListBox
-            foreach (var material in materiales)
-            {
-                LbMateriales.Items.Add(material);
-            }
+            CargarMateriales(materiales);
+            CargarNinos(niños);
+        }
 
-            foreach (var niño in niños)
+        private void AjustarTablaNinos()
+        {
+            // Establecer el tamaño de la tabla
+            dataGridNinos.Width = 500;  // Puedes aumentar este valor si quieres más espacio
+            dataGridNinos.Height = 200;
+
+
+            // Ajustar el tamaño de las columnas si ya fueron creadas
+            if (dataGridNinos.Columns.Count > 0)
             {
-                LbNiños.Items.Add(niño);
+                dataGridNinos.Columns[0].Width = 200; // Nombre del Niño
+                dataGridNinos.Columns[1].Width = 100; // Edad
+                dataGridNinos.Columns[2].Width = 400; // Nombre del Padre
             }
         }
+
+
+        private void CargarMateriales(List<string> materiales)
+        {
+            dataGridMateriales.Columns.Clear();
+            dataGridMateriales.Rows.Clear();
+            dataGridMateriales.Columns.Add("Material", "Material Necesario");
+
+            foreach (var material in materiales)
+            {
+                dataGridMateriales.Rows.Add(material);
+            }
+        }
+
+
+        private void CargarNinos(List<string> listaNinos)
+        {
+            dataGridNinos.Columns.Clear();
+            dataGridNinos.Rows.Clear();
+
+            dataGridNinos.Columns.Add("Nombre", "Nombre del Niño");
+            dataGridNinos.Columns.Add("Edad", "Edad");
+            dataGridNinos.Columns.Add("Padre", "Nombre del Padre");
+
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+
+            foreach (var info in listaNinos)
+            {
+                // Ejemplo de formato: "Nombre: Juan, Apellidos: Pérez, Edad: 10"
+                string nombre = "", edadStr = "", nombrePadre = "No encontrado";
+                int edad = 0;
+
+                var partes = info.Split(',');
+
+                foreach (var parte in partes)
+                {
+                    if (parte.Trim().StartsWith("Nombre:"))
+                        nombre = parte.Replace("Nombre:", "").Trim();
+                    else if (parte.Trim().StartsWith("Edad:"))
+                        edadStr = parte.Replace("Edad:", "").Trim();
+                }
+
+                int.TryParse(edadStr, out edad);
+
+                // Buscar nombre del padre según el nombre del niño y edad
+                string query = @"
+                    SELECT u.nombre 
+                    FROM Usuarios u
+                    JOIN Ninos n ON n.id_padre = u.id
+                    WHERE n.nombre = @nombre ";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+                {
+                    cmd.Parameters.AddWithValue("@nombre", nombre);
+                    cmd.Parameters.AddWithValue("@edad", edad);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            nombrePadre = reader["nombre"].ToString();
+                        }
+                    }
+                }
+
+                dataGridNinos.Rows.Add(nombre, edad, nombrePadre);
+            }
+
+            con.CerrarConexion();
+        }
+
+
+
 
         /// <summary>
         /// Verifica si un objeto es una instancia de la clase <see cref="MonitorForm"/>.
@@ -154,7 +239,16 @@ namespace TFG_DavidGomez
 
         private void modificarActividadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Actividad a = new Actividad();
+            a.btnApuntar.Visible = false;
+            a.cbNinos.Visible = false;
+            a.btnGuardar.Visible = true;
+            a.txtNombre.Visible = true;
+            a.txtFecha.Visible = true;
+            a.lbDescripcion.Visible = true;
+            a.dgvActividades.Visible = true;
+            a.btnSeleccionarImagen.Visible = true;
+            a.ShowDialog();
         }
 
         //private void CerrarAplicacion(object sender, FormClosedEventArgs e)

@@ -418,10 +418,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
                     {
                         if (reader.Read())
                         {
-                            DateTime fechaRegistro = reader.IsDBNull(reader.GetOrdinal("fecha_registro"))
-                                ? DateTime.MinValue
-                                : reader.GetDateTime("fecha_registro");
-
+                            
                             var usuario = new UsuarioMonitor(
                                 reader.GetString("nombre"),
                                 reader.GetString("apellidos"),
@@ -429,7 +426,6 @@ namespace TFG_DavidGomez.Clases.Adaptador
                                 reader.GetString("correo"),
                                 reader.GetString("contrasena"),
                                 reader.GetString("tipo"),
-                                fechaRegistro,
                                 reader.IsDBNull(reader.GetOrdinal("telefono")) ? "" : reader.GetString("telefono"),
                                 reader.IsDBNull(reader.GetOrdinal("direccion")) ? "" : reader.GetString("direccion")
                             );
@@ -494,6 +490,7 @@ namespace TFG_DavidGomez.Clases.Adaptador
                             Apellidos = reader.IsDBNull(reader.GetOrdinal("apellidos")) ? "" : reader.GetString("apellidos"),
                             FechaNacimiento = reader.GetDateTime("fecha_nacimiento"),
                             DNI = reader.IsDBNull(reader.GetOrdinal("dni")) ? null : reader.GetString("dni"),
+                            Edad = reader.GetInt32("edad"),
                             IdPadre = reader.IsDBNull(reader.GetOrdinal("id_padre")) ? 0 : reader.GetInt32("id_padre")
                         };
 

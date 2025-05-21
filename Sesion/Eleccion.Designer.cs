@@ -50,9 +50,9 @@
             btn_izq.ForeColor = Color.White;
             btn_izq.Location = new Point(85, 448);
             btn_izq.Name = "btn_izq";
-            btn_izq.Size = new Size(75, 23);
+            btn_izq.Size = new Size(93, 23);
             btn_izq.TabIndex = 1;
-            btn_izq.Text = "<----";
+            btn_izq.Text = "Mes anterior";
             btn_izq.UseVisualStyleBackColor = false;
             btn_izq.Click += btn_izq_Click;
             // 
@@ -65,9 +65,9 @@
             btn_drch.ForeColor = Color.White;
             btn_drch.Location = new Point(429, 448);
             btn_drch.Name = "btn_drch";
-            btn_drch.Size = new Size(75, 23);
+            btn_drch.Size = new Size(103, 23);
             btn_drch.TabIndex = 2;
-            btn_drch.Text = "---->";
+            btn_drch.Text = "Siguiente mes";
             btn_drch.UseVisualStyleBackColor = false;
             btn_drch.Click += btn_drch_Click;
             // 
@@ -120,7 +120,7 @@
             PanelBotones.Anchor = AnchorStyles.None;
             PanelBotones.Location = new Point(20, 37);
             PanelBotones.Name = "PanelBotones";
-            PanelBotones.Size = new Size(731, 371);
+            PanelBotones.Size = new Size(731, 390);
             PanelBotones.TabIndex = 4;
             // 
             // Eleccion

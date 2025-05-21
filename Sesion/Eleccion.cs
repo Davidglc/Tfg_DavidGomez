@@ -105,6 +105,12 @@ namespace TFG_DavidGomez.Sesion
             {
                 Actividad formActividad = new Actividad();
                 formActividad.CargarDatos(actividad);
+                formActividad.btnGuardar.Visible = false;
+                formActividad.txtNombre.Visible = false;
+                formActividad.txtFecha.Visible = false;
+                formActividad.lbDescripcion.Visible = false;
+                formActividad.dgvActividades.Visible = false;
+                formActividad.btnSeleccionarImagen.Visible = false;
                 formActividad.ShowDialog();
             }
         }
