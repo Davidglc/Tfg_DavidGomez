@@ -47,11 +47,15 @@ namespace TFG_DavidGomez.Sesion
                     Height = 180,
                     Margin = new Padding(10),
                     Tag = actividad,
-                    Text = $"{actividad.Nombre}\n{actividad.Fecha.ToShortDateString()}",
-                    TextAlign = ContentAlignment.BottomCenter,
+                    Text = $"{actividad.Nombre}\n{actividad.Fecha:dd/MM/yyyy}",
                     Font = new Font("Segoe UI", 9),
+                    TextAlign = ContentAlignment.BottomCenter,
                     ImageAlign = ContentAlignment.TopCenter,
-                    TextImageRelation = TextImageRelation.ImageAboveText
+                    TextImageRelation = TextImageRelation.ImageAboveText,
+                    FlatStyle = FlatStyle.Standard, // Opcional: más moderno
+                    BackColor = Color.White,        // Estilo más limpio
+                    ForeColor = Color.Black,
+                    Padding = new Padding(5, 5, 5, 10) // Asegura espacio entre imagen y texto
                 };
 
                 if (actividad.Imagen != null)
@@ -59,7 +63,7 @@ namespace TFG_DavidGomez.Sesion
                     using (var ms = new MemoryStream(actividad.Imagen))
                     {
                         Image originalImage = Image.FromStream(ms);
-                        Image resizedImage = new Bitmap(originalImage, new Size(140, 100));
+                        Image resizedImage = new Bitmap(originalImage, new Size(120, 90));
                         btn.Image = resizedImage;
                     }
                 }
@@ -71,6 +75,7 @@ namespace TFG_DavidGomez.Sesion
             // Mostrar/ocultar flecha izquierda
             btn_izq.Visible = mesActual > new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
         }
+
 
 
 
@@ -108,7 +113,7 @@ namespace TFG_DavidGomez.Sesion
                 formActividad.btnGuardar.Visible = false;
                 formActividad.txtNombre.Visible = false;
                 formActividad.txtFecha.Visible = false;
-                formActividad.lbDescripcion.Visible = false;
+                formActividad.txtDescripcion.Visible = false;
                 formActividad.dgvActividades.Visible = false;
                 formActividad.btnSeleccionarImagen.Visible = false;
                 formActividad.ShowDialog();

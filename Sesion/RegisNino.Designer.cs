@@ -40,7 +40,6 @@
             txEdad = new TextBox();
             label4 = new Label();
             btn_Aceptar = new Button();
-            button2 = new Button();
             label5 = new Label();
             SuspendLayout();
             // 
@@ -151,27 +150,15 @@
             btn_Aceptar.UseVisualStyleBackColor = false;
             btn_Aceptar.Click += button1_Click;
             // 
-            // button2
-            // 
-            button2.BackColor = Color.Red;
-            button2.Location = new Point(118, 342);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 26;
-            button2.Text = "Aceptar";
-            button2.UseVisualStyleBackColor = false;
-            button2.Visible = false;
-            // 
             // label5
             // 
             label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.Location = new Point(51, 78);
             label5.Name = "label5";
-            label5.Size = new Size(250, 15);
+            label5.Size = new Size(264, 15);
             label5.TabIndex = 27;
-            label5.Text = "(Si el niño no tiene DNI haz click en este texto)";
-            label5.Click += label5_Click;
+            label5.Text = "(Si el niño no tiene DNI deja el campo en blanco)";
             // 
             // RegisNino
             // 
@@ -181,7 +168,6 @@
             BackColor = Color.LightGray;
             ClientSize = new Size(364, 418);
             Controls.Add(label5);
-            Controls.Add(button2);
             Controls.Add(btn_Aceptar);
             Controls.Add(txEdad);
             Controls.Add(label4);
@@ -215,7 +201,6 @@
         private TextBox txEdad;
         private Label label4;
         private Button btn_Aceptar;
-        private Button button2;
         private Label label5;
     }
 }

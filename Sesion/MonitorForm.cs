@@ -81,6 +81,7 @@ namespace TFG_DavidGomez
             {
                 dataGridMateriales.Rows.Add(material);
             }
+            EstilizarTabla(dataGridMateriales);
         }
 
 
@@ -137,7 +138,7 @@ namespace TFG_DavidGomez
 
                 dataGridNinos.Rows.Add(nombre, edad, nombrePadre);
             }
-
+            EstilizarTabla(dataGridNinos);
             con.CerrarConexion();
         }
 
@@ -241,14 +242,51 @@ namespace TFG_DavidGomez
         {
             Actividad a = new Actividad();
             a.btnApuntar.Visible = false;
-            a.cbNinos.Visible = false;
+            a.lbcbNino.Visible = false;
+            a.cbNinos.Visible = true;
             a.btnGuardar.Visible = true;
             a.txtNombre.Visible = true;
             a.txtFecha.Visible = true;
-            a.lbDescripcion.Visible = true;
+            a.txtDescripcion.Visible = true;
             a.dgvActividades.Visible = true;
             a.btnSeleccionarImagen.Visible = true;
+            a.CargarMonitoresComboBox();
             a.ShowDialog();
+        }
+
+        private void EstilizarTabla(DataGridView dgv)
+        {
+            // Colores generales
+            dgv.BackgroundColor = Color.White;
+            dgv.GridColor = Color.LightGray;
+            dgv.BorderStyle = BorderStyle.None;
+
+            // Estilo de columnas
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 144, 255); // Azul moderno
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersHeight = 35;
+
+            // Estilo de filas
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgv.DefaultCellStyle.ForeColor = Color.Black;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 255); // Azul claro al seleccionar
+            dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgv.RowTemplate.Height = 30;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245); // gris suave
+
+            // Ajuste automático
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.MultiSelect = false;
+            dgv.AllowUserToResizeRows = false;
+
+            // Quitar bordes de celdas al seleccionar
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.RowHeadersVisible = false; // Quita la columna de encabezado de filas
         }
 
         //private void CerrarAplicacion(object sender, FormClosedEventArgs e)

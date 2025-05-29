@@ -167,6 +167,7 @@
             dataGridMateriales.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridMateriales.Location = new Point(20, 90);
             dataGridMateriales.Name = "dataGridMateriales";
+            dataGridMateriales.ReadOnly = true;
             dataGridMateriales.Size = new Size(289, 327);
             dataGridMateriales.TabIndex = 8;
             // 
@@ -176,6 +177,7 @@
             dataGridNinos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridNinos.Location = new Point(424, 90);
             dataGridNinos.Name = "dataGridNinos";
+            dataGridNinos.ReadOnly = true;
             dataGridNinos.Size = new Size(289, 327);
             dataGridNinos.TabIndex = 9;
             // 

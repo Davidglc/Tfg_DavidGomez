@@ -37,10 +37,11 @@
             txtNombre = new TextBox();
             txtFecha = new TextBox();
             cbNinos = new ComboBox();
-            lbDescripcion = new ListBox();
             dgvActividades = new DataGridView();
             btnSeleccionarImagen = new Button();
             btnGuardar = new Button();
+            lbcbNino = new Label();
+            txtDescripcion = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             SuspendLayout();
             // 
@@ -81,7 +82,7 @@
             btnApuntar.FlatAppearance.BorderSize = 0;
             btnApuntar.FlatStyle = FlatStyle.Flat;
             btnApuntar.ForeColor = Color.White;
-            btnApuntar.Location = new Point(25, 330);
+            btnApuntar.Location = new Point(293, 330);
             btnApuntar.Name = "btnApuntar";
             btnApuntar.Size = new Size(82, 52);
             btnApuntar.TabIndex = 3;
@@ -126,23 +127,13 @@
             cbNinos.Size = new Size(121, 23);
             cbNinos.TabIndex = 8;
             // 
-            // lbDescripcion
-            // 
-            lbDescripcion.Anchor = AnchorStyles.None;
-            lbDescripcion.FormattingEnabled = true;
-            lbDescripcion.ItemHeight = 15;
-            lbDescripcion.Location = new Point(145, 117);
-            lbDescripcion.Name = "lbDescripcion";
-            lbDescripcion.Size = new Size(338, 124);
-            lbDescripcion.TabIndex = 9;
-            lbDescripcion.Visible = false;
-            // 
             // dgvActividades
             // 
             dgvActividades.Anchor = AnchorStyles.None;
             dgvActividades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvActividades.Location = new Point(524, 199);
             dgvActividades.Name = "dgvActividades";
+            dgvActividades.ReadOnly = true;
             dgvActividades.Size = new Size(596, 232);
             dgvActividades.TabIndex = 10;
             dgvActividades.Visible = false;
@@ -180,15 +171,36 @@
             btnGuardar.Visible = false;
             btnGuardar.Click += btnGuardar_Click;
             // 
+            // lbcbNino
+            // 
+            lbcbNino.Anchor = AnchorStyles.None;
+            lbcbNino.AutoSize = true;
+            lbcbNino.Location = new Point(143, 312);
+            lbcbNino.Name = "lbcbNino";
+            lbcbNino.Size = new Size(93, 15);
+            lbcbNino.TabIndex = 13;
+            lbcbNino.Text = "Seleccione niño:";
+            // 
+            // txtDescripcion
+            // 
+            txtDescripcion.Anchor = AnchorStyles.None;
+            txtDescripcion.Location = new Point(143, 117);
+            txtDescripcion.Multiline = true;
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(338, 143);
+            txtDescripcion.TabIndex = 14;
+            txtDescripcion.Visible = false;
+            // 
             // Actividad
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(txtDescripcion);
+            Controls.Add(lbcbNino);
             Controls.Add(btnGuardar);
             Controls.Add(btnSeleccionarImagen);
             Controls.Add(dgvActividades);
-            Controls.Add(lbDescripcion);
             Controls.Add(cbNinos);
             Controls.Add(txtFecha);
             Controls.Add(txtNombre);
@@ -217,9 +229,10 @@
         public TextBox txtNombre;
         public TextBox txtFecha;
         public ComboBox cbNinos;
-        public ListBox lbDescripcion;
         public DataGridView dgvActividades;
         public Button btnSeleccionarImagen;
         public Button btnGuardar;
+        public Label lbcbNino;
+        public TextBox txtDescripcion;
     }
 }

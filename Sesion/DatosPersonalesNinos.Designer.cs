@@ -155,6 +155,7 @@
             dgvNinos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNinos.Location = new Point(306, 31);
             dgvNinos.Name = "dgvNinos";
+            dgvNinos.ReadOnly = true;
             dgvNinos.Size = new Size(482, 96);
             dgvNinos.TabIndex = 38;
             dgvNinos.CellClick += dgvNinos_CellClick;

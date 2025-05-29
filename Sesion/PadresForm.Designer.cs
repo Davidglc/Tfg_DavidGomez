@@ -55,6 +55,7 @@
             dataGridInscripciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridInscripciones.Location = new Point(12, 43);
             dataGridInscripciones.Name = "dataGridInscripciones";
+            dataGridInscripciones.ReadOnly = true;
             dataGridInscripciones.Size = new Size(776, 331);
             dataGridInscripciones.TabIndex = 4;
             // 

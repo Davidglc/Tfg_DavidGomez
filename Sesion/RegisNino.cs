@@ -90,7 +90,8 @@ namespace TFG_DavidGomez.Sesion
                 }
 
                 // Validar formato del DNI si se proporciona
-                if (!string.IsNullOrWhiteSpace(dni) && !System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
+                if (!string.IsNullOrWhiteSpace(dni) &&
+                    !System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
                 {
                     MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -107,7 +108,7 @@ namespace TFG_DavidGomez.Sesion
                 conexion.AbrirConexion();
 
                 // Verificar si ya existe un niño con el mismo DNI (solo si no es nulo)
-                if (!string.IsNullOrEmpty(dni))
+                if (!string.IsNullOrWhiteSpace(dni))
                 {
                     string checkQuery = "SELECT COUNT(*) FROM Ninos WHERE dni = @dni";
                     using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conexion.ObtenerConexion()))
@@ -130,7 +131,13 @@ namespace TFG_DavidGomez.Sesion
                     insertCmd.Parameters.AddWithValue("@nombre", nombre);
                     insertCmd.Parameters.AddWithValue("@apellidos", apellidos);
                     insertCmd.Parameters.AddWithValue("@fechaNacimiento", fechaNacimiento);
-                    insertCmd.Parameters.AddWithValue("@dni", string.IsNullOrEmpty(dni) ? (object)DBNull.Value : dni);
+
+                    // Aquí se guarda NULL si el campo está vacío
+                    if (string.IsNullOrWhiteSpace(dni))
+                        insertCmd.Parameters.AddWithValue("@dni", DBNull.Value);
+                    else
+                        insertCmd.Parameters.AddWithValue("@dni", dni);
+
                     insertCmd.Parameters.AddWithValue("@edad", edad);
                     insertCmd.Parameters.AddWithValue("@idPadre", idPadre);
 
@@ -148,6 +155,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Error al guardar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         /// <summary>
@@ -203,15 +211,6 @@ namespace TFG_DavidGomez.Sesion
         //    }
         //}
 
-        private void label5_Click(object sender, EventArgs e)
-        {
-            // Asignar un valor nulo (vacío) al campo del DNI
-            txDNI.Text = string.Empty;
-
-            // Informar al usuario que se dejará sin DNI
-            MessageBox.Show("Este niño no tendrá DNI registrado. Se dejará como valor nulo en la base de datos.",
-                "DNI no obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
 
     }
 }

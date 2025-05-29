@@ -16,12 +16,12 @@ namespace TFG_DavidGomez.Sesion
     {
         private Actividades actividadActual;
         private List<Nino> listaNinos;
+        private int? actividadSeleccionadaId = null;
 
         public Actividad()
         {
             InitializeComponent();
-            CargarActividades();          
-
+            CargarActividades();
         }
 
         public void CargarDatos(Actividades actividad)
@@ -182,7 +182,7 @@ namespace TFG_DavidGomez.Sesion
         {
             string nombre = txtNombre.Text.Trim();
             string fechaTexto = txtFecha.Text.Trim();
-            string descripcion = string.Join(",", lbDescripcion.Items.Cast<string>());
+            string descripcion = txtDescripcion.Text.Trim(); // ← ahora viene del TextBox
 
             if (!DateTime.TryParse(fechaTexto, out DateTime fecha))
             {
@@ -190,16 +190,31 @@ namespace TFG_DavidGomez.Sesion
                 return;
             }
 
-            if (string.IsNullOrEmpty(nombre) || lbDescripcion.Items.Count == 0 || imagenBytes == null)
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(descripcion) || imagenBytes == null || cbNinos.SelectedItem == null)
             {
-                MessageBox.Show("Completa todos los campos.");
+                MessageBox.Show("Completa todos los campos, incluyendo el monitor.");
                 return;
             }
 
-            string query = "INSERT INTO Actividades (nombre, descripcion, fecha, imagen) VALUES (@nombre, @descripcion, @fecha, @imagen)";
+            int idMonitor = ((ComboboxItem)cbNinos.SelectedItem).Value is int id ? id : 0;
 
             ConMDB con = new ConMDB();
             con.AbrirConexion();
+
+            string query;
+            if (actividadSeleccionadaId != null)
+            {
+                // UPDATE por ID
+                query = @"UPDATE Actividades 
+                  SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen, id_usuario = @id_usuario 
+                  WHERE id = @id";
+            }
+            else
+            {
+                // INSERT
+                query = @"INSERT INTO Actividades (nombre, descripcion, fecha, imagen, id_usuario) 
+                  VALUES (@nombre, @descripcion, @fecha, @imagen, @id_usuario)";
+            }
 
             using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
             {
@@ -207,21 +222,31 @@ namespace TFG_DavidGomez.Sesion
                 cmd.Parameters.AddWithValue("@descripcion", descripcion);
                 cmd.Parameters.AddWithValue("@fecha", fecha);
                 cmd.Parameters.AddWithValue("@imagen", imagenBytes);
+                cmd.Parameters.AddWithValue("@id_usuario", idMonitor);
+
+                if (actividadSeleccionadaId != null)
+                    cmd.Parameters.AddWithValue("@id", actividadSeleccionadaId.Value);
 
                 cmd.ExecuteNonQuery();
             }
 
             con.CerrarConexion();
-            MessageBox.Show("Actividad guardada.");
+
+            MessageBox.Show("Actividad guardada correctamente.");
+            actividadSeleccionadaId = null;
             CargarActividades();
             LimpiarFormulario();
         }
+
+
+
+
 
         private void LimpiarFormulario()
         {
             txtNombre.Clear();
             txtFecha.Clear();
-            lbDescripcion.Items.Clear();
+            txtDescripcion.Clear();
             pn_Img.BackgroundImage = null;
             imagenBytes = null;
         }
@@ -231,21 +256,111 @@ namespace TFG_DavidGomez.Sesion
             dgvActividades.Rows.Clear();
             dgvActividades.Columns.Clear();
 
+            // ID oculto
             dgvActividades.Columns.Add("Id", "ID");
             dgvActividades.Columns["Id"].Visible = false;
+
             dgvActividades.Columns.Add("Nombre", "Nombre");
             dgvActividades.Columns.Add("Fecha", "Fecha");
 
-            // 🟡 Añadir columna oculta para imagen
-            var colImg = new DataGridViewImageColumn
+            // Usamos una columna de texto para almacenar los bytes (sin mostrarla)
+            var colImagen = new DataGridViewTextBoxColumn
             {
                 Name = "Imagen",
                 HeaderText = "Imagen",
-                Visible = false // Ocultar visualmente
+                Visible = false
             };
-            dgvActividades.Columns.Add(colImg);
+            dgvActividades.Columns.Add(colImagen);
 
             string query = "SELECT id, nombre, fecha, imagen FROM Actividades";
+
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+
+            using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            using (MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    // Convertimos a base64 para que no dé errores en el grid
+                    string imagenBase64 = null;
+                    if (!reader.IsDBNull(reader.GetOrdinal("imagen")))
+                    {
+                        byte[] imgBytes = (byte[])reader["imagen"];
+                        imagenBase64 = Convert.ToBase64String(imgBytes);
+                    }
+
+                    dgvActividades.Rows.Add(
+                        reader["id"].ToString(),
+                        reader["nombre"].ToString(),
+                        Convert.ToDateTime(reader["fecha"]).ToString("yyyy-MM-dd"),
+                        imagenBase64
+                    );
+                }
+            }
+            EstilizarTabla(dgvActividades);
+            con.CerrarConexion();
+        }
+
+        private void dgvActividades_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow fila = dgvActividades.Rows[e.RowIndex];
+
+                txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
+                txtFecha.Text = fila.Cells["Fecha"].Value?.ToString() ?? "";
+                actividadSeleccionadaId = Convert.ToInt32(fila.Cells["Id"].Value);
+
+                string id = fila.Cells["Id"].Value?.ToString() ?? "";
+
+                txtDescripcion.Clear(); // ← limpiar el TextBox
+
+                ConMDB con = new ConMDB();
+                con.AbrirConexion();
+
+                string query = "SELECT descripcion, imagen FROM Actividades WHERE id = @id";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Descripción en una sola línea para el TextBox
+                            txtDescripcion.Text = reader["descripcion"].ToString();
+
+                            if (!reader.IsDBNull(reader.GetOrdinal("imagen")))
+                            {
+                                byte[] imagenBytes = (byte[])reader["imagen"];
+                                using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                {
+                                    Image originalImage = Image.FromStream(ms);
+                                    Image resizedImage = new Bitmap(originalImage, pn_Img.Size);
+                                    pn_Img.BackgroundImage = resizedImage;
+                                    pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
+                                }
+                            }
+                            else
+                            {
+                                pn_Img.BackgroundImage = null;
+                            }
+                        }
+                    }
+                }
+
+                con.CerrarConexion();
+            }
+        }
+
+
+        public void CargarMonitoresComboBox()
+        {
+            cbNinos.Items.Clear(); // Asegúrate de limpiar antes
+
+            string query = "SELECT id, nombre FROM Usuarios WHERE tipo = 'monitor'"; // Ajusta si usas otra tabla o condición
 
             ConMDB con = new ConMDB();
             con.AbrirConexion();
@@ -256,87 +371,56 @@ namespace TFG_DavidGomez.Sesion
                 {
                     while (reader.Read())
                     {
-                        dgvActividades.Rows.Add(
-                            reader["id"].ToString(),
-                            reader["nombre"].ToString(),
-                            Convert.ToDateTime(reader["fecha"]).ToString("yyyy-MM-dd"),
-                            reader["imagen"] is DBNull ? null : (byte[])reader["imagen"]
-                        );
+                        int id = reader.GetInt32("id");
+                        string nombre = reader.GetString("nombre");
+
+                        // Puedes almacenar el objeto completo o una tupla en ComboBox
+                        cbNinos.Items.Add(new ComboboxItem { Text = nombre, Value = id });
                     }
                 }
             }
 
             con.CerrarConexion();
+
+            // Opcional: selecciona el primero automáticamente
+            if (cbNinos.Items.Count > 0)
+                cbNinos.SelectedIndex = 0;
         }
 
-
-
-        private void dgvActividades_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void EstilizarTabla(DataGridView dgv)
         {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow fila = dgvActividades.Rows[e.RowIndex];
+            // Colores generales
+            dgv.BackgroundColor = Color.White;
+            dgv.GridColor = Color.LightGray;
+            dgv.BorderStyle = BorderStyle.None;
 
-                // Nombre y Fecha
-                txtNombre.Text = fila.Cells["Nombre"].Value?.ToString();
-                txtFecha.Text = fila.Cells["Fecha"].Value?.ToString();
+            // Estilo de columnas
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 144, 255); // Azul moderno
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersHeight = 35;
 
-                // ID para la descripción
-                string id = fila.Cells["Id"].Value?.ToString();
-                lbDescripcion.Items.Clear();
+            // Estilo de filas
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgv.DefaultCellStyle.ForeColor = Color.Black;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 255); // Azul claro al seleccionar
+            dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgv.RowTemplate.Height = 30;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245); // gris suave
 
-                string query = "SELECT descripcion FROM Actividades WHERE id = @id";
-                ConMDB con = new ConMDB();
-                con.AbrirConexion();
+            // Ajuste automático
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.MultiSelect = false;
+            dgv.AllowUserToResizeRows = false;
 
-                using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            string descripcion = reader["descripcion"].ToString();
-                            const int maxCharsPerLine = 60;
-
-                            for (int i = 0; i < descripcion.Length; i += maxCharsPerLine)
-                            {
-                                string linea = descripcion.Substring(i, Math.Min(maxCharsPerLine, descripcion.Length - i));
-                                lbDescripcion.Items.Add(linea.Trim());
-                            }
-
-                        }
-                    }
-                }
-
-                con.CerrarConexion();
-
-                // Imagen (ya debe estar cargada desde la base de datos como columna oculta "Imagen")
-                object valorImagen = fila.Cells["Imagen"].Value;
-                if (valorImagen != null && valorImagen != DBNull.Value && valorImagen is byte[] imgBytes)
-                {
-                    try
-                    {
-                        using (MemoryStream ms = new MemoryStream(imgBytes))
-                        {
-                            pn_Img.BackgroundImage = new Bitmap(Image.FromStream(ms), pn_Img.Size);
-                            pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
-                        }
-                    }
-                    catch
-                    {
-                        pn_Img.BackgroundImage = null; // Evita excepción si los bytes están corruptos
-                    }
-                }
-                else
-                {
-                    pn_Img.BackgroundImage = null;
-                }
-            }
+            // Quitar bordes de celdas al seleccionar
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.RowHeadersVisible = false; // Quita la columna de encabezado de filas
         }
-
-
-
 
     }
 }
