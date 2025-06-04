@@ -66,7 +66,6 @@ namespace TFG_DavidGomez.Sesion
                 string dni = txDNI.Text.Trim();
                 string apellidos = txApellidos.Text.Trim();
                 DateTime fechaNacimiento;
-                int edad;
 
                 // Validar formato de fecha de nacimiento
                 if (!DateTime.TryParseExact(txFnac.Text.Trim(), "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
@@ -75,12 +74,9 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                // Validar edad
-                if (!int.TryParse(txEdad.Text.Trim(), out edad))
-                {
-                    MessageBox.Show("Por favor, introduce un valor numérico válido para la edad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                // Calcular edad automáticamente
+                int edad = DateTime.Today.Year - fechaNacimiento.Year;
+                if (fechaNacimiento > DateTime.Today.AddYears(-edad)) edad--;
 
                 // Validar campos requeridos
                 if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellidos))
@@ -90,8 +86,7 @@ namespace TFG_DavidGomez.Sesion
                 }
 
                 // Validar formato del DNI si se proporciona
-                if (!string.IsNullOrWhiteSpace(dni) &&
-                    !System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
+                if (!string.IsNullOrWhiteSpace(dni) && !System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
                 {
                     MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -131,13 +126,7 @@ namespace TFG_DavidGomez.Sesion
                     insertCmd.Parameters.AddWithValue("@nombre", nombre);
                     insertCmd.Parameters.AddWithValue("@apellidos", apellidos);
                     insertCmd.Parameters.AddWithValue("@fechaNacimiento", fechaNacimiento);
-
-                    // Aquí se guarda NULL si el campo está vacío
-                    if (string.IsNullOrWhiteSpace(dni))
-                        insertCmd.Parameters.AddWithValue("@dni", DBNull.Value);
-                    else
-                        insertCmd.Parameters.AddWithValue("@dni", dni);
-
+                    insertCmd.Parameters.AddWithValue("@dni", string.IsNullOrWhiteSpace(dni) ? (object)DBNull.Value : dni);
                     insertCmd.Parameters.AddWithValue("@edad", edad);
                     insertCmd.Parameters.AddWithValue("@idPadre", idPadre);
 
@@ -155,6 +144,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Error al guardar el niño: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 

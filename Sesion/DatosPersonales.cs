@@ -339,7 +339,6 @@ namespace TFG_DavidGomez.Sesion
                 return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
-
     }
 }
 

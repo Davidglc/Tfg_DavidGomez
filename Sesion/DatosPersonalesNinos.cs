@@ -30,6 +30,8 @@ namespace TFG_DavidGomez.Sesion
 
         public DatosPersonalesNinos(int idPadre)
         {
+
+            
             InitializeComponent();
             this.idPadre = idPadre;
             RedondearBoton(btn_Aceptar, 20);
@@ -61,13 +63,13 @@ namespace TFG_DavidGomez.Sesion
             dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FechaNacimiento", HeaderText = "Fecha de nacimiento" });
             dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Edad", HeaderText = "Edad" });
 
-            dgvNinos.Dock = DockStyle.None;
+            //dgvNinos.Dock = DockStyle.None;
             dgvNinos.Width = 600;
             dgvNinos.Height = 150;
 
             // Posicionar manualmente al lado de los TextBox (ajusta según el ancho del grupo de controles)
             dgvNinos.Left = 60; // <-- Aquí decides el desplazamiento lateral
-            dgvNinos.Top = 120;
+            dgvNinos.Top = lblUsuario.Top;
 
             dgvNinos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvNinos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -116,7 +118,6 @@ namespace TFG_DavidGomez.Sesion
                 txApellidos.Text = nino.Apellidos;
                 txDNI.Text = nino.DNI;
                 txFnac.Text = nino.FechaNacimiento.ToString("yyyy/MM/dd");
-                txEdad.Text = nino.Edad.ToString();
             }
         }
 
@@ -135,7 +136,6 @@ namespace TFG_DavidGomez.Sesion
             string apellidos = txApellidos.Text.Trim();
             string dni = txDNI.Text.Trim().ToUpper();
             DateTime fechaNacimiento;
-            int edad;
 
             if (!DateTime.TryParseExact(txFnac.Text.Trim(), "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
             {
@@ -143,23 +143,22 @@ namespace TFG_DavidGomez.Sesion
                 return;
             }
 
-            if (!int.TryParse(txEdad.Text.Trim(), out edad))
+            // ✅ Calcular edad automáticamente
+            int edad = DateTime.Today.Year - fechaNacimiento.Year;
+            if (fechaNacimiento > DateTime.Today.AddYears(-edad))
             {
-                MessageBox.Show("Edad inválida.");
-                return;
+                edad--;
             }
 
-            // Validación del formato del DNI si no es nulo
             if (!string.IsNullOrEmpty(dni) && !System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Z]$"))
             {
-                MessageBox.Show("El DNI debe tener 8 cifras seguidas de una letra mayúscula (ejemplo: 1234567A).");
+                MessageBox.Show("El DNI debe tener 8 cifras seguidas de una letra mayúscula (ejemplo: 12345678A).");
                 return;
             }
 
             ConMDB con = new ConMDB();
             con.AbrirConexion();
 
-            // Verificar si el DNI está en uso por otro niño
             if (!string.IsNullOrEmpty(dni))
             {
                 string dniNiñosQuery = "SELECT COUNT(*) FROM Ninos WHERE dni = @dni AND id != @id";
@@ -176,7 +175,6 @@ namespace TFG_DavidGomez.Sesion
                     }
                 }
 
-                // Verificar si el DNI está en uso por algún usuario
                 string dniUsuariosQuery = "SELECT COUNT(*) FROM Usuarios WHERE dni = @dni";
                 using (MySqlCommand cmd = new MySqlCommand(dniUsuariosQuery, con.ObtenerConexion()))
                 {
@@ -191,14 +189,13 @@ namespace TFG_DavidGomez.Sesion
                 }
             }
 
-            // Actualizar datos
             string updateQuery = @"UPDATE Ninos SET 
-                        nombre = @nombre, 
-                        apellidos = @apellidos, 
-                        dni = @dni, 
-                        fecha_nacimiento = @fechaNacimiento, 
-                        edad = @edad 
-                       WHERE id = @id";
+                nombre = @nombre, 
+                apellidos = @apellidos, 
+                dni = @dni, 
+                fecha_nacimiento = @fechaNacimiento, 
+                edad = @edad 
+                WHERE id = @id";
 
             using (MySqlCommand cmd = new MySqlCommand(updateQuery, con.ObtenerConexion()))
             {
@@ -223,6 +220,7 @@ namespace TFG_DavidGomez.Sesion
 
             con.CerrarConexion();
         }
+
         private void EstilizarTabla(DataGridView dgv)
         {
             // Colores generales

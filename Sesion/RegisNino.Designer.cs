@@ -37,10 +37,12 @@
             label1 = new Label();
             txFnac = new TextBox();
             label3 = new Label();
-            txEdad = new TextBox();
-            label4 = new Label();
             btn_Aceptar = new Button();
             label5 = new Label();
+            PanelParent = new Panel();
+            panel2 = new Panel();
+            PanelParent.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // txDNI
@@ -116,25 +118,6 @@
             label3.TabIndex = 21;
             label3.Text = "Fecha de nacimiento";
             // 
-            // txEdad
-            // 
-            txEdad.Anchor = AnchorStyles.None;
-            txEdad.Location = new Point(22, 256);
-            txEdad.MaxLength = 2;
-            txEdad.Name = "txEdad";
-            txEdad.Size = new Size(304, 23);
-            txEdad.TabIndex = 24;
-            // 
-            // label4
-            // 
-            label4.Anchor = AnchorStyles.None;
-            label4.AutoSize = true;
-            label4.Location = new Point(22, 238);
-            label4.Name = "label4";
-            label4.Size = new Size(33, 15);
-            label4.TabIndex = 23;
-            label4.Text = "Edad";
-            // 
             // btn_Aceptar
             // 
             btn_Aceptar.Anchor = AnchorStyles.None;
@@ -142,7 +125,7 @@
             btn_Aceptar.FlatAppearance.BorderSize = 0;
             btn_Aceptar.FlatStyle = FlatStyle.Flat;
             btn_Aceptar.ForeColor = Color.White;
-            btn_Aceptar.Location = new Point(118, 313);
+            btn_Aceptar.Location = new Point(124, 253);
             btn_Aceptar.Name = "btn_Aceptar";
             btn_Aceptar.Size = new Size(75, 23);
             btn_Aceptar.TabIndex = 25;
@@ -160,6 +143,33 @@
             label5.TabIndex = 27;
             label5.Text = "(Si el niño no tiene DNI deja el campo en blanco)";
             // 
+            // PanelParent
+            // 
+            PanelParent.Controls.Add(panel2);
+            PanelParent.Dock = DockStyle.Fill;
+            PanelParent.Location = new Point(0, 0);
+            PanelParent.Name = "PanelParent";
+            PanelParent.Size = new Size(364, 418);
+            PanelParent.TabIndex = 28;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(lblUsuario);
+            panel2.Controls.Add(txUsuario);
+            panel2.Controls.Add(label5);
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(txDNI);
+            panel2.Controls.Add(label1);
+            panel2.Controls.Add(txApellidos);
+            panel2.Controls.Add(label3);
+            panel2.Controls.Add(txFnac);
+            panel2.Controls.Add(btn_Aceptar);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(364, 418);
+            panel2.TabIndex = 29;
+            // 
             // RegisNino
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -167,25 +177,16 @@
             AutoSize = true;
             BackColor = Color.LightGray;
             ClientSize = new Size(364, 418);
-            Controls.Add(label5);
-            Controls.Add(btn_Aceptar);
-            Controls.Add(txEdad);
-            Controls.Add(label4);
-            Controls.Add(txFnac);
-            Controls.Add(label3);
-            Controls.Add(txApellidos);
-            Controls.Add(label1);
-            Controls.Add(txDNI);
-            Controls.Add(label2);
-            Controls.Add(txUsuario);
-            Controls.Add(lblUsuario);
+            Controls.Add(PanelParent);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegisNino";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Registrar Niño";
             WindowState = FormWindowState.Maximized;
+            PanelParent.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -198,9 +199,9 @@
         private Label label1;
         private TextBox txFnac;
         private Label label3;
-        private TextBox txEdad;
-        private Label label4;
         private Button btn_Aceptar;
         private Label label5;
+        private Panel PanelParent;
+        private Panel panel2;
     }
 }

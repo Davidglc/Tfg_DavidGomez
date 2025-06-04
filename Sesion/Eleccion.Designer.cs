@@ -38,19 +38,27 @@
             editarDatosPersonalesToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             PanelBotones = new FlowLayoutPanel();
+            PanelParent = new Panel();
+            PanelFill = new Panel();
+            PanelMenu = new Panel();
+            panel4 = new Panel();
             menuStrip1.SuspendLayout();
+            PanelParent.SuspendLayout();
+            PanelFill.SuspendLayout();
+            PanelMenu.SuspendLayout();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // btn_izq
             // 
-            btn_izq.Anchor = AnchorStyles.None;
             btn_izq.BackColor = Color.DodgerBlue;
+            btn_izq.Dock = DockStyle.Left;
             btn_izq.FlatAppearance.BorderSize = 0;
             btn_izq.FlatStyle = FlatStyle.Flat;
             btn_izq.ForeColor = Color.White;
-            btn_izq.Location = new Point(85, 448);
+            btn_izq.Location = new Point(0, 0);
             btn_izq.Name = "btn_izq";
-            btn_izq.Size = new Size(93, 23);
+            btn_izq.Size = new Size(93, 25);
             btn_izq.TabIndex = 1;
             btn_izq.Text = "Mes anterior";
             btn_izq.UseVisualStyleBackColor = false;
@@ -58,14 +66,14 @@
             // 
             // btn_drch
             // 
-            btn_drch.Anchor = AnchorStyles.None;
             btn_drch.BackColor = Color.DodgerBlue;
+            btn_drch.Dock = DockStyle.Right;
             btn_drch.FlatAppearance.BorderSize = 0;
             btn_drch.FlatStyle = FlatStyle.Flat;
             btn_drch.ForeColor = Color.White;
-            btn_drch.Location = new Point(429, 448);
+            btn_drch.Location = new Point(676, 0);
             btn_drch.Name = "btn_drch";
-            btn_drch.Size = new Size(103, 23);
+            btn_drch.Size = new Size(103, 25);
             btn_drch.TabIndex = 2;
             btn_drch.Text = "Siguiente mes";
             btn_drch.UseVisualStyleBackColor = false;
@@ -117,21 +125,57 @@
             // 
             // PanelBotones
             // 
-            PanelBotones.Anchor = AnchorStyles.None;
-            PanelBotones.Location = new Point(20, 37);
+            PanelBotones.Dock = DockStyle.Fill;
+            PanelBotones.Location = new Point(0, 0);
             PanelBotones.Name = "PanelBotones";
-            PanelBotones.Size = new Size(731, 390);
+            PanelBotones.Size = new Size(779, 458);
             PanelBotones.TabIndex = 4;
+            // 
+            // PanelParent
+            // 
+            PanelParent.Controls.Add(PanelFill);
+            PanelParent.Controls.Add(PanelMenu);
+            PanelParent.Dock = DockStyle.Fill;
+            PanelParent.Location = new Point(0, 0);
+            PanelParent.Name = "PanelParent";
+            PanelParent.Size = new Size(779, 480);
+            PanelParent.TabIndex = 0;
+            // 
+            // PanelFill
+            // 
+            PanelFill.Controls.Add(PanelBotones);
+            PanelFill.Dock = DockStyle.Fill;
+            PanelFill.Location = new Point(0, 22);
+            PanelFill.Name = "PanelFill";
+            PanelFill.Size = new Size(779, 458);
+            PanelFill.TabIndex = 1;
+            // 
+            // PanelMenu
+            // 
+            PanelMenu.Controls.Add(menuStrip1);
+            PanelMenu.Dock = DockStyle.Top;
+            PanelMenu.Location = new Point(0, 0);
+            PanelMenu.Name = "PanelMenu";
+            PanelMenu.Size = new Size(779, 22);
+            PanelMenu.TabIndex = 2;
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(btn_drch);
+            panel4.Controls.Add(btn_izq);
+            panel4.Dock = DockStyle.Bottom;
+            panel4.Location = new Point(0, 480);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(779, 25);
+            panel4.TabIndex = 3;
             // 
             // Eleccion
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(779, 505);
-            Controls.Add(PanelBotones);
-            Controls.Add(menuStrip1);
-            Controls.Add(btn_drch);
-            Controls.Add(btn_izq);
+            Controls.Add(PanelParent);
+            Controls.Add(panel4);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Eleccion";
             StartPosition = FormStartPosition.CenterScreen;
@@ -139,8 +183,12 @@
             WindowState = FormWindowState.Maximized;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            PanelParent.ResumeLayout(false);
+            PanelFill.ResumeLayout(false);
+            PanelMenu.ResumeLayout(false);
+            PanelMenu.PerformLayout();
+            panel4.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -153,5 +201,9 @@
         private ToolStripMenuItem editarDatosPersonalesToolStripMenuItem;
         private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
         private FlowLayoutPanel PanelBotones;
+        private Panel PanelParent;
+        private Panel PanelFill;
+        private Panel panel4;
+        private Panel PanelMenu;
     }
 }

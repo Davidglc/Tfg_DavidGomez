@@ -119,18 +119,58 @@ namespace TFG_DavidGomez
                 }
                 else if (rol == "admin")
                 {
-                    // Mostrar formulario monitor en modo admin
-                    MonitorForm monitorForm = new MonitorForm(
-                        DateTime.Now,
-                        "Panel de Administración",
-                        new List<string>(),
-                        new List<String>()
-                    );
+                    try
+                    {
+                        // Obtener la actividad correspondiente al día actual
+                        var actividad = ma.ObtenerActividadPorDia(DateTime.Today);
 
-                    monitorForm.añadirMonitorToolStripMenuItem.Visible = true;
-                    monitorForm.modificarActividadToolStripMenuItem.Visible = true;
-                    this.Hide();
-                    monitorForm.Show();
+                        if (actividad != null)
+                        {
+                            // Extraer datos de la actividad
+                            string nombreActividad = actividad["nombre"].ToString();
+                            int idActividad = Convert.ToInt32(actividad["id"]);
+
+                            var materiales = ma.ObtenerMaterialesPorActividad(idActividad);
+                            var ninos = ma.ObtenerNinosPorActividad(idActividad);
+
+                            var nombresNinos = ninos.Select(n => $"Nombre: {n.Nombre}, Apellidos: {n.Apellidos}, Edad: {n.Edad}").ToList();
+
+                            // Mostrar formulario Monitor con datos reales
+                            MonitorForm monitorForm = new MonitorForm(
+                                DateTime.Today,
+                                nombreActividad,
+                                materiales,
+                                nombresNinos
+                            );
+
+                            // Mostrar opciones de admin también
+                            monitorForm.añadirMonitorToolStripMenuItem.Visible = true;
+                            monitorForm.modificarActividadToolStripMenuItem.Visible = true;
+
+                            this.Hide();
+                            monitorForm.Show();
+                        }
+                        else
+                        {
+                            // No hay actividad: cargar modo panel administración
+                            MonitorForm monitorForm = new MonitorForm(
+                                DateTime.Today,
+                                "Panel de Administración",
+                                new List<string>(),
+                                new List<string>()
+                            );
+
+                            monitorForm.añadirMonitorToolStripMenuItem.Visible = true;
+                            monitorForm.modificarActividadToolStripMenuItem.Visible = true;
+
+                            this.Hide();
+                            monitorForm.Show();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al cargar datos del administrador: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else

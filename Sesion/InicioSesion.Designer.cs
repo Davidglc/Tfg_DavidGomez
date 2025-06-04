@@ -36,6 +36,10 @@
             TxContrasena = new TextBox();
             btnRegistrarse = new Button();
             lblBienvenia = new Label();
+            PanelParent = new Panel();
+            PanelCosas = new Panel();
+            PanelParent.SuspendLayout();
+            PanelCosas.SuspendLayout();
             SuspendLayout();
             // 
             // lblUsuario
@@ -122,6 +126,30 @@
             lblBienvenia.TabIndex = 6;
             lblBienvenia.Text = "BIENVENIDO";
             // 
+            // PanelParent
+            // 
+            PanelParent.Controls.Add(PanelCosas);
+            PanelParent.Dock = DockStyle.Fill;
+            PanelParent.Location = new Point(0, 0);
+            PanelParent.Name = "PanelParent";
+            PanelParent.Size = new Size(800, 450);
+            PanelParent.TabIndex = 7;
+            // 
+            // PanelCosas
+            // 
+            PanelCosas.Controls.Add(lblBienvenia);
+            PanelCosas.Controls.Add(lblUsuario);
+            PanelCosas.Controls.Add(lblContraseña);
+            PanelCosas.Controls.Add(txUsuario);
+            PanelCosas.Controls.Add(TxContrasena);
+            PanelCosas.Controls.Add(btnRegistrarse);
+            PanelCosas.Controls.Add(btnInicioSesion);
+            PanelCosas.Dock = DockStyle.Fill;
+            PanelCosas.Location = new Point(0, 0);
+            PanelCosas.Name = "PanelCosas";
+            PanelCosas.Size = new Size(800, 450);
+            PanelCosas.TabIndex = 8;
+            // 
             // InicioSesion
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -130,21 +158,17 @@
             BackColor = Color.LightGray;
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(800, 450);
-            Controls.Add(lblBienvenia);
-            Controls.Add(btnRegistrarse);
-            Controls.Add(TxContrasena);
-            Controls.Add(txUsuario);
-            Controls.Add(btnInicioSesion);
-            Controls.Add(lblContraseña);
-            Controls.Add(lblUsuario);
+            Controls.Add(PanelParent);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "InicioSesion";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inicio Sesión";
             WindowState = FormWindowState.Maximized;
+            PanelParent.ResumeLayout(false);
+            PanelCosas.ResumeLayout(false);
+            PanelCosas.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -156,5 +180,7 @@
         private TextBox TxContrasena;
         private Button btnRegistrarse;
         private Label lblBienvenia;
+        private Panel PanelParent;
+        private Panel PanelCosas;
     }
 }

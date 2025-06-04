@@ -45,6 +45,10 @@
             BtnGuardarMoni = new Button();
             TxDirec = new TextBox();
             TxDireccion = new Label();
+            PanelParent = new Panel();
+            PanelCosas = new Panel();
+            PanelParent.SuspendLayout();
+            PanelCosas.SuspendLayout();
             SuspendLayout();
             // 
             // TxContrasena
@@ -213,6 +217,39 @@
             TxDireccion.TabIndex = 22;
             TxDireccion.Text = "Dirección";
             // 
+            // PanelParent
+            // 
+            PanelParent.Controls.Add(PanelCosas);
+            PanelParent.Dock = DockStyle.Fill;
+            PanelParent.Location = new Point(0, 0);
+            PanelParent.Name = "PanelParent";
+            PanelParent.Size = new Size(466, 450);
+            PanelParent.TabIndex = 23;
+            // 
+            // PanelCosas
+            // 
+            PanelCosas.Controls.Add(lblUsuario);
+            PanelCosas.Controls.Add(txUsuario);
+            PanelCosas.Controls.Add(lblContraseña);
+            PanelCosas.Controls.Add(TxContrasena);
+            PanelCosas.Controls.Add(label2);
+            PanelCosas.Controls.Add(txDNI);
+            PanelCosas.Controls.Add(label3);
+            PanelCosas.Controls.Add(txTelf);
+            PanelCosas.Controls.Add(label4);
+            PanelCosas.Controls.Add(txCorreo);
+            PanelCosas.Controls.Add(label1);
+            PanelCosas.Controls.Add(txApellidos);
+            PanelCosas.Controls.Add(TxDireccion);
+            PanelCosas.Controls.Add(TxDirec);
+            PanelCosas.Controls.Add(BtnGuardarMoni);
+            PanelCosas.Controls.Add(btnGuardar);
+            PanelCosas.Dock = DockStyle.Fill;
+            PanelCosas.Location = new Point(0, 0);
+            PanelCosas.Name = "PanelCosas";
+            PanelCosas.Size = new Size(466, 450);
+            PanelCosas.TabIndex = 24;
+            // 
             // Registrarse
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -220,29 +257,16 @@
             AutoSize = true;
             BackColor = Color.LightGray;
             ClientSize = new Size(466, 450);
-            Controls.Add(TxDirec);
-            Controls.Add(TxDireccion);
-            Controls.Add(BtnGuardarMoni);
-            Controls.Add(txApellidos);
-            Controls.Add(label1);
-            Controls.Add(btnGuardar);
-            Controls.Add(txCorreo);
-            Controls.Add(label4);
-            Controls.Add(txTelf);
-            Controls.Add(label3);
-            Controls.Add(txDNI);
-            Controls.Add(label2);
-            Controls.Add(TxContrasena);
-            Controls.Add(txUsuario);
-            Controls.Add(lblContraseña);
-            Controls.Add(lblUsuario);
+            Controls.Add(PanelParent);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Registrarse";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Registrarse";
             WindowState = FormWindowState.Maximized;
+            PanelParent.ResumeLayout(false);
+            PanelCosas.ResumeLayout(false);
+            PanelCosas.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -263,5 +287,7 @@
         public Button BtnGuardarMoni;
         private TextBox TxDirec;
         private Label TxDireccion;
+        private Panel PanelParent;
+        private Panel PanelCosas;
     }
 }

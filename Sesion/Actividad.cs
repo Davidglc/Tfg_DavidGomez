@@ -21,6 +21,7 @@ namespace TFG_DavidGomez.Sesion
         public Actividad()
         {
             InitializeComponent();
+            // ConfigurarPaneles();
             CargarActividades();
         }
 
@@ -42,7 +43,46 @@ namespace TFG_DavidGomez.Sesion
             }
 
             CargarNinosDelPadre();
+            CargarMaterialesDesdeActividad(actividad.Id);
         }
+
+        private void CargarMaterialesDesdeActividad(int idActividad)
+        {
+            dbgMateriales.Columns.Clear();
+            dbgMateriales.Rows.Clear();
+
+            // Solo una columna: nombre del material
+            dbgMateriales.Columns.Add("Material", "Nombre del Material");
+
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+
+            string query = "SELECT materiales FROM Actividades WHERE id = @id";
+
+            using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            {
+                cmd.Parameters.AddWithValue("@id", idActividad);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read() && !reader.IsDBNull(0))
+                    {
+                        string materialesTexto = reader.GetString(0);
+                        string[] materiales = materialesTexto.Split(',');
+
+                        foreach (var item in materiales)
+                        {
+                            string nombreMaterial = item.Trim();
+                            dbgMateriales.Rows.Add(nombreMaterial);
+                        }
+                    }
+                }
+            }
+            EstilizarTabla(dbgMateriales);
+            con.CerrarConexion();
+        }
+
+
 
         private void CargarNinosDelPadre()
         {
@@ -178,11 +218,12 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             string nombre = txtNombre.Text.Trim();
             string fechaTexto = txtFecha.Text.Trim();
-            string descripcion = txtDescripcion.Text.Trim(); // ← ahora viene del TextBox
+            string descripcion = txtDescripcion.Text.Trim();
 
             if (!DateTime.TryParse(fechaTexto, out DateTime fecha))
             {
@@ -196,7 +237,11 @@ namespace TFG_DavidGomez.Sesion
                 return;
             }
 
+            // Obtener ID del monitor desde el ComboBox
             int idMonitor = ((ComboboxItem)cbNinos.SelectedItem).Value is int id ? id : 0;
+
+            // 🧠 Obtener materiales de la tabla dbgMateriales
+            string materiales = ObtenerMaterialesDesdeTabla();
 
             ConMDB con = new ConMDB();
             con.AbrirConexion();
@@ -204,16 +249,14 @@ namespace TFG_DavidGomez.Sesion
             string query;
             if (actividadSeleccionadaId != null)
             {
-                // UPDATE por ID
                 query = @"UPDATE Actividades 
-                  SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen, id_usuario = @id_usuario 
+                  SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen, id_usuario = @id_usuario, materiales = @materiales 
                   WHERE id = @id";
             }
             else
             {
-                // INSERT
-                query = @"INSERT INTO Actividades (nombre, descripcion, fecha, imagen, id_usuario) 
-                  VALUES (@nombre, @descripcion, @fecha, @imagen, @id_usuario)";
+                query = @"INSERT INTO Actividades (nombre, descripcion, fecha, imagen, id_usuario, materiales) 
+                  VALUES (@nombre, @descripcion, @fecha, @imagen, @id_usuario, @materiales)";
             }
 
             using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
@@ -223,6 +266,7 @@ namespace TFG_DavidGomez.Sesion
                 cmd.Parameters.AddWithValue("@fecha", fecha);
                 cmd.Parameters.AddWithValue("@imagen", imagenBytes);
                 cmd.Parameters.AddWithValue("@id_usuario", idMonitor);
+                cmd.Parameters.AddWithValue("@materiales", materiales);
 
                 if (actividadSeleccionadaId != null)
                     cmd.Parameters.AddWithValue("@id", actividadSeleccionadaId.Value);
@@ -239,7 +283,24 @@ namespace TFG_DavidGomez.Sesion
         }
 
 
+        private string ObtenerMaterialesDesdeTabla()
+        {
+            List<string> materialesList = new List<string>();
 
+            foreach (DataGridViewRow row in dbgMateriales.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                string nombre = row.Cells[0].Value?.ToString() ?? "";
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    materialesList.Add($"{nombre}");
+                }
+            }
+
+            return string.Join(", ", materialesList);
+        }
 
 
         private void LimpiarFormulario()
@@ -249,6 +310,8 @@ namespace TFG_DavidGomez.Sesion
             txtDescripcion.Clear();
             pn_Img.BackgroundImage = null;
             imagenBytes = null;
+            dbgMateriales.Columns.Clear();
+            dbgMateriales.Rows.Clear();
         }
 
         private void CargarActividades()
@@ -311,6 +374,7 @@ namespace TFG_DavidGomez.Sesion
                 txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
                 txtFecha.Text = fila.Cells["Fecha"].Value?.ToString() ?? "";
                 actividadSeleccionadaId = Convert.ToInt32(fila.Cells["Id"].Value);
+                
 
                 string id = fila.Cells["Id"].Value?.ToString() ?? "";
 
@@ -319,7 +383,7 @@ namespace TFG_DavidGomez.Sesion
                 ConMDB con = new ConMDB();
                 con.AbrirConexion();
 
-                string query = "SELECT descripcion, imagen FROM Actividades WHERE id = @id";
+                string query = "SELECT descripcion, imagen, materiales FROM Actividades WHERE id = @id\r\n";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
                 {
@@ -331,6 +395,9 @@ namespace TFG_DavidGomez.Sesion
                         {
                             // Descripción en una sola línea para el TextBox
                             txtDescripcion.Text = reader["descripcion"].ToString();
+                            string materialesTexto = reader["materiales"].ToString();
+                            CargarMaterialesEnTabla(materialesTexto);
+
 
                             if (!reader.IsDBNull(reader.GetOrdinal("imagen")))
                             {
@@ -353,6 +420,95 @@ namespace TFG_DavidGomez.Sesion
 
                 con.CerrarConexion();
             }
+        }
+
+        private string ObtenerMaterialesDeActividad(string idActividad)
+        {
+            string materiales = "";
+
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+
+            string query = "SELECT materiales FROM Actividades WHERE id = @id";
+            using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            {
+                cmd.Parameters.AddWithValue("@id", idActividad);
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        materiales = reader["materiales"].ToString();
+                    }
+                }
+            }
+
+            con.CerrarConexion();
+            return materiales;
+        }
+
+        private void CargarMaterialesEnTabla(string materialesTexto)
+        {
+            dbgMateriales.Columns.Clear();
+            dbgMateriales.Rows.Clear();
+
+            dbgMateriales.Columns.Add("Material", "Materiales");
+
+            if (!string.IsNullOrWhiteSpace(materialesTexto))
+            {
+                string[] materiales = materialesTexto.Split(',');
+
+                foreach (var item in materiales)
+                {
+                    dbgMateriales.Rows.Add(item.Trim());
+                }
+            }
+
+            EstilizarTabla(dbgMateriales);
+        }
+
+
+
+        private void ConfigurarPaneles()
+        {
+            // Panel principal
+            Panel panelPrincipal = new Panel { Dock = DockStyle.Fill };
+            this.Controls.Add(panelPrincipal);
+
+            // Panel izquierdo
+            Panel panelIzq = new Panel { Dock = DockStyle.Left, Width = 250 };
+            panelPrincipal.Controls.Add(panelIzq);
+
+            // Panel derecho
+            Panel panelDer = new Panel { Dock = DockStyle.Right, Width = 400 };
+            panelPrincipal.Controls.Add(panelDer);
+
+            // Panel inferior
+            Panel panelInf = new Panel { Dock = DockStyle.Bottom, Height = 120 };
+            panelPrincipal.Controls.Add(panelInf);
+
+            // Panel centro
+            Panel panelCentro = new Panel { Dock = DockStyle.Fill };
+            panelPrincipal.Controls.Add(panelCentro);
+
+            // Ahora mueve tus controles manualmente a cada panel
+            // Panel izquierdo (datos de actividad)
+            panelIzq.Controls.Add(lb_nombre);
+            panelIzq.Controls.Add(txtNombre);
+            panelIzq.Controls.Add(lb_Fecha);
+            panelIzq.Controls.Add(txtFecha);
+            panelIzq.Controls.Add(lb_des);
+            panelIzq.Controls.Add(txtDescripcion);
+
+            // Panel derecho (imagen y tabla)
+            panelDer.Controls.Add(pn_Img);
+            panelDer.Controls.Add(dgvActividades);
+
+            // Panel inferior (botones y combo)
+            panelInf.Controls.Add(btnGuardar);
+            panelInf.Controls.Add(btnSeleccionarImagen);
+            panelInf.Controls.Add(btnApuntar);
+            panelInf.Controls.Add(cbNinos);
+            panelInf.Controls.Add(lbcbNino);
         }
 
 
@@ -422,5 +578,9 @@ namespace TFG_DavidGomez.Sesion
             dgv.RowHeadersVisible = false; // Quita la columna de encabezado de filas
         }
 
+        private void Actividad_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

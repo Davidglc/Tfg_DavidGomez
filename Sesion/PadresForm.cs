@@ -111,30 +111,30 @@ namespace TFG_DavidGomez
         {
             int margenVertical = 15;
 
-            // Establece tamaño fijo del DataGridView (lo mínimo necesario)
+            // Tamaño fijo para la tabla
             dataGridInscripciones.Width = 700;
             dataGridInscripciones.Height = 300;
-            dataGridInscripciones.Left = (this.ClientSize.Width - dataGridInscripciones.Width) / 2;
-            dataGridInscripciones.Top = 250;
 
-            // Asegúrate de desactivar el autoajuste para respetar los anchos definidos
+            // Centrar la tabla en el panel contenedor
+            dataGridInscripciones.Left = (PanelCosas.Width - dataGridInscripciones.Width) / 2;
+            dataGridInscripciones.Top = 50; // Puedes ajustar este valor
+
+            // Desactivar autoajuste y establecer anchos de columna
             dataGridInscripciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
-            // Establecer ancho manual para columnas si ya están agregadas
             if (dataGridInscripciones.Columns.Count > 0)
             {
-                dataGridInscripciones.Columns[0].Width = 130; // Nombre del Niño
-                dataGridInscripciones.Columns[1].Width = 380; // Nombre de la Actividad (más ancha)
-                dataGridInscripciones.Columns[2].Width = 160; // Fecha
+                dataGridInscripciones.Columns[0].Width = 130;
+                dataGridInscripciones.Columns[1].Width = 380;
+                dataGridInscripciones.Columns[2].Width = 160;
             }
 
-            // Posición del botón centrado y cerca de la tabla
+            // Centrar el botón respecto al panel, debajo de la tabla
             btn_DA.Width = 130;
             btn_DA.Height = 40;
-            btn_DA.Left = (this.ClientSize.Width - btn_DA.Width) / 2;
-            btn_DA.Top = 375;
+            btn_DA.Left = (PanelCosas.Width - btn_DA.Width) / 2;
+            btn_DA.Top = dataGridInscripciones.Bottom + margenVertical;
         }
-
 
 
 
