@@ -212,7 +212,6 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                string contraseñaEncriptada = EncriptarSHA256(contraseña);
 
                 ConMDB con = new ConMDB();
                 con.AbrirConexion();
@@ -231,6 +230,9 @@ namespace TFG_DavidGomez.Sesion
                         return;
                     }
                 }
+
+
+                string contraseñaEncriptada = EncriptarSHA256(contraseña);
 
                 // Insertar nuevo monitor
                 string queryInsert = @"INSERT INTO Usuarios (nombre, apellidos, dni, contrasena, tipo, telefono, correo, direccion)

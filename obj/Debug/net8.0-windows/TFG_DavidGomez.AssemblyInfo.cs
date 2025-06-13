@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TFG_DavidGomez")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6723256d24a6424c2193bb62d2597c9a43827b7f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42d6b99c24470ff8dd23ced1052b2231167e2f5c")]
 [assembly: System.Reflection.AssemblyProductAttribute("TFG_DavidGomez")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TFG_DavidGomez")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

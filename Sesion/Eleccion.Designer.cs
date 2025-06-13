@@ -104,10 +104,11 @@
             // 
             // usuarioToolStripMenuItem
             // 
+            usuarioToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
             usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { editarDatosPersonalesToolStripMenuItem, cerrarSesiónToolStripMenuItem });
+            usuarioToolStripMenuItem.Image = (Image)resources.GetObject("usuarioToolStripMenuItem.Image");
             usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
-            usuarioToolStripMenuItem.Size = new Size(59, 20);
-            usuarioToolStripMenuItem.Text = "Usuario";
+            usuarioToolStripMenuItem.Size = new Size(28, 20);
             // 
             // editarDatosPersonalesToolStripMenuItem
             // 
