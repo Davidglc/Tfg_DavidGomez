@@ -49,9 +49,9 @@
             lbMateriales = new Label();
             panel3 = new Panel();
             panel1 = new Panel();
+            btn_LimpiarCampos = new Button();
             btn_Eliminar = new Button();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            btn_LimpiarCampos = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dbgMateriales).BeginInit();
             PanelParent.SuspendLayout();
@@ -176,7 +176,7 @@
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.FlatStyle = FlatStyle.Flat;
             btnGuardar.ForeColor = Color.White;
-            btnGuardar.Location = new Point(106, 18);
+            btnGuardar.Location = new Point(109, 18);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(82, 52);
             btnGuardar.TabIndex = 12;
@@ -288,22 +288,6 @@
             panel1.Size = new Size(800, 100);
             panel1.TabIndex = 11;
             // 
-            // btn_Eliminar
-            // 
-            btn_Eliminar.Anchor = AnchorStyles.None;
-            btn_Eliminar.BackColor = Color.DodgerBlue;
-            btn_Eliminar.FlatAppearance.BorderSize = 0;
-            btn_Eliminar.FlatStyle = FlatStyle.Flat;
-            btn_Eliminar.ForeColor = Color.White;
-            btn_Eliminar.Location = new Point(12, 18);
-            btn_Eliminar.Name = "btn_Eliminar";
-            btn_Eliminar.Size = new Size(82, 52);
-            btn_Eliminar.TabIndex = 17;
-            btn_Eliminar.Text = "Eliminar";
-            btn_Eliminar.UseVisualStyleBackColor = false;
-            btn_Eliminar.Visible = false;
-            btn_Eliminar.Click += btn_Eliminar_Click;
-            // 
             // btn_LimpiarCampos
             // 
             btn_LimpiarCampos.Anchor = AnchorStyles.None;
@@ -319,6 +303,22 @@
             btn_LimpiarCampos.UseVisualStyleBackColor = false;
             btn_LimpiarCampos.Visible = false;
             btn_LimpiarCampos.Click += btn_LimpiarCampos_Click;
+            // 
+            // btn_Eliminar
+            // 
+            btn_Eliminar.Anchor = AnchorStyles.None;
+            btn_Eliminar.BackColor = Color.DodgerBlue;
+            btn_Eliminar.FlatAppearance.BorderSize = 0;
+            btn_Eliminar.FlatStyle = FlatStyle.Flat;
+            btn_Eliminar.ForeColor = Color.White;
+            btn_Eliminar.Location = new Point(12, 18);
+            btn_Eliminar.Name = "btn_Eliminar";
+            btn_Eliminar.Size = new Size(82, 52);
+            btn_Eliminar.TabIndex = 17;
+            btn_Eliminar.Text = "Eliminar";
+            btn_Eliminar.UseVisualStyleBackColor = false;
+            btn_Eliminar.Visible = false;
+            btn_Eliminar.Click += btn_Eliminar_Click;
             // 
             // Actividad
             // 

@@ -194,48 +194,42 @@ namespace TFG_DavidGomez.Sesion
                 string apellidos = txApellidos.Text.Trim();
                 string dni = txDNI.Text.Trim();
                 string correo = txCorreo.Text.Trim();
-                string contrasena = TxContrasena.Text.Trim();
                 string telefono = txTelefono.Text.Trim();
                 string direccion = txDirec.Text.Trim();
+                string nuevaPwd = TxContrasena.Text.Trim();
 
-                //// 3) Validar
-                //if (string.IsNullOrEmpty(nombre) ||
-                //    string.IsNullOrEmpty(apellidos) ||
-                //    string.IsNullOrEmpty(dni) ||
-                //    string.IsNullOrEmpty(correo) ||
-                //    string.IsNullOrEmpty(contrasena))
-                //{
-                //    MessageBox.Show("Completa todos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
+                // 3) Encriptar contraseña si se ha escrito
+                string pwdHash = null;
+                bool cambiarPwd = !string.IsNullOrEmpty(nuevaPwd);
+                if (cambiarPwd)
+                    pwdHash = EncriptarSHA256(nuevaPwd);
 
-                // 4) Encriptar contraseña
-                string pwdHash = EncriptarSHA256(contrasena);
+                // 4) Armar el SQL dinámicamente
+                var sb = new StringBuilder();
+                sb.AppendLine("UPDATE Usuarios");
+                sb.AppendLine("   SET nombre    = @nombre,");
+                sb.AppendLine("       apellidos = @apellidos,");
+                sb.AppendLine("       dni       = @dni,");
+                sb.AppendLine("       correo    = @correo,");
+                if (cambiarPwd)
+                    sb.AppendLine("       contrasena= @contrasena,");
+                sb.AppendLine("       telefono  = @telefono,");
+                sb.AppendLine("       direccion = @direccion");
+                sb.AppendLine(" WHERE id        = @id;");
 
-                // 5) Actualizar en MariaDB
-                ConMDB con = new ConMDB();
+                // 5) Ejecutar
+                var con = new ConMDB();
                 try
                 {
                     con.AbrirConexion();
-                    string sql = @"
-                        UPDATE Usuarios
-                           SET nombre     = @nombre,
-                               apellidos  = @apellidos,
-                               dni        = @dni,
-                               correo     = @correo,
-                               contrasena = @contrasena,
-                               telefono   = @telefono,
-                               direccion  = @direccion
-                         WHERE id         = @id;
-                    ";
-
-                    using (var cmd = new MySqlCommand(sql, con.ObtenerConexion()))
+                    using (var cmd = new MySqlCommand(sb.ToString(), con.ObtenerConexion()))
                     {
                         cmd.Parameters.AddWithValue("@nombre", nombre);
                         cmd.Parameters.AddWithValue("@apellidos", apellidos);
                         cmd.Parameters.AddWithValue("@dni", dni);
                         cmd.Parameters.AddWithValue("@correo", correo);
-                        cmd.Parameters.AddWithValue("@contrasena", pwdHash);
+                        if (cambiarPwd)
+                            cmd.Parameters.AddWithValue("@contrasena", pwdHash);
                         cmd.Parameters.AddWithValue("@telefono", telefono);
                         cmd.Parameters.AddWithValue("@direccion", direccion);
                         cmd.Parameters.AddWithValue("@id", idUsuario);
@@ -261,6 +255,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         /// <summary>
@@ -282,48 +277,42 @@ namespace TFG_DavidGomez.Sesion
                 string apellidos = txApellidos.Text.Trim();
                 string dni = txDNI.Text.Trim();
                 string correo = txCorreo.Text.Trim();
-                string contrasena = TxContrasena.Text.Trim();
                 string telefono = txTelefono.Text.Trim();
                 string direccion = txDirec.Text.Trim();
+                string nuevaPwd = TxContrasena.Text.Trim();
 
-                //// 3) Validar
-                //if (string.IsNullOrEmpty(nombre) ||
-                //    string.IsNullOrEmpty(apellidos) ||
-                //    string.IsNullOrEmpty(dni) ||
-                //    string.IsNullOrEmpty(correo) ||
-                //    string.IsNullOrEmpty(contrasena))
-                //{
-                //    MessageBox.Show("Completa todos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
+                // 3) Encriptar contraseña si se ha escrito
+                string pwdHash = null;
+                bool cambiarPwd = !string.IsNullOrEmpty(nuevaPwd);
+                if (cambiarPwd)
+                    pwdHash = EncriptarSHA256(nuevaPwd);
 
-                // 4) Encriptar contraseña
-                string pwdHash = EncriptarSHA256(contrasena);
+                // 4) Armar el SQL dinámicamente
+                var sb = new StringBuilder();
+                sb.AppendLine("UPDATE Usuarios");
+                sb.AppendLine("   SET nombre    = @nombre,");
+                sb.AppendLine("       apellidos = @apellidos,");
+                sb.AppendLine("       dni       = @dni,");
+                sb.AppendLine("       correo    = @correo,");
+                if (cambiarPwd)
+                    sb.AppendLine("       contrasena= @contrasena,");
+                sb.AppendLine("       telefono  = @telefono,");
+                sb.AppendLine("       direccion = @direccion");
+                sb.AppendLine(" WHERE id        = @id;");
 
-                // 5) Actualizar en MariaDB
-                ConMDB con = new ConMDB();
+                // 5) Ejecutar
+                var con = new ConMDB();
                 try
                 {
                     con.AbrirConexion();
-                    string sql = @"
-                UPDATE Usuarios
-                   SET nombre     = @nombre,
-                       apellidos  = @apellidos,
-                       dni        = @dni,
-                       correo     = @correo,
-                       contrasena = @contrasena,
-                       telefono   = @telefono,
-                       direccion  = @direccion
-                 WHERE id         = @id;
-            ";
-
-                    using (var cmd = new MySqlCommand(sql, con.ObtenerConexion()))
+                    using (var cmd = new MySqlCommand(sb.ToString(), con.ObtenerConexion()))
                     {
                         cmd.Parameters.AddWithValue("@nombre", nombre);
                         cmd.Parameters.AddWithValue("@apellidos", apellidos);
                         cmd.Parameters.AddWithValue("@dni", dni);
                         cmd.Parameters.AddWithValue("@correo", correo);
-                        cmd.Parameters.AddWithValue("@contrasena", pwdHash);
+                        if (cambiarPwd)
+                            cmd.Parameters.AddWithValue("@contrasena", pwdHash);
                         cmd.Parameters.AddWithValue("@telefono", telefono);
                         cmd.Parameters.AddWithValue("@direccion", direccion);
                         cmd.Parameters.AddWithValue("@id", idUsuario);
@@ -349,6 +338,7 @@ namespace TFG_DavidGomez.Sesion
                 MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         /// <summary>
         /// Verifica si se deben mostrar los datos de niños para el usuario actual.
