@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -183,118 +182,174 @@ namespace TFG_DavidGomez.Sesion
         {
             try
             {
-                // Obtener el ID del usuario desde la sesión
-                int idUsuario = int.Parse(SesionIniciada.IdUsuario);
-
-                // Crear una instancia de MongoDBAdapter
-                MariaDbAdapter ma = new MariaDbAdapter();
-
-                // Verificar si el usuario existe en la base de datos
-                Usuario usuarioExistente = ma.ObtenerUsuarioPorId(idUsuario);
-
-                if (usuarioExistente == null)
+                // 1) Obtener el ID del usuario
+                if (!int.TryParse(SesionIniciada.IdUsuario, out int idUsuario))
                 {
-                    MessageBox.Show("No se encontró el usuario en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("ID de usuario inválido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Modificar los datos del usuario con los valores de los TextBox
-                usuarioExistente.Nombre = txUsuario.Text;
-                usuarioExistente.Apellidos = txApellidos.Text;
-                usuarioExistente.DNI = txDNI.Text;
-                usuarioExistente.Correo = txCorreo.Text;
-                usuarioExistente.Contrasena = EncriptarSHA256(TxContrasena.Text);
-                usuarioExistente.Telefono = txTelefono.Text;
+                // 2) Leer valores de los TextBox
+                string nombre = txUsuario.Text.Trim();
+                string apellidos = txApellidos.Text.Trim();
+                string dni = txDNI.Text.Trim();
+                string correo = txCorreo.Text.Trim();
+                string contrasena = TxContrasena.Text.Trim();
+                string telefono = txTelefono.Text.Trim();
+                string direccion = txDirec.Text.Trim();
 
-                // Actualizar el usuario en la base de datos
-                var usuariosCollection = ConBD2.GetCollection<Usuario>("Usuarios");
-                var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
-                var actualizacion = Builders<Usuario>.Update
-                    .Set(u => u.Nombre, usuarioExistente.Nombre)
-                    .Set(u => u.Apellidos, usuarioExistente.Apellidos)
-                    .Set(u => u.DNI, usuarioExistente.DNI)
-                    .Set(u => u.Correo, usuarioExistente.Correo)
-                    .Set(u => u.Contrasena, usuarioExistente.Contrasena)
-                    .Set(u => u.Telefono, usuarioExistente.Telefono)
-                    .Set(u => u.Direccion, usuarioExistente.Direccion);
+                //// 3) Validar
+                //if (string.IsNullOrEmpty(nombre) ||
+                //    string.IsNullOrEmpty(apellidos) ||
+                //    string.IsNullOrEmpty(dni) ||
+                //    string.IsNullOrEmpty(correo) ||
+                //    string.IsNullOrEmpty(contrasena))
+                //{
+                //    MessageBox.Show("Completa todos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
 
-                var resultado = usuariosCollection.UpdateOne(filtro, actualizacion);
+                // 4) Encriptar contraseña
+                string pwdHash = EncriptarSHA256(contrasena);
 
-                if (resultado.ModifiedCount > 0)
+                // 5) Actualizar en MariaDB
+                ConMDB con = new ConMDB();
+                try
                 {
-                    MessageBox.Show("Los datos han sido actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    con.AbrirConexion();
+                    string sql = @"
+                        UPDATE Usuarios
+                           SET nombre     = @nombre,
+                               apellidos  = @apellidos,
+                               dni        = @dni,
+                               correo     = @correo,
+                               contrasena = @contrasena,
+                               telefono   = @telefono,
+                               direccion  = @direccion
+                         WHERE id         = @id;
+                    ";
+
+                    using (var cmd = new MySqlCommand(sql, con.ObtenerConexion()))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@apellidos", apellidos);
+                        cmd.Parameters.AddWithValue("@dni", dni);
+                        cmd.Parameters.AddWithValue("@correo", correo);
+                        cmd.Parameters.AddWithValue("@contrasena", pwdHash);
+                        cmd.Parameters.AddWithValue("@telefono", telefono);
+                        cmd.Parameters.AddWithValue("@direccion", direccion);
+                        cmd.Parameters.AddWithValue("@id", idUsuario);
+
+                        int filas = cmd.ExecuteNonQuery();
+                        if (filas > 0)
+                            MessageBox.Show("Los datos han sido actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        else
+                            MessageBox.Show("No se encontró el usuario o no hubo cambios.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
-                else
+                catch (MySqlException sqlEx)
                 {
-                    MessageBox.Show("No se pudo actualizar la información.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error de base de datos: {sqlEx.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    con.CerrarConexion();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.Close();
         }
+
 
         /// <summary>
         /// Evento para guardar los datos actualizados de un Monitor.
         /// </summary>
-        private void BtnGuardarMoni_Click(object sender, EventArgs e)
+        private void btnGuardarMoni_Click(object sender, EventArgs e)
         {
             try
             {
-                // Obtener el ID del usuario desde la sesión
-                int idUsuario = int.Parse(SesionIniciada.IdUsuario);
-
-                // Crear una instancia de MongoDBAdapter
-                MariaDbAdapter ma = new MariaDbAdapter();
-
-                // Verificar si el usuario existe en la base de datos
-                UsuarioMonitor usuarioExistente = ma.ObtenerUsuarioPorIdMoni(idUsuario);
-
-                if (usuarioExistente == null)
+                // 1) Obtener el ID del usuario
+                if (!int.TryParse(SesionIniciada.IdUsuario, out int idUsuario))
                 {
-                    MessageBox.Show("No se encontró el usuario en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("ID de usuario inválido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Modificar los datos del usuario con los valores de los TextBox
-                usuarioExistente.Nombre = txUsuario.Text;
-                usuarioExistente.Apellidos = txApellidos.Text;
-                usuarioExistente.DNI = txDNI.Text;
-                usuarioExistente.Correo = txCorreo.Text;
-                usuarioExistente.Contrasena = EncriptarSHA256(TxContrasena.Text);
-                usuarioExistente.Telefono = txTelefono.Text;
+                // 2) Leer valores de los TextBox
+                string nombre = txUsuario.Text.Trim();
+                string apellidos = txApellidos.Text.Trim();
+                string dni = txDNI.Text.Trim();
+                string correo = txCorreo.Text.Trim();
+                string contrasena = TxContrasena.Text.Trim();
+                string telefono = txTelefono.Text.Trim();
+                string direccion = txDirec.Text.Trim();
 
-                // Actualizar el usuario en la base de datos
-                var usuariosCollection = ConBD2.GetCollection<Usuario>("Usuarios");
-                var filtro = Builders<Usuario>.Filter.Eq(u => u.Id, idUsuario);
-                var actualizacion = Builders<Usuario>.Update
-                    .Set(u => u.Nombre, usuarioExistente.Nombre)
-                    .Set(u => u.Apellidos, usuarioExistente.Apellidos)
-                    .Set(u => u.DNI, usuarioExistente.DNI)
-                    .Set(u => u.Correo, usuarioExistente.Correo)
-                    .Set(u => u.Contrasena, usuarioExistente.Contrasena)
-                    .Set(u => u.Telefono, usuarioExistente.Telefono)
-                    .Set(u => u.Direccion, usuarioExistente.Direccion);
+                //// 3) Validar
+                //if (string.IsNullOrEmpty(nombre) ||
+                //    string.IsNullOrEmpty(apellidos) ||
+                //    string.IsNullOrEmpty(dni) ||
+                //    string.IsNullOrEmpty(correo) ||
+                //    string.IsNullOrEmpty(contrasena))
+                //{
+                //    MessageBox.Show("Completa todos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
 
-                var resultado = usuariosCollection.UpdateOne(filtro, actualizacion);
+                // 4) Encriptar contraseña
+                string pwdHash = EncriptarSHA256(contrasena);
 
-                if (resultado.ModifiedCount > 0)
+                // 5) Actualizar en MariaDB
+                ConMDB con = new ConMDB();
+                try
                 {
-                    MessageBox.Show("Los datos han sido actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    con.AbrirConexion();
+                    string sql = @"
+                UPDATE Usuarios
+                   SET nombre     = @nombre,
+                       apellidos  = @apellidos,
+                       dni        = @dni,
+                       correo     = @correo,
+                       contrasena = @contrasena,
+                       telefono   = @telefono,
+                       direccion  = @direccion
+                 WHERE id         = @id;
+            ";
+
+                    using (var cmd = new MySqlCommand(sql, con.ObtenerConexion()))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@apellidos", apellidos);
+                        cmd.Parameters.AddWithValue("@dni", dni);
+                        cmd.Parameters.AddWithValue("@correo", correo);
+                        cmd.Parameters.AddWithValue("@contrasena", pwdHash);
+                        cmd.Parameters.AddWithValue("@telefono", telefono);
+                        cmd.Parameters.AddWithValue("@direccion", direccion);
+                        cmd.Parameters.AddWithValue("@id", idUsuario);
+
+                        int filas = cmd.ExecuteNonQuery();
+                        if (filas > 0)
+                            MessageBox.Show("Los datos han sido actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        else
+                            MessageBox.Show("No se encontró el usuario o no hubo cambios.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
-                else
+                catch (MySqlException sqlEx)
                 {
-                    MessageBox.Show("No se pudo actualizar la información.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error de base de datos: {sqlEx.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    con.CerrarConexion();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.Close();
         }
+
         /// <summary>
         /// Verifica si se deben mostrar los datos de niños para el usuario actual.
         /// </summary>

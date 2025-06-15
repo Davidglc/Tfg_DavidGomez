@@ -66,7 +66,7 @@ namespace TFG_DavidGomez.Sesion
                 string dni = txDNI.Text.Trim();
                 string apellidos = txApellidos.Text.Trim();
                 DateTime fechaNacimiento;
-
+                
                 // Validar formato de fecha de nacimiento
                 if (!DateTime.TryParseExact(txFnac.Text.Trim(), "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
                 {

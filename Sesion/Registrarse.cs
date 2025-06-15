@@ -15,6 +15,7 @@ using TFG_DavidGomez.Clases.Conexion.TFG_DavidGomez;
 using System.Security.Cryptography;
 using System.Drawing.Drawing2D;
 using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
 
 
 namespace TFG_DavidGomez.Sesion
@@ -87,12 +88,23 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                // Validar formato de DNI
-                if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
+
+                // Validar formato multinacional de documento
+                if (!ValidarDocumentoMultinacional(DNI))
                 {
-                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("El documento de identidad no tiene un formato reconocido.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
+
+
+                //// Validar formato de DNI
+                //if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
+                //{
+                //    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
 
                 if (!System.Text.RegularExpressions.Regex.IsMatch(Correo, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 {
@@ -160,6 +172,52 @@ namespace TFG_DavidGomez.Sesion
             }
         }
 
+        private bool ValidarDocumentoMultinacional(string doc)
+        {
+            if (string.IsNullOrWhiteSpace(doc))
+                return false;
+
+            var patrones = new[]
+            {
+                // España: 8 dígitos + letra
+                @"^\d{8}[A-Za-z]$",
+
+                // México:
+                // – CURP: 4 letras + 6 dígitos + 8 alfanuméricos
+                @"^[A-Z]{4}\d{6}[A-Z0-9]{8}$",
+                // – RFC (opcionalmente homoclave): 3 o 4 letras + 6 dígitos + 3 alfanuméricos
+                @"^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$",
+
+                // Argentina: 7 u 8 dígitos
+                @"^\d{7,8}$",
+
+                // Chile (RUT): 7 u 8 dígitos + guión + dígito o K
+                @"^\d{7,8}-[0-9Kk]$",
+
+                // Colombia (Cédula): 6 a 10 dígitos
+                @"^\d{6,10}$",
+
+                // Brasil (CPF):
+                // – Formato con puntos y guión: 000.000.000-00
+                @"^\d{3}\.\d{3}\.\d{3}-\d{2}$",
+                // – Sólo dígitos: 11 dígitos seguidos
+                @"^\d{11}$",
+
+                // Venezuela (Cédula):
+                // – Con prefijo V- o E-: V-12345678 o E-12345678
+                @"^[VE]-\d{7,8}$",
+                // – Sólo dígitos (sin prefijo): 7 u 8 dígitos
+                @"^\d{7,8}$"
+            };
+
+            foreach (var pat in patrones)
+            {
+                if (Regex.IsMatch(doc, pat, RegexOptions.IgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Verifica si el objeto actual es una instancia de la clase <see cref="Registrarse"/>.
@@ -213,9 +271,11 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
-                if (!System.Text.RegularExpressions.Regex.IsMatch(DNI, @"^\d{8}[A-Za-z]$"))
+                // Validar formato multinacional de documento
+                if (!ValidarDocumentoMultinacional(DNI))
                 {
-                    MessageBox.Show("El DNI debe contener 8 números seguidos de una sola letra al final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("El documento de identidad no tiene un formato reconocido.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

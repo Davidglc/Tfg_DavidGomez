@@ -182,7 +182,6 @@
             Name = "RegisNino";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Registrar Niño";
-            WindowState = FormWindowState.Minimized;
             PanelParent.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();

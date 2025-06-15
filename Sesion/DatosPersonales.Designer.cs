@@ -217,7 +217,7 @@
             BtnGuardarMoni.TabIndex = 35;
             BtnGuardarMoni.Text = "Guardar";
             BtnGuardarMoni.UseVisualStyleBackColor = false;
-            BtnGuardarMoni.Click += BtnGuardarMoni_Click;
+            BtnGuardarMoni.Click += btnGuardarMoni_Click;
             // 
             // txDirec
             // 

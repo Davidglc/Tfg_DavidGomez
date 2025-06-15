@@ -28,6 +28,7 @@ namespace TFG_DavidGomez.Sesion
             RedondearBoton(btnGuardar, 20);
             RedondearBoton(btnSeleccionarImagen, 20);
             RedondearBoton(btn_Eliminar, 20);
+            RedondearBoton(btn_LimpiarCampos, 20);
         }
 
         public void CargarDatos(Actividades actividad)
@@ -236,11 +237,11 @@ namespace TFG_DavidGomez.Sesion
                 return;
             }
 
-            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(descripcion) || imagenBytes == null || cbNinos.SelectedItem == null)
-            {
-                MessageBox.Show("Completa todos los campos, incluyendo el monitor.");
-                return;
-            }
+            //if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(descripcion) || imagenBytes == null || cbNinos.SelectedItem == null)
+            //{
+            //    MessageBox.Show("Completa todos los campos, incluyendo el monitor.");
+            //    return;
+            //}
 
             // Obtener ID del monitor desde el ComboBox
             int idMonitor = ((ComboboxItem)cbNinos.SelectedItem).Value is int id ? id : 0;
@@ -315,8 +316,8 @@ namespace TFG_DavidGomez.Sesion
             txtDescripcion.Clear();
             pn_Img.BackgroundImage = null;
             imagenBytes = null;
-            dbgMateriales.Columns.Clear();
             dbgMateriales.Rows.Clear();
+            cbNinos.SelectedIndex = 0;
         }
 
         private void CargarActividades()
@@ -375,7 +376,6 @@ namespace TFG_DavidGomez.Sesion
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow fila = dgvActividades.Rows[e.RowIndex];
-
                 txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
                 txtFecha.Text = fila.Cells["Fecha"].Value?.ToString() ?? "";
                 actividadSeleccionadaId = Convert.ToInt32(fila.Cells["Id"].Value);
@@ -388,7 +388,7 @@ namespace TFG_DavidGomez.Sesion
                 ConMDB con = new ConMDB();
                 con.AbrirConexion();
 
-                string query = "SELECT descripcion, imagen, materiales FROM Actividades WHERE id = @id\r\n";
+                string query = "SELECT descripcion, imagen, materiales,id_usuario FROM Actividades WHERE id = @id\r\n";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
                 {
@@ -419,6 +419,9 @@ namespace TFG_DavidGomez.Sesion
                             {
                                 pn_Img.BackgroundImage = null;
                             }
+                            int idMonitor = reader.GetInt32("id_usuario")-2;
+                            // Finalmente lo seleccionamos en el ComboBox
+                            cbNinos.SelectedIndex = idMonitor;
                         }
                     }
                 }
@@ -543,9 +546,6 @@ namespace TFG_DavidGomez.Sesion
 
             con.CerrarConexion();
 
-            // Opcional: selecciona el primero automáticamente
-            if (cbNinos.Items.Count > 0)
-                cbNinos.SelectedIndex = 0;
         }
 
         private void EstilizarTabla(DataGridView dgv)
@@ -650,6 +650,11 @@ namespace TFG_DavidGomez.Sesion
             path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
             path.CloseAllFigures();
             btn.Region = new Region(path);
+        }
+
+        private void btn_LimpiarCampos_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
         }
     }
 }

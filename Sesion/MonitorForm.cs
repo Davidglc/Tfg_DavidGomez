@@ -252,6 +252,7 @@ namespace TFG_DavidGomez
             a.dgvActividades.Visible = true;
             a.btnSeleccionarImagen.Visible = true;
             a.btn_Eliminar.Visible = true;
+            a.btn_LimpiarCampos.Visible = true;
             a.CargarMonitoresComboBox();
             a.ShowDialog();
         }
