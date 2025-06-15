@@ -243,6 +243,7 @@ namespace TFG_DavidGomez
             Actividad a = new Actividad();
             a.btnApuntar.Visible = false;
             a.lbcbNino.Visible = false;
+            a.lblMonitor.Visible = true;
             a.cbNinos.Visible = true;
             a.btnGuardar.Visible = true;
             a.txtNombre.Visible = true;
@@ -250,6 +251,7 @@ namespace TFG_DavidGomez
             a.txtDescripcion.Visible = true;
             a.dgvActividades.Visible = true;
             a.btnSeleccionarImagen.Visible = true;
+            a.btn_Eliminar.Visible = true;
             a.CargarMonitoresComboBox();
             a.ShowDialog();
         }

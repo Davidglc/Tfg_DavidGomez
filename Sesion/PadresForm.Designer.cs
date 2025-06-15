@@ -96,7 +96,6 @@
             Name = "PadresForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Actividades Apuntadas";
-            WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)dataGridInscripciones).EndInit();
             PanelParent.ResumeLayout(false);
             PanelCosas.ResumeLayout(false);

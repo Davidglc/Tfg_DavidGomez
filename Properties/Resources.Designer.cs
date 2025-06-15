@@ -59,5 +59,15 @@ namespace TFG_DavidGomez.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LogoTFG {
+            get {
+                object obj = ResourceManager.GetObject("LogoTFG", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -63,17 +63,42 @@ namespace TFG_DavidGomez.Sesion
             dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FechaNacimiento", HeaderText = "Fecha de nacimiento" });
             dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Edad", HeaderText = "Edad" });
 
-            //dgvNinos.Dock = DockStyle.None;
-            dgvNinos.Width = 600;
-            dgvNinos.Height = 150;
+            // Dimensiones más contenidas
+            dgvNinos.Width = 500;
+            dgvNinos.Height = 120;
 
-            // Posicionar manualmente al lado de los TextBox (ajusta según el ancho del grupo de controles)
-            dgvNinos.Left = 60; // <-- Aquí decides el desplazamiento lateral
+            // Centrar horizontalmente en el formulario
+            dgvNinos.Left = (this.ClientSize.Width - dgvNinos.Width) / 2;
+            // Alinearlo con la parte superior de los TextBoxes (o ajusta a tu gusto)
             dgvNinos.Top = lblUsuario.Top;
 
             dgvNinos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvNinos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
+
+
+        //private void ConfigurarGrid()
+        //{
+        //    dgvNinos.Columns.Clear();
+
+        //    dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "ID", Visible = false });
+        //    dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Nombre", HeaderText = "Nombre" });
+        //    dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Apellidos", HeaderText = "Apellidos" });
+        //    dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DNI", HeaderText = "DNI" });
+        //    dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FechaNacimiento", HeaderText = "Fecha de nacimiento" });
+        //    dgvNinos.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Edad", HeaderText = "Edad" });
+
+        //    //dgvNinos.Dock = DockStyle.None;
+        //    dgvNinos.Width = 600;
+        //    dgvNinos.Height = 150;
+
+        //    // Posicionar manualmente al lado de los TextBox (ajusta según el ancho del grupo de controles)
+        //    dgvNinos.Left = 60; // <-- Aquí decides el desplazamiento lateral
+        //    dgvNinos.Top = lblUsuario.Top;
+
+        //    dgvNinos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        //    dgvNinos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        //}
 
 
 

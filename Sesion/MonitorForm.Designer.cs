@@ -35,7 +35,6 @@
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             datosPersonalesToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
-            toolStripMenuItem1 = new ToolStripMenuItem();
             lbFecha = new Label();
             LbFecha2 = new Label();
             LAtividad = new Label();
@@ -51,7 +50,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, modificarActividadToolStripMenuItem, usuarioToolStripMenuItem, toolStripMenuItem1 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { añadirMonitorToolStripMenuItem, modificarActividadToolStripMenuItem, usuarioToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -77,10 +76,13 @@
             // usuarioToolStripMenuItem
             // 
             usuarioToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
+            usuarioToolStripMenuItem.BackgroundImageLayout = ImageLayout.Stretch;
             usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { datosPersonalesToolStripMenuItem, cerrarSesionToolStripMenuItem });
             usuarioToolStripMenuItem.Image = (Image)resources.GetObject("usuarioToolStripMenuItem.Image");
             usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
-            usuarioToolStripMenuItem.Size = new Size(28, 20);
+            usuarioToolStripMenuItem.RightToLeft = RightToLeft.No;
+            usuarioToolStripMenuItem.Size = new Size(75, 20);
+            usuarioToolStripMenuItem.Text = "Usuario";
             // 
             // datosPersonalesToolStripMenuItem
             // 
@@ -95,12 +97,6 @@
             cerrarSesionToolStripMenuItem.Size = new Size(196, 22);
             cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             cerrarSesionToolStripMenuItem.Click += cerrarSesionToolStripMenuItem_Click;
-            // 
-            // toolStripMenuItem1
-            // 
-            toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(22, 20);
-            toolStripMenuItem1.Text = " ";
             // 
             // lbFecha
             // 
@@ -198,6 +194,7 @@
             Controls.Add(LbFecha2);
             Controls.Add(lbFecha);
             Controls.Add(menuStrip1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "MonitorForm";
@@ -226,7 +223,6 @@
         private ToolStripMenuItem datosPersonalesToolStripMenuItem;
         private ToolStripMenuItem cerrarSesionToolStripMenuItem;
         public ToolStripMenuItem modificarActividadToolStripMenuItem;
-        private ToolStripMenuItem toolStripMenuItem1;
         private DataGridView dataGridMateriales;
         private DataGridView dataGridNinos;
     }

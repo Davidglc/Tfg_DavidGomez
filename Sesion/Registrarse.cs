@@ -94,6 +94,13 @@ namespace TFG_DavidGomez.Sesion
                     return;
                 }
 
+                if (!System.Text.RegularExpressions.Regex.IsMatch(Correo, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    MessageBox.Show("El formato del correo electrónico no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
                 // Encriptar la contraseña
                 string contraseñaEncriptada = EncriptarSHA256(contraseña);
 

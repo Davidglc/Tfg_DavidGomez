@@ -26,6 +26,10 @@ namespace TFG_DavidGomez.Sesion
             InitializeComponent();
             mdba = new MariaDbAdapter();
             PanelBotones.AutoScroll = true;
+            btn_drch.Width = 170;
+            btn_drch.Height = 90;
+            btn_izq.Width = 170;
+            btn_izq.Height = 90;
             RedondearBoton(btn_drch, 20);
             RedondearBoton(btn_izq, 20);
             CargarActividadesDelMes();
@@ -43,8 +47,8 @@ namespace TFG_DavidGomez.Sesion
 
                 Button btn = new Button
                 {
-                    Width = 150,
-                    Height = 180,
+                    Width = 170,
+                    Height = 210,
                     Margin = new Padding(10),
                     Tag = actividad,
                     Text = $"{actividad.Nombre}\n{actividad.Fecha:dd/MM/yyyy}",
@@ -52,10 +56,10 @@ namespace TFG_DavidGomez.Sesion
                     TextAlign = ContentAlignment.BottomCenter,
                     ImageAlign = ContentAlignment.TopCenter,
                     TextImageRelation = TextImageRelation.ImageAboveText,
-                    FlatStyle = FlatStyle.Standard, // Opcional: más moderno
-                    BackColor = Color.White,        // Estilo más limpio
+                    FlatStyle = FlatStyle.Standard,
+                    BackColor = Color.White,
                     ForeColor = Color.Black,
-                    Padding = new Padding(5, 5, 5, 10) // Asegura espacio entre imagen y texto
+                    Padding = new Padding(5, 5, 5, 10)
                 };
 
                 if (actividad.Imagen != null)
@@ -63,18 +67,25 @@ namespace TFG_DavidGomez.Sesion
                     using (var ms = new MemoryStream(actividad.Imagen))
                     {
                         Image originalImage = Image.FromStream(ms);
-                        Image resizedImage = new Bitmap(originalImage, new Size(120, 90));
+                        Image resizedImage = new Bitmap(originalImage, new Size(150, 120));
                         btn.Image = resizedImage;
                     }
+                }
+                else
+                {
+                    // CAda vez que no haya imagen en la BBDD, usamos la de recursos
+                    // Supongamos que tu recurso se llama 'defaultLogo'
+                    Image defaultImg = Properties.Resources.LogoTFG;
+                    btn.Image = new Bitmap(defaultImg, new Size(150, 120));
                 }
 
                 btn.Click += AbrirActividad_Click;
                 PanelBotones.Controls.Add(btn);
             }
 
-            // Mostrar/ocultar flecha izquierda
             btn_izq.Visible = mesActual > new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
         }
+
 
 
 

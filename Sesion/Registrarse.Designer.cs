@@ -262,7 +262,6 @@
             Name = "Registrarse";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Registrarse";
-            WindowState = FormWindowState.Maximized;
             PanelParent.ResumeLayout(false);
             PanelCosas.ResumeLayout(false);
             PanelCosas.PerformLayout();

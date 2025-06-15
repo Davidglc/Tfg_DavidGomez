@@ -58,7 +58,7 @@
             btn_izq.ForeColor = Color.White;
             btn_izq.Location = new Point(0, 0);
             btn_izq.Name = "btn_izq";
-            btn_izq.Size = new Size(93, 25);
+            btn_izq.Size = new Size(93, 51);
             btn_izq.TabIndex = 1;
             btn_izq.Text = "Mes anterior";
             btn_izq.UseVisualStyleBackColor = false;
@@ -73,7 +73,7 @@
             btn_drch.ForeColor = Color.White;
             btn_drch.Location = new Point(676, 0);
             btn_drch.Name = "btn_drch";
-            btn_drch.Size = new Size(103, 25);
+            btn_drch.Size = new Size(103, 51);
             btn_drch.TabIndex = 2;
             btn_drch.Text = "Siguiente mes";
             btn_drch.UseVisualStyleBackColor = false;
@@ -108,7 +108,8 @@
             usuarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { editarDatosPersonalesToolStripMenuItem, cerrarSesiónToolStripMenuItem });
             usuarioToolStripMenuItem.Image = (Image)resources.GetObject("usuarioToolStripMenuItem.Image");
             usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
-            usuarioToolStripMenuItem.Size = new Size(28, 20);
+            usuarioToolStripMenuItem.Size = new Size(75, 20);
+            usuarioToolStripMenuItem.Text = "Usuario";
             // 
             // editarDatosPersonalesToolStripMenuItem
             // 
@@ -129,7 +130,7 @@
             PanelBotones.Dock = DockStyle.Fill;
             PanelBotones.Location = new Point(0, 0);
             PanelBotones.Name = "PanelBotones";
-            PanelBotones.Size = new Size(779, 458);
+            PanelBotones.Size = new Size(779, 432);
             PanelBotones.TabIndex = 4;
             // 
             // PanelParent
@@ -139,7 +140,7 @@
             PanelParent.Dock = DockStyle.Fill;
             PanelParent.Location = new Point(0, 0);
             PanelParent.Name = "PanelParent";
-            PanelParent.Size = new Size(779, 480);
+            PanelParent.Size = new Size(779, 454);
             PanelParent.TabIndex = 0;
             // 
             // PanelFill
@@ -148,7 +149,7 @@
             PanelFill.Dock = DockStyle.Fill;
             PanelFill.Location = new Point(0, 22);
             PanelFill.Name = "PanelFill";
-            PanelFill.Size = new Size(779, 458);
+            PanelFill.Size = new Size(779, 432);
             PanelFill.TabIndex = 1;
             // 
             // PanelMenu
@@ -165,9 +166,9 @@
             panel4.Controls.Add(btn_drch);
             panel4.Controls.Add(btn_izq);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 480);
+            panel4.Location = new Point(0, 454);
             panel4.Name = "panel4";
-            panel4.Size = new Size(779, 25);
+            panel4.Size = new Size(779, 51);
             panel4.TabIndex = 3;
             // 
             // Eleccion

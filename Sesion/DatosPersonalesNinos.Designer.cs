@@ -141,7 +141,6 @@
             // dgvNinos
             // 
             dgvNinos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvNinos.Dock = DockStyle.Right;
             dgvNinos.Location = new Point(0, 0);
             dgvNinos.Name = "dgvNinos";
             dgvNinos.ReadOnly = true;

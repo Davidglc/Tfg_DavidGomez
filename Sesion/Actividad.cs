@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -23,6 +24,10 @@ namespace TFG_DavidGomez.Sesion
             InitializeComponent();
             // ConfigurarPaneles();
             CargarActividades();
+            RedondearBoton(btnApuntar, 20);
+            RedondearBoton(btnGuardar, 20);
+            RedondearBoton(btnSeleccionarImagen, 20);
+            RedondearBoton(btn_Eliminar, 20);
         }
 
         public void CargarDatos(Actividades actividad)
@@ -374,7 +379,7 @@ namespace TFG_DavidGomez.Sesion
                 txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
                 txtFecha.Text = fila.Cells["Fecha"].Value?.ToString() ?? "";
                 actividadSeleccionadaId = Convert.ToInt32(fila.Cells["Id"].Value);
-                
+
 
                 string id = fila.Cells["Id"].Value?.ToString() ?? "";
 
@@ -581,6 +586,70 @@ namespace TFG_DavidGomez.Sesion
         private void Actividad_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_Eliminar_Click(object sender, EventArgs e)
+        {
+            // 1) ¿Hay una actividad seleccionada?
+            if (actividadSeleccionadaId == null)
+            {
+                MessageBox.Show("Selecciona primero una actividad.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2) Confirmación
+            var resultado = MessageBox.Show(
+                "¿Seguro que deseas eliminar esta actividad?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+            if (resultado != DialogResult.Yes) return;
+
+            // 3) Borrado en BD
+            try
+            {
+                ConMDB con = new ConMDB();
+                con.AbrirConexion();
+
+                string sql = "DELETE FROM Actividades WHERE id = @id";
+                using (var cmd = new MySqlCommand(sql, con.ObtenerConexion()))
+                {
+                    cmd.Parameters.AddWithValue("@id", actividadSeleccionadaId.Value);
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas > 0)
+                    {
+                        MessageBox.Show("Actividad eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontró la actividad o no se pudo eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                con.CerrarConexion();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar la actividad: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            // 4) Refrescar UI
+            actividadSeleccionadaId = null;
+            LimpiarFormulario();      // si tienes un método que limpia los TextBox, lb, panel, etc.
+            CargarActividades();      // recarga el grid
+        }
+
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+            btn.Region = new Region(path);
         }
     }
 }

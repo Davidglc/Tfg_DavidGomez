@@ -49,6 +49,7 @@
             lbMateriales = new Label();
             panel3 = new Panel();
             panel1 = new Panel();
+            btn_Eliminar = new Button();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dbgMateriales).BeginInit();
@@ -73,6 +74,7 @@
             lb_des.Anchor = AnchorStyles.None;
             lb_des.AutoSize = true;
             lb_des.Location = new Point(25, 70);
+            lb_des.MaximumSize = new Size(600, 0);
             lb_des.Name = "lb_des";
             lb_des.Size = new Size(69, 15);
             lb_des.TabIndex = 1;
@@ -109,7 +111,7 @@
             pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
             pn_Img.Location = new Point(348, 26);
             pn_Img.Name = "pn_Img";
-            pn_Img.Size = new Size(186, 140);
+            pn_Img.Size = new Size(212, 184);
             pn_Img.TabIndex = 4;
             // 
             // txtNombre
@@ -142,7 +144,7 @@
             // dgvActividades
             // 
             dgvActividades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvActividades.Location = new Point(348, 172);
+            dgvActividades.Location = new Point(348, 219);
             dgvActividades.Name = "dgvActividades";
             dgvActividades.ReadOnly = true;
             dgvActividades.Size = new Size(430, 166);
@@ -186,7 +188,7 @@
             // 
             lbcbNino.Anchor = AnchorStyles.None;
             lbcbNino.AutoSize = true;
-            lbcbNino.Location = new Point(303, 0);
+            lbcbNino.Location = new Point(254, 0);
             lbcbNino.Name = "lbcbNino";
             lbcbNino.Size = new Size(93, 15);
             lbcbNino.TabIndex = 13;
@@ -220,6 +222,7 @@
             lblMonitor.Size = new Size(112, 15);
             lblMonitor.TabIndex = 16;
             lblMonitor.Text = "Seleccione monitor:";
+            lblMonitor.Visible = false;
             // 
             // PanelParent
             // 
@@ -270,6 +273,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btn_Eliminar);
             panel1.Controls.Add(lblMonitor);
             panel1.Controls.Add(lbcbNino);
             panel1.Controls.Add(btnGuardar);
@@ -281,6 +285,22 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 100);
             panel1.TabIndex = 11;
+            // 
+            // btn_Eliminar
+            // 
+            btn_Eliminar.Anchor = AnchorStyles.None;
+            btn_Eliminar.BackColor = Color.DodgerBlue;
+            btn_Eliminar.FlatAppearance.BorderSize = 0;
+            btn_Eliminar.FlatStyle = FlatStyle.Flat;
+            btn_Eliminar.ForeColor = Color.White;
+            btn_Eliminar.Location = new Point(12, 18);
+            btn_Eliminar.Name = "btn_Eliminar";
+            btn_Eliminar.Size = new Size(82, 52);
+            btn_Eliminar.TabIndex = 17;
+            btn_Eliminar.Text = "Eliminar";
+            btn_Eliminar.UseVisualStyleBackColor = false;
+            btn_Eliminar.Visible = false;
+            btn_Eliminar.Click += btn_Eliminar_Click;
             // 
             // Actividad
             // 
@@ -328,5 +348,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Label lbMateriales;
         private Panel panel1;
+        public Button btn_Eliminar;
     }
 }
