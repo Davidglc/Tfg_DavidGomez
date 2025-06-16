@@ -373,62 +373,72 @@ namespace TFG_DavidGomez.Sesion
 
         private void dgvActividades_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex < 0) return;
+
+            var fila = dgvActividades.Rows[e.RowIndex];
+            txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
+            txtFecha.Text = fila.Cells["Fecha"].Value?.ToString() ?? "";
+            actividadSeleccionadaId = Convert.ToInt32(fila.Cells["Id"].Value);
+
+            // Preparar consulta
+            string query = @"
+                SELECT descripcion, imagen, materiales, id_usuario
+                  FROM Actividades
+                 WHERE id = @id";
+
+            // 1) Abrir conexión
+            ConMDB con = new ConMDB();
+            con.AbrirConexion();
+            try
             {
-                DataGridViewRow fila = dgvActividades.Rows[e.RowIndex];
-                txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
-                txtFecha.Text = fila.Cells["Fecha"].Value?.ToString() ?? "";
-                actividadSeleccionadaId = Convert.ToInt32(fila.Cells["Id"].Value);
-
-
-                string id = fila.Cells["Id"].Value?.ToString() ?? "";
-
-                txtDescripcion.Clear(); // ← limpiar el TextBox
-
-                ConMDB con = new ConMDB();
-                con.AbrirConexion();
-
-                string query = "SELECT descripcion, imagen, materiales,id_usuario FROM Actividades WHERE id = @id\r\n";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+                // 2) Ejecutar comando
+                using (var cmd = new MySqlCommand(query, con.ObtenerConexion()))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    cmd.Parameters.AddWithValue("@id", actividadSeleccionadaId);
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
+                        if (!reader.Read()) return;
+
+                        // a) Descripción
+                        txtDescripcion.Text = reader.GetString("descripcion");
+
+                        // b) Materiales
+                        string matTexto = reader.IsDBNull(reader.GetOrdinal("materiales"))
+                            ? ""
+                            : reader.GetString("materiales");
+                        CargarMaterialesEnTabla(matTexto);
+
+                        // c) Imagen
+                        if (!reader.IsDBNull(reader.GetOrdinal("imagen")))
                         {
-                            // Descripción en una sola línea para el TextBox
-                            txtDescripcion.Text = reader["descripcion"].ToString();
-                            string materialesTexto = reader["materiales"].ToString();
-                            CargarMaterialesEnTabla(materialesTexto);
-
-
-                            if (!reader.IsDBNull(reader.GetOrdinal("imagen")))
+                            byte[] imgBytes = (byte[])reader["imagen"];
+                            using (var ms = new MemoryStream(imgBytes))
                             {
-                                byte[] imagenBytes = (byte[])reader["imagen"];
-                                using (MemoryStream ms = new MemoryStream(imagenBytes))
-                                {
-                                    Image originalImage = Image.FromStream(ms);
-                                    Image resizedImage = new Bitmap(originalImage, pn_Img.Size);
-                                    pn_Img.BackgroundImage = resizedImage;
-                                    pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
-                                }
+                                Image orig = Image.FromStream(ms);
+                                pn_Img.BackgroundImage = new Bitmap(orig, pn_Img.Size);
+                                pn_Img.BackgroundImageLayout = ImageLayout.Stretch;
                             }
-                            else
-                            {
-                                pn_Img.BackgroundImage = null;
-                            }
-                            int idMonitor = reader.GetInt32("id_usuario")-2;
-                            // Finalmente lo seleccionamos en el ComboBox
-                            cbNinos.SelectedIndex = idMonitor;
                         }
+                        else
+                        {
+                            pn_Img.BackgroundImage = null;
+                        }
+
+                        // d) Monitor
+                        int idUsuarioActividad = reader.GetInt32("id_usuario");
+                        // Selecciona en el combo usando DataSource+ValueMember
+                        cbNinos.SelectedValue = idUsuarioActividad;
                     }
                 }
-
+            }
+            finally
+            {
+                // 3) Cerrar la conexión siempre
                 con.CerrarConexion();
             }
         }
+
+
 
         private string ObtenerMaterialesDeActividad(string idActividad)
         {
@@ -522,31 +532,35 @@ namespace TFG_DavidGomez.Sesion
 
         public void CargarMonitoresComboBox()
         {
-            cbNinos.Items.Clear(); // Asegúrate de limpiar antes
+            // 1) Creamos la lista de items
+            var lista = new List<ComboboxItem>();
 
-            string query = "SELECT id, nombre FROM Usuarios WHERE tipo = 'monitor'"; // Ajusta si usas otra tabla o condición
+            string query = "SELECT id, nombre, apellidos FROM Usuarios WHERE tipo = 'monitor'";
 
             ConMDB con = new ConMDB();
             con.AbrirConexion();
 
-            using (MySqlCommand cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            using (var cmd = new MySqlCommand(query, con.ObtenerConexion()))
+            using (var reader = cmd.ExecuteReader())
             {
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    lista.Add(new ComboboxItem
                     {
-                        int id = reader.GetInt32("id");
-                        string nombre = reader.GetString("nombre");
-
-                        // Puedes almacenar el objeto completo o una tupla en ComboBox
-                        cbNinos.Items.Add(new ComboboxItem { Text = nombre, Value = id });
-                    }
+                        Text = reader.GetString("nombre") + " " + reader.GetString("apellidos"),
+                        Value = reader.GetInt32("id")
+                    });
                 }
             }
 
             con.CerrarConexion();
 
+            // 2) Ligamos al ComboBox
+            cbNinos.DisplayMember = "Text";
+            cbNinos.ValueMember = "Value";
+            cbNinos.DataSource = lista;
         }
+
 
         private void EstilizarTabla(DataGridView dgv)
         {
